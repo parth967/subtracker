@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-WSGI entry point for PythonAnywhere deployment
+WSGI entry point for SubTracker Pro on PythonAnywhere
 """
 
 import sys
@@ -8,19 +8,22 @@ import os
 from dotenv import load_dotenv
 
 # Add your project directory to Python path
-project_home = '/home/yourusername/mysite'  # Update this path
+project_home = '/home/yourusername/mysite'  # Update this path with your username
 if project_home not in sys.path:
     sys.path = [project_home] + sys.path
 
-# Load environment variables
-load_dotenv(os.path.join(project_home, '.env'))
+# Load production environment variables
+load_dotenv(os.path.join(project_home, '.env.production'))
 
-from app import app, db, email_monitor
+from app import app, db
 
-# Initialize database and start email monitoring
+# Initialize database tables
 with app.app_context():
-    db.create_all()
-    email_monitor.start_monitoring()
+    try:
+        db.create_all()
+        print("Database tables created successfully!")
+    except Exception as e:
+        print(f"Database initialization error: {e}")
 
 # This is what PythonAnywhere will use
 application = app
