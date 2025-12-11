@@ -16,6 +16,11 @@ License: MIT
 
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, EmailField, SelectField, TextAreaField, DecimalField, DateField
+from wtforms.validators import DataRequired, Email, Length, EqualTo
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import os
 from decimal import Decimal
@@ -25,15 +30,78 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-this')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///subscription_manager.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['WTF_CSRF_ENABLED'] = True
 
 db = SQLAlchemy(app)
 
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+login_manager.login_message = 'Please log in to access SubTracker Pro.'
+login_manager.login_message_category = 'info'
+
+# User loader for Flask-Login
+@login_manager.user_loader
+def load_user(user_id):
+    return AuthUser.query.get(int(user_id))
+
+# Authentication Forms
+class LoginForm(FlaskForm):
+    email = EmailField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+
+class SignupForm(FlaskForm):
+    name = StringField('Full Name', validators=[DataRequired(), Length(min=2, max=100)])
+    email = EmailField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
+    confirm_password = PasswordField('Confirm Password', 
+                                   validators=[DataRequired(), EqualTo('password')])
+
+class SubscriptionForm(FlaskForm):
+    name = StringField('Service Name', validators=[DataRequired()])
+    cost = DecimalField('Cost', validators=[DataRequired()])
+    billing_cycle = SelectField('Billing Cycle', 
+                               choices=[('weekly', 'Weekly'), ('monthly', 'Monthly'), ('yearly', 'Yearly')],
+                               validators=[DataRequired()])
+    start_date = DateField('Start Date', validators=[DataRequired()])
+    user_id = SelectField('User', coerce=int, validators=[DataRequired()])
+    category_id = SelectField('Category', coerce=int, validators=[DataRequired()])
+    description = TextAreaField('Description')
+    website_url = StringField('Website URL')
+    notes = TextAreaField('Notes')
+
 # Database Models
-class User(db.Model):
+class AuthUser(UserMixin, db.Model):
+    """Authentication user model for login system"""
+    __tablename__ = 'auth_users'
+    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(200), nullable=False)
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relationship to subscription users
+    subscription_users = db.relationship('User', backref='auth_user', lazy=True)
+    
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+    
+    def __repr__(self):
+        return f'<AuthUser {self.email}>'
+
+class User(db.Model):
+    """Subscription user model (for tracking who uses which subscriptions)"""
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), nullable=True)
     user_type = db.Column(db.String(50), default='personal')  # personal, business, family
+    auth_user_id = db.Column(db.Integer, db.ForeignKey('auth_users.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     subscriptions = db.relationship('Subscription', backref='user', lazy=True)
@@ -101,14 +169,82 @@ def get_monthly_cost(cost, billing_cycle):
         return float(cost) * 4.33  # Average weeks per month
     return float(cost)
 
-# Routes
+# Authentication Routes
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
+    
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = AuthUser.query.filter_by(email=form.email.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user)
+            next_page = request.args.get('next')
+            flash(f'Welcome back, {user.name}!', 'success')
+            return redirect(next_page) if next_page else redirect(url_for('dashboard'))
+        else:
+            flash('Invalid email or password.', 'error')
+    
+    return render_template('auth/login.html', form=form)
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
+    
+    form = SignupForm()
+    if form.validate_on_submit():
+        # Check if user already exists
+        existing_user = AuthUser.query.filter_by(email=form.email.data).first()
+        if existing_user:
+            flash('Email already registered. Please log in instead.', 'error')
+            return redirect(url_for('login'))
+        
+        # Create new user
+        user = AuthUser(
+            name=form.name.data,
+            email=form.email.data
+        )
+        user.set_password(form.password.data)
+        
+        db.session.add(user)
+        db.session.commit()
+        
+        # Create default personal user for subscriptions
+        personal_user = User(
+            name=form.name.data,
+            email=form.email.data,
+            user_type='personal',
+            auth_user_id=user.id
+        )
+        db.session.add(personal_user)
+        db.session.commit()
+        
+        flash('Account created successfully! Please log in.', 'success')
+        return redirect(url_for('login'))
+    
+    return render_template('auth/signup.html', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('login'))
+
+# Main Routes
 @app.route('/')
+@login_required
 def dashboard():
     """Main dashboard with analytics"""
-    # Get all data
-    users = User.query.all()
+    # Get data for current user only
+    users = User.query.filter_by(auth_user_id=current_user.id).all()
     categories = Category.query.all()
-    subscriptions = Subscription.query.filter_by(status='active').all()
+    subscriptions = Subscription.query.join(User).filter(
+        User.auth_user_id == current_user.id,
+        Subscription.status == 'active'
+    ).all()
     
     # Calculate analytics
     total_subscriptions = len(subscriptions)
@@ -164,6 +300,7 @@ def dashboard():
                          categories=categories)
 
 @app.route('/subscriptions')
+@login_required
 def subscriptions():
     """View all subscriptions"""
     page = request.args.get('page', 1, type=int)
@@ -171,20 +308,20 @@ def subscriptions():
     category_id = request.args.get('category', 'all')
     user_id = request.args.get('user', 'all')
     
-    query = Subscription.query
+    query = Subscription.query.join(User).filter(User.auth_user_id == current_user.id)
     
     if status != 'all':
-        query = query.filter_by(status=status)
+        query = query.filter(Subscription.status == status)
     if category_id != 'all':
-        query = query.filter_by(category_id=category_id)
+        query = query.filter(Subscription.category_id == category_id)
     if user_id != 'all':
-        query = query.filter_by(user_id=user_id)
+        query = query.filter(Subscription.user_id == user_id)
     
     subscriptions = query.order_by(Subscription.created_at.desc()).paginate(
         page=page, per_page=20, error_out=False
     )
     
-    users = User.query.all()
+    users = User.query.filter_by(auth_user_id=current_user.id).all()
     categories = Category.query.all()
     
     return render_template('subscriptions.html', 
@@ -197,6 +334,7 @@ def subscriptions():
                          today=datetime.now().date())
 
 @app.route('/add_subscription', methods=['GET', 'POST'])
+@login_required
 def add_subscription():
     """Add new subscription"""
     if request.method == 'POST':
@@ -233,12 +371,13 @@ def add_subscription():
         except Exception as e:
             flash(f'Error adding subscription: {str(e)}', 'error')
     
-    users = User.query.all()
+    users = User.query.filter_by(auth_user_id=current_user.id).all()
     categories = Category.query.all()
     
     return render_template('add_subscription.html', users=users, categories=categories)
 
 @app.route('/add_user', methods=['GET', 'POST'])
+@login_required
 def add_user():
     """Add new user"""
     if request.method == 'POST':
@@ -250,7 +389,8 @@ def add_user():
             user = User(
                 name=name,
                 email=email if email else None,
-                user_type=user_type
+                user_type=user_type,
+                auth_user_id=current_user.id
             )
             
             db.session.add(user)
@@ -265,6 +405,7 @@ def add_user():
     return render_template('add_user.html')
 
 @app.route('/add_category', methods=['GET', 'POST'])
+@login_required
 def add_category():
     """Add new category"""
     if request.method == 'POST':
@@ -291,9 +432,13 @@ def add_category():
     return render_template('add_category.html')
 
 @app.route('/analytics')
+@login_required
 def analytics():
     """Detailed analytics page"""
-    subscriptions = Subscription.query.filter_by(status='active').all()
+    subscriptions = Subscription.query.join(User).filter(
+        User.auth_user_id == current_user.id,
+        Subscription.status == 'active'
+    ).all()
     
     # Monthly spending trend (last 12 months)
     monthly_data = {}
@@ -317,9 +462,13 @@ def analytics():
                          monthly_data=sorted_months)
 
 @app.route('/api/subscription_data')
+@login_required
 def api_subscription_data():
     """API endpoint for chart data"""
-    subscriptions = Subscription.query.filter_by(status='active').all()
+    subscriptions = Subscription.query.join(User).filter(
+        User.auth_user_id == current_user.id,
+        Subscription.status == 'active'
+    ).all()
     categories = Category.query.all()
     
     # Category data for pie chart

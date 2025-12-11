@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - SubTracker Pro{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3 class="mb-0 fw-bold" style="color: var(--primary);">
+                        <i class="fas fa-user-plus me-2"></i>Join SubTracker Pro
+                    </h3>
+                    <p class="text-muted mb-0 mt-2">Create your account to start tracking subscriptions</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-4">
+                            {{ form.name.label(class="form-label fw-semibold") }}
+                            {{ form.name(class="form-control form-control-lg", placeholder="John Doe") }}
+                            {% if form.name.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.name.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form.email.label(class="form-label fw-semibold") }}
+                            {{ form.email(class="form-control form-control-lg", placeholder="john@example.com") }}
+                            {% if form.email.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.email.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                {{ form.password.label(class="form-label fw-semibold") }}
+                                {{ form.password(class="form-control form-control-lg", placeholder="Min 6 characters") }}
+                                {% if form.password.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.password.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                {{ form.confirm_password.label(class="form-label fw-semibold") }}
+                                {{ form.confirm_password(class="form-control form-control-lg", placeholder="Repeat password") }}
+                                {% if form.confirm_password.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.confirm_password.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center">
+                        <p class="text-muted">
+                            Already have an account? 
+                            <a href="{{ url_for('login') }}" class="text-decoration-none fw-semibold" style="color: var(--primary);">
+                                Sign in here
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- What You Get -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3 text-center">What you get with SubTracker Pro:</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle me-2" style="color: var(--success);"></i>
+                                <small>Unlimited subscriptions</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle me-2" style="color: var(--success);"></i>
+                                <small>Multi-user support</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle me-2" style="color: var(--success);"></i>
+                                <small>Future projections</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle me-2" style="color: var(--success);"></i>
+                                <small>Advanced analytics</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle me-2" style="color: var(--success);"></i>
+                                <small>Secure & private</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle me-2" style="color: var(--success);"></i>
+                                <small>Always free</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
