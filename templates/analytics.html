@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - Subscription Manager{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Hero Section -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold text-primary animate-fade-in">📊 Analytics & Insights</h1>
+            <p class="lead text-muted animate-fade-in">Understand your subscription spending patterns</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Spending Chart -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-chart-pie me-2 text-primary"></i>Spending by Category
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-calculator me-2 text-success"></i>Cost Breakdown
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% set total_monthly = subscriptions|sum(attribute='cost')|float if subscriptions else 0 %}
+                    {% set total_yearly = total_monthly * 12 %}
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Monthly Total:</span>
+                            <strong class="text-primary">${{ "%.2f"|format(total_monthly) }}</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Yearly Total:</span>
+                            <strong class="text-warning">${{ "%.2f"|format(total_yearly) }}</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Average per Sub:</span>
+                            <strong class="text-info">${{ "%.2f"|format(total_monthly / subscriptions|length if subscriptions else 0) }}</strong>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="mb-2">
+                        <small class="text-muted">Most Expensive:</small>
+                        {% if subscriptions %}
+                            {% set most_expensive = subscriptions|max(attribute='cost') %}
+                            <br><strong>{{ most_expensive.name }}</strong> - ${{ most_expensive.cost }}
+                        {% else %}
+                            <br><span class="text-muted">No subscriptions</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-2">
+                        <small class="text-muted">Cheapest:</small>
+                        {% if subscriptions %}
+                            {% set cheapest = subscriptions|min(attribute='cost') %}
+                            <br><strong>{{ cheapest.name }}</strong> - ${{ cheapest.cost }}
+                        {% else %}
+                            <br><span class="text-muted">No subscriptions</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optimization Tips -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0 fw-bold">
+                        <i class="fas fa-lightbulb me-2 text-warning"></i>Optimization Tips
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <small>
+                            <strong>💡 Tip:</strong> Consider annual billing for frequently used services to save up to 20%!
+                        </small>
+                    </div>
+                    <div class="alert alert-warning">
+                        <small>
+                            <strong>⚠️ Review:</strong> Check for unused subscriptions monthly to avoid waste.
+                        </small>
+                    </div>
+                    <div class="alert alert-success">
+                        <small>
+                            <strong>✅ Bundle:</strong> Look for family plans or bundles to reduce per-person costs.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription List -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-list me-2 text-secondary"></i>All Active Subscriptions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if subscriptions %}
+                        <div class="row">
+                            {% for subscription in subscriptions %}
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card subscription-card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="card-title mb-0">{{ subscription.name }}</h6>
+                                            <span class="badge bg-{{ subscription.category.color }}">${{ subscription.cost }}</span>
+                                        </div>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                <i class="{{ subscription.category.icon }} me-1"></i>{{ subscription.category.name }}
+                                                <br>
+                                                <i class="fas fa-user me-1"></i>{{ subscription.user.name }}
+                                                <br>
+                                                <i class="fas fa-calendar me-1"></i>{{ subscription.billing_cycle.title() }}
+                                            </small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No subscriptions to analyze yet.</p>
+                            <a href="{{ url_for('add_subscription') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Add Your First Subscription
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Fetch data and create chart
+    fetch('/api/subscription_data')
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.categories,
+                    datasets: [{
+                        data: data.category_costs,
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0',
+                            '#9966FF',
+                            '#FF9F40',
+                            '#FF6384',
+                            '#C9CBCF'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': $' + context.parsed.toFixed(2) + '/month';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error loading chart data:', error);
+            document.getElementById('categoryChart').parentElement.innerHTML = 
+                '<div class="text-center py-4"><p class="text-muted">No data available for chart</p></div>';
+        });
+</script>
+{% endblock %}

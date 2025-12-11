@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}All Subscriptions - Subscription Manager{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Hero Section -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold text-primary animate-fade-in">📋 All Subscriptions</h1>
+            <p class="lead text-muted animate-fade-in">Manage and track all your subscriptions</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card animate-fade-in">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h4 class="mb-0 fw-bold">
+                                <i class="fas fa-list me-2 text-primary"></i>Subscriptions
+                            </h4>
+                        </div>
+                        <div class="col-md-6">
+                            <form method="GET" class="row g-2">
+                                <div class="col-md-3">
+                                    <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="all" {{ 'selected' if current_status == 'all' }}>All Status</option>
+                                        <option value="active" {{ 'selected' if current_status == 'active' }}>Active</option>
+                                        <option value="paused" {{ 'selected' if current_status == 'paused' }}>Paused</option>
+                                        <option value="cancelled" {{ 'selected' if current_status == 'cancelled' }}>Cancelled</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="category" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="all" {{ 'selected' if current_category == 'all' }}>All Categories</option>
+                                        {% for category in categories %}
+                                        <option value="{{ category.id }}" {{ 'selected' if current_category == category.id|string }}>
+                                            {{ category.name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="user" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="all" {{ 'selected' if current_user == 'all' }}>All Users</option>
+                                        {% for user in users %}
+                                        <option value="{{ user.id }}" {{ 'selected' if current_user == user.id|string }}>
+                                            {{ user.name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <a href="{{ url_for('add_subscription') }}" class="btn btn-primary btn-sm w-100">
+                                        <i class="fas fa-plus me-1"></i>Add New
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if subscriptions.items %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>User</th>
+                                        <th>Category</th>
+                                        <th>Cost</th>
+                                        <th>Billing</th>
+                                        <th>Next Payment</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for subscription in subscriptions.items %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="{{ subscription.category.icon }} me-3 text-{{ subscription.category.color }}"></i>
+                                                <div>
+                                                    <strong>{{ subscription.name }}</strong>
+                                                    {% if subscription.description %}
+                                                        <br><small class="text-muted">{{ subscription.description[:50] }}{% if subscription.description|length > 50 %}...{% endif %}</small>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-{{ 'primary' if subscription.user.user_type == 'personal' else 'warning' if subscription.user.user_type == 'business' else 'info' }} rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 30px; height: 30px;">
+                                                    <i class="fas fa-{{ 'user' if subscription.user.user_type == 'personal' else 'briefcase' if subscription.user.user_type == 'business' else 'users' }} text-white small"></i>
+                                                </div>
+                                                <div>
+                                                    <strong>{{ subscription.user.name }}</strong>
+                                                    <br><small class="text-muted">{{ subscription.user.user_type.title() }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-{{ subscription.category.color }}">
+                                                <i class="{{ subscription.category.icon }} me-1"></i>
+                                                {{ subscription.category.name }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <strong>${{ subscription.cost }}</strong>
+                                            <br><small class="text-muted">${{ "%.2f"|format((subscription.cost|float / 12) if subscription.billing_cycle == 'yearly' else (subscription.cost|float * 4.33) if subscription.billing_cycle == 'weekly' else subscription.cost|float) }}/mo</small>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary">{{ subscription.billing_cycle.title() }}</span>
+                                        </td>
+                                        <td>
+                                            {{ subscription.next_billing.strftime('%b %d, %Y') }}
+                                            <br>
+                                            {% set days_until = (subscription.next_billing - today).days if today else 0 %}
+                                            <small class="text-{{ 'danger' if days_until <= 7 else 'warning' if days_until <= 30 else 'muted' }}">
+                                                {% if days_until < 0 %}
+                                                    {{ days_until|abs }} days overdue
+                                                {% elif days_until == 0 %}
+                                                    Due today
+                                                {% elif days_until == 1 %}
+                                                    Due tomorrow
+                                                {% else %}
+                                                    In {{ days_until }} days
+                                                {% endif %}
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-{{ 'success' if subscription.status == 'active' else 'warning' if subscription.status == 'paused' else 'danger' }}">
+                                                {{ subscription.status.title() }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                {% if subscription.website_url %}
+                                                <a href="{{ subscription.website_url }}" target="_blank" class="btn btn-outline-info" title="Visit Website">
+                                                    <i class="fas fa-external-link-alt"></i>
+                                                </a>
+                                                {% endif %}
+                                                <button class="btn btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger" title="Delete" onclick="return confirm('Are you sure?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        {% if subscriptions.pages > 1 %}
+                        <nav aria-label="Subscription pagination">
+                            <ul class="pagination justify-content-center">
+                                {% if subscriptions.has_prev %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('subscriptions', page=subscriptions.prev_num, status=current_status, category=current_category, user=current_user) }}">Previous</a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for page_num in subscriptions.iter_pages() %}
+                                    {% if page_num %}
+                                        {% if page_num != subscriptions.page %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ url_for('subscriptions', page=page_num, status=current_status, category=current_category, user=current_user) }}">{{ page_num }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item active">
+                                                <span class="page-link">{{ page_num }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if subscriptions.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('subscriptions', page=subscriptions.next_num, status=current_status, category=current_category, user=current_user) }}">Next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                            <h5 class="text-muted">No subscriptions found</h5>
+                            <p class="text-muted">Start tracking your subscriptions by adding your first one.</p>
+                            <a href="{{ url_for('add_subscription') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Add Your First Subscription
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

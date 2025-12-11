@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block title %}Add Subscription - SubTracker Pro{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold text-primary animate-fade-in">➕ Add New Subscription</h1>
+            <p class="lead text-muted animate-fade-in">Track your subscription spending</p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+            <div class="card animate-fade-in">
+                <div class="card-header text-center">
+                    <h4 class="mb-0 fw-bold">
+                        <i class="fas fa-credit-card me-2 text-primary"></i>Subscription Details
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="name" class="form-label fw-semibold">
+                                    <i class="fas fa-tag me-2 text-primary"></i>Service Name
+                                </label>
+                                <input type="text" class="form-control form-control-lg" id="name" name="name" required 
+                                       placeholder="Netflix, Spotify, etc.">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="cost" class="form-label fw-semibold">
+                                    <i class="fas fa-dollar-sign me-2 text-success"></i>Cost
+                                </label>
+                                <input type="number" step="0.01" class="form-control form-control-lg" id="cost" name="cost" required
+                                       placeholder="9.99">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="billing_cycle" class="form-label fw-semibold">
+                                    <i class="fas fa-calendar me-2 text-warning"></i>Billing Cycle
+                                </label>
+                                <select class="form-select form-select-lg" id="billing_cycle" name="billing_cycle" required>
+                                    <option value="">Select billing cycle</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="yearly">Yearly</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="start_date" class="form-label fw-semibold">
+                                    <i class="fas fa-calendar-plus me-2 text-info"></i>Start Date
+                                </label>
+                                <input type="date" class="form-control form-control-lg" id="start_date" name="start_date" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="user_id" class="form-label fw-semibold">
+                                    <i class="fas fa-user me-2 text-secondary"></i>User
+                                </label>
+                                <select class="form-select form-select-lg" id="user_id" name="user_id" required>
+                                    <option value="">Select user</option>
+                                    {% for user in users %}
+                                    <option value="{{ user.id }}">{{ user.name }} ({{ user.user_type.title() }})</option>
+                                    {% endfor %}
+                                </select>
+                                {% if not users %}
+                                <div class="form-text text-warning">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                    No users found. <a href="{{ url_for('add_user') }}">Add a user first</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="category_id" class="form-label fw-semibold">
+                                    <i class="fas fa-tags me-2 text-danger"></i>Category
+                                </label>
+                                <select class="form-select form-select-lg" id="category_id" name="category_id" required>
+                                    <option value="">Select category</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}">
+                                        {{ category.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="website_url" class="form-label fw-semibold">
+                                <i class="fas fa-link me-2 text-info"></i>Website URL (Optional)
+                            </label>
+                            <input type="url" class="form-control form-control-lg" id="website_url" name="website_url"
+                                   placeholder="https://netflix.com">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="description" class="form-label fw-semibold">
+                                <i class="fas fa-align-left me-2 text-muted"></i>Description (Optional)
+                            </label>
+                            <textarea class="form-control" id="description" name="description" rows="3"
+                                      placeholder="Additional details about this subscription..."></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="notes" class="form-label fw-semibold">
+                                <i class="fas fa-sticky-note me-2 text-warning"></i>Notes (Optional)
+                            </label>
+                            <textarea class="form-control" id="notes" name="notes" rows="2"
+                                      placeholder="Any additional notes..."></textarea>
+                        </div>
+
+                        <div class="d-grid gap-3 d-md-flex justify-content-md-center mt-4">
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-lg px-4">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                                <i class="fas fa-plus me-2"></i>Add Subscription
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Quick Add Popular Services -->
+            <div class="card mt-4 animate-fade-in">
+                <div class="card-header">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-star me-2 text-warning"></i>Popular Services
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-outline-danger w-100" onclick="fillForm('Netflix', '15.99', 'monthly', 'Streaming')">
+                                <i class="fas fa-play me-2"></i>Netflix
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-outline-success w-100" onclick="fillForm('Spotify', '9.99', 'monthly', 'Music')">
+                                <i class="fas fa-music me-2"></i>Spotify
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-outline-primary w-100" onclick="fillForm('Microsoft 365', '6.99', 'monthly', 'Productivity')">
+                                <i class="fas fa-laptop-code me-2"></i>Microsoft 365
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-outline-info w-100" onclick="fillForm('Dropbox', '9.99', 'monthly', 'Cloud Storage')">
+                                <i class="fas fa-cloud me-2"></i>Dropbox
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-outline-warning w-100" onclick="fillForm('Adobe Creative', '20.99', 'monthly', 'Software')">
+                                <i class="fas fa-palette me-2"></i>Adobe Creative
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-outline-dark w-100" onclick="fillForm('Amazon Prime', '12.99', 'monthly', 'Streaming')">
+                                <i class="fas fa-shopping-cart me-2"></i>Amazon Prime
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Set today's date as default
+    document.getElementById('start_date').valueAsDate = new Date();
+
+    // Quick fill function for popular services
+    function fillForm(name, cost, cycle, category) {
+        document.getElementById('name').value = name;
+        document.getElementById('cost').value = cost;
+        document.getElementById('billing_cycle').value = cycle;
+        
+        // Find and select category
+        const categorySelect = document.getElementById('category_id');
+        for (let option of categorySelect.options) {
+            if (option.text.includes(category)) {
+                option.selected = true;
+                break;
+            }
+        }
+    }
+</script>
+{% endblock %}

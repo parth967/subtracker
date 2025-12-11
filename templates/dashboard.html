@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <p class="lead mb-0" style="color: var(--text-secondary);">
+                    Track and manage all your subscriptions in one place
+                </p>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('add_subscription') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Add Subscription
+                </a>
+                <a href="{{ url_for('analytics') }}" class="btn btn-secondary">
+                    <i class="fas fa-chart-bar me-2"></i>Analytics
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clean Statistics Cards -->
+    <div class="row mb-5 g-4">
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="card stats-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-list fa-2x mb-3" style="color: var(--primary);"></i>
+                    <h3 class="fw-bold">{{ stats.total_subscriptions }}</h3>
+                    <p class="mb-0 text-muted">Active Subscriptions</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="card stats-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-calendar-day fa-2x mb-3" style="color: var(--success);"></i>
+                    <h3 class="fw-bold">${{ "%.2f"|format(stats.total_monthly_cost / 30) }}</h3>
+                    <p class="mb-0 text-muted">Daily Cost</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="card stats-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-calendar-week fa-2x mb-3" style="color: var(--warning);"></i>
+                    <h3 class="fw-bold">${{ "%.2f"|format(stats.total_monthly_cost / 4.33) }}</h3>
+                    <p class="mb-0 text-muted">Weekly Cost</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="card stats-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-dollar-sign fa-2x mb-3" style="color: var(--primary);"></i>
+                    <h3 class="fw-bold">${{ stats.total_monthly_cost }}</h3>
+                    <p class="mb-0 text-muted">Monthly Cost</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="card stats-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-calendar-alt fa-2x mb-3" style="color: var(--danger);"></i>
+                    <h3 class="fw-bold">${{ stats.total_yearly_cost }}</h3>
+                    <p class="mb-0 text-muted">Yearly Cost</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="card stats-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-chart-line fa-2x mb-3" style="color: var(--success);"></i>
+                    <h3 class="fw-bold">${{ stats.avg_cost_per_subscription }}</h3>
+                    <p class="mb-0 text-muted">Avg per Sub</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Future Projections -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-chart-line me-2" style="color: var(--primary);"></i>Future Spending Projections
+                    </h5>
+                    <p class="mb-0 text-muted">See how much you'll spend if you continue with current subscriptions</p>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Project for:</label>
+                            <select id="projectionPeriod" class="form-select" onchange="updateProjections()">
+                                <option value="6">6 Months</option>
+                                <option value="12" selected>1 Year</option>
+                                <option value="24">2 Years</option>
+                                <option value="36">3 Years</option>
+                                <option value="60">5 Years</option>
+                                <option value="120">10 Years</option>
+                            </select>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 rounded" style="background: var(--gray-100); border: 1px solid var(--gray-200);">
+                                        <h4 class="mb-1" style="color: var(--primary);" id="projectedTotal">$0</h4>
+                                        <small class="text-muted">Total Cost</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 rounded" style="background: var(--gray-100); border: 1px solid var(--gray-200);">
+                                        <h4 class="mb-1" style="color: var(--success);" id="projectedSavings">$0</h4>
+                                        <small class="text-muted">Potential Savings (20%)</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 rounded" style="background: var(--gray-100); border: 1px solid var(--gray-200);">
+                                        <h4 class="mb-1" style="color: var(--warning);" id="projectedOptimized">$0</h4>
+                                        <small class="text-muted">Optimized Cost</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart -->
+                    <div class="mt-4">
+                        <canvas id="projectionChart" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Category Breakdown -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-tags me-2" style="color: var(--primary);"></i>Spending by Category
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if stats.category_stats %}
+                        {% for category, data in stats.category_stats.items() %}
+                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded" style="background: var(--gray-50);">
+                            <div class="d-flex align-items-center">
+                                <i class="{{ data.icon }} me-3" style="color: var(--primary);"></i>
+                                <div>
+                                    <strong>{{ category }}</strong>
+                                    <br>
+                                    <small class="text-muted">{{ data.count }} subscription{{ 's' if data.count != 1 else '' }}</small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <h6 class="mb-0 fw-bold">${{ "%.2f"|format(data.monthly_cost) }}</h6>
+                                <small class="text-muted">per month</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-tags fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No subscriptions found</p>
+                            <a href="{{ url_for('add_subscription') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Add Your First Subscription
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- User Breakdown -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-users me-2" style="color: var(--success);"></i>Spending by User
+                    </h5>
+                    <a href="{{ url_for('add_user') }}" class="btn btn-success btn-sm">
+                        <i class="fas fa-user-plus me-1"></i>Add User
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if stats.user_stats %}
+                        {% for user, data in stats.user_stats.items() %}
+                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded" style="background: var(--gray-50);">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background: var(--primary); color: white;">
+                                    <i class="fas fa-{{ 'user' if data.type == 'personal' else 'briefcase' if data.type == 'business' else 'users' }}"></i>
+                                </div>
+                                <div>
+                                    <strong>{{ user }}</strong>
+                                    <br>
+                                    <small class="text-muted">{{ data.count }} subscription{{ 's' if data.count != 1 else '' }} • {{ data.type.title() }}</small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <h6 class="mb-0 fw-bold">${{ "%.2f"|format(data.monthly_cost) }}</h6>
+                                <small class="text-muted">per month</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No users found</p>
+                            <a href="{{ url_for('add_user') }}" class="btn btn-success">
+                                <i class="fas fa-user-plus me-2"></i>Add Your First User
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const monthlyTotal = {{ stats.total_monthly_cost }};
+    let projectionChart;
+
+    function updateProjections() {
+        const months = parseInt(document.getElementById('projectionPeriod').value);
+        const totalCost = monthlyTotal * months;
+        const potentialSavings = totalCost * 0.2;
+        const optimizedCost = totalCost - potentialSavings;
+
+        document.getElementById('projectedTotal').textContent = '$' + totalCost.toLocaleString();
+        document.getElementById('projectedSavings').textContent = '$' + potentialSavings.toLocaleString();
+        document.getElementById('projectedOptimized').textContent = '$' + optimizedCost.toLocaleString();
+
+        updateChart(months);
+    }
+
+    function updateChart(months) {
+        const ctx = document.getElementById('projectionChart').getContext('2d');
+        
+        const labels = [];
+        const currentData = [];
+        const optimizedData = [];
+        
+        for (let i = 0; i <= months; i += Math.max(1, Math.floor(months / 12))) {
+            labels.push(i === 0 ? 'Now' : `${i}mo`);
+            currentData.push(monthlyTotal * i);
+            optimizedData.push(monthlyTotal * i * 0.8);
+        }
+
+        if (projectionChart) {
+            projectionChart.destroy();
+        }
+
+        projectionChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Current Spending',
+                    data: currentData,
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Optimized Spending',
+                    data: optimizedData,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: { size: 14, weight: 'bold' }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProjections();
+    });
+</script>
+{% endblock %}

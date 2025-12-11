@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Add Email Configuration - Email Analyzer{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold text-primary animate-fade-in">🚀 Add Email Account</h1>
+            <p class="lead text-muted animate-fade-in">Connect your email to start tracking job applications</p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+            <div class="card animate-fade-in" style="animation-delay: 0.2s">
+                <div class="card-header text-center">
+                    <h4 class="mb-0 fw-bold">
+                        <i class="fas fa-envelope-plus me-2 text-primary"></i>Email Configuration
+                    </h4>
+                    <p class="text-muted mb-0 mt-2">Securely connect your email account</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-semibold">
+                                <i class="fas fa-envelope me-2 text-primary"></i>Email Address
+                            </label>
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" required 
+                                   placeholder="your.email@gmail.com">
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Enter your email address that you want to monitor
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="app_password" class="form-label fw-semibold">
+                                <i class="fas fa-key me-2 text-warning"></i>App Password
+                            </label>
+                            <input type="password" class="form-control form-control-lg" id="app_password" name="app_password" required
+                                   placeholder="Enter your app password">
+                            <div class="form-text">
+                                <i class="fas fa-shield-alt me-1 text-success"></i>
+                                For Gmail: Generate an app password in your Google Account settings<br>
+                                <a href="https://support.google.com/accounts/answer/185833" target="_blank" class="text-decoration-none">
+                                    <i class="fas fa-external-link-alt me-1"></i>How to create an app password
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="imap_server" class="form-label fw-semibold">
+                                <i class="fas fa-server me-2 text-info"></i>Email Provider
+                            </label>
+                            <select class="form-select form-select-lg" id="imap_server" name="imap_server">
+                                <option value="imap.gmail.com">Gmail (imap.gmail.com)</option>
+                                <option value="outlook.office365.com">Outlook/Hotmail (outlook.office365.com)</option>
+                                <option value="imap.mail.yahoo.com">Yahoo (imap.mail.yahoo.com)</option>
+                                <option value="imap.aol.com">AOL (imap.aol.com)</option>
+                                <option value="custom">Custom Server</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3" id="custom_server_div" style="display: none;">
+                            <label for="custom_server" class="form-label">Custom IMAP Server</label>
+                            <input type="text" class="form-control" id="custom_server" name="custom_server" placeholder="imap.yourprovider.com">
+                        </div>
+
+                        <div class="alert alert-info border-0" style="background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);">
+                            <h6 class="fw-bold"><i class="fas fa-lightbulb me-2 text-warning"></i>Quick Setup Guide:</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="mb-0">
+                                        <li><strong>Gmail:</strong> Enable 2FA + create app password</li>
+                                        <li><strong>Outlook:</strong> Use app password if 2FA enabled</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="mb-0">
+                                        <li><strong>Yahoo:</strong> Generate app password in security</li>
+                                        <li><strong>All:</strong> Ensure IMAP is enabled</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-3 d-md-flex justify-content-md-center mt-4">
+                            <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg px-4">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                                <i class="fas fa-rocket me-2"></i>Connect Email
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('imap_server').addEventListener('change', function() {
+        const customDiv = document.getElementById('custom_server_div');
+        const customInput = document.getElementById('custom_server');
+        
+        if (this.value === 'custom') {
+            customDiv.style.display = 'block';
+            customInput.required = true;
+        } else {
+            customDiv.style.display = 'none';
+            customInput.required = false;
+            customInput.value = '';
+        }
+    });
+
+    // Update the form submission to handle custom server
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const serverSelect = document.getElementById('imap_server');
+        const customInput = document.getElementById('custom_server');
+        
+        if (serverSelect.value === 'custom' && customInput.value) {
+            serverSelect.value = customInput.value;
+        }
+    });
+</script>
+{% endblock %}
