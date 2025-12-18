@@ -1,35 +1,26 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3.10
+
 """
-WSGI entry point for SubTracker Pro on PythonAnywhere
+WSGI Configuration for InviteMe on PythonAnywhere
+
+This file contains the WSGI configuration required to serve the InviteMe
+Flask application on PythonAnywhere hosting platform.
 """
 
 import sys
 import os
 from dotenv import load_dotenv
 
-# Add your project directory to Python path
-project_home = '/home/Parth967/mysite/subtracker'
+# Add your project directory to sys.path
+project_home = '/home/Parth967/inviteme'
 if project_home not in sys.path:
     sys.path = [project_home] + sys.path
 
-# Load production environment variables
+# Load environment variables
 load_dotenv(os.path.join(project_home, '.env.production'))
 
-from app import app, db
-
-# Initialize database tables
-with app.app_context():
-    try:
-        db.create_all()
-        print("SubTracker Pro database tables created successfully!")
-    except Exception as e:
-        print(f"Database initialization error: {e}")
-
-# This is what PythonAnywhere will use
-application = app
+# Import your Flask application
+from app import app as application
 
 if __name__ == "__main__":
-    app.run()
-
-
-echo 'export MYSQL_PASSWORD="your-actual-mysql-password"' >> ~/.bashrc
+    application.run()

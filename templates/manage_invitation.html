@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+{% block title %}Manage {{ invitation.title }} - InviteMe{% endblock %}
+
+{% block extra_css %}
+<style>
+    .share-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .qr-code-container {
+        background: white;
+        padding: 1rem;
+        border-radius: 15px;
+        display: inline-block;
+    }
+    
+    .share-link {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-family: monospace;
+    }
+    
+    .share-link:focus {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        box-shadow: none;
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .rsvp-list {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
+    .rsvp-item {
+        border-left: 4px solid;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: white;
+        border-radius: 0 10px 10px 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .rsvp-item.attending {
+        border-left-color: var(--success);
+    }
+    
+    .rsvp-item.not-attending {
+        border-left-color: var(--danger);
+    }
+    
+    .rsvp-item.maybe {
+        border-left-color: var(--warning);
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 300px;
+        margin: 2rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="fw-bold mb-2">{{ invitation.title }}</h1>
+                    <p class="text-muted mb-0">
+                        <i class="fas fa-calendar me-2"></i>{{ invitation.event_date.strftime('%B %d, %Y') }}
+                        {% if invitation.event_time %}at {{ invitation.event_time }}{% endif %}
+                    </p>
+                </div>
+                <div>
+                    <a href="{{ url_for('view_invitation', code=invitation.invitation_code) }}" 
+                       class="btn btn-outline-primary" target="_blank">
+                        <i class="fas fa-eye me-2"></i>View Invitation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Section -->
+    <div class="share-card">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="fw-bold mb-3">
+                    <i class="fas fa-share-alt me-2"></i>Share Your Invitation
+                </h3>
+                <p class="mb-3">Share this link with your guests so they can view the invitation and RSVP:</p>
+                
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control share-link" 
+                           value="{{ invitation.share_url }}" 
+                           id="shareLink" readonly>
+                    <button class="btn btn-light" type="button" onclick="copyLink()">
+                        <i class="fas fa-copy me-2"></i>Copy Link
+                    </button>
+                </div>
+                
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="https://wa.me/?text={{ 'You\'re invited! ' + invitation.share_url | urlencode }}" 
+                       class="btn btn-success btn-sm" target="_blank">
+                        <i class="fab fa-whatsapp me-2"></i>WhatsApp
+                    </a>
+                    <a href="mailto:?subject={{ invitation.title | urlencode }}&body={{ 'You\'re invited to ' + invitation.title + '! View details and RSVP: ' + invitation.share_url | urlencode }}" 
+                       class="btn btn-info btn-sm">
+                        <i class="fas fa-envelope me-2"></i>Email
+                    </a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ invitation.share_url | urlencode }}" 
+                       class="btn btn-primary btn-sm" target="_blank">
+                        <i class="fab fa-facebook me-2"></i>Facebook
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?text={{ 'You\'re invited! ' + invitation.share_url | urlencode }}" 
+                       class="btn btn-info btn-sm" target="_blank">
+                        <i class="fab fa-twitter me-2"></i>Twitter
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="qr-code-container">
+                    <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="img-fluid" style="max-width: 150px;">
+                </div>
+                <p class="mt-2 mb-0"><small>Scan QR Code</small></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number text-primary">{{ invitation.total_rsvps }}</div>
+                <div class="stat-label">Total RSVPs</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number text-success">{{ invitation.attending_count }}</div>
+                <div class="stat-label">Attending</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number text-warning">{{ invitation.maybe_count }}</div>
+                <div class="stat-label">Maybe</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number text-danger">{{ invitation.not_attending_count }}</div>
+                <div class="stat-label">Can't Attend</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and RSVPs -->
+    <div class="row g-4">
+        <!-- RSVP Chart -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-chart-pie me-2" style="color: var(--primary);"></i>
+                        RSVP Breakdown
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="rsvpChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent RSVPs -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-users me-2" style="color: var(--success);"></i>
+                        Recent RSVPs
+                    </h5>
+                    <span class="badge bg-primary">{{ invitation.total_rsvps }} total</span>
+                </div>
+                <div class="card-body">
+                    {% if invitation.rsvps %}
+                    <div class="rsvp-list">
+                        {% for rsvp in invitation.rsvps|sort(attribute='responded_at', reverse=true) %}
+                        <div class="rsvp-item {{ rsvp.status.replace('_', '-') }}">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="fw-bold mb-1">{{ rsvp.guest_name }}</h6>
+                                    <p class="mb-1">
+                                        <span class="badge bg-{{ 'success' if rsvp.status == 'attending' else 'danger' if rsvp.status == 'not_attending' else 'warning' }}">
+                                            {% if rsvp.status == 'attending' %}
+                                                <i class="fas fa-check me-1"></i>Attending
+                                            {% elif rsvp.status == 'not_attending' %}
+                                                <i class="fas fa-times me-1"></i>Not Attending
+                                            {% else %}
+                                                <i class="fas fa-question me-1"></i>Maybe
+                                            {% endif %}
+                                        </span>
+                                        {% if rsvp.guest_count > 1 %}
+                                        <span class="badge bg-secondary ms-1">{{ rsvp.guest_count }} guests</span>
+                                        {% endif %}
+                                    </p>
+                                    {% if rsvp.message %}
+                                    <p class="mb-1 text-muted small fst-italic">"{{ rsvp.message }}"</p>
+                                    {% endif %}
+                                    {% if rsvp.dietary_requirements %}
+                                    <p class="mb-1 small"><strong>Dietary:</strong> {{ rsvp.dietary_requirements }}</p>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">{{ rsvp.responded_at.strftime('%m/%d %I:%M %p') }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <h6 class="text-muted">No RSVPs yet</h6>
+                        <p class="text-muted mb-0">Share your invitation to start receiving responses!</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Details -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-info-circle me-2" style="color: var(--info);"></i>
+                        Event Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-primary">Basic Information</h6>
+                            <p><strong>Event Type:</strong> {{ invitation.event_type.replace('_', ' ').title() }}</p>
+                            {% if invitation.description %}
+                            <p><strong>Description:</strong> {{ invitation.description }}</p>
+                            {% endif %}
+                            {% if invitation.custom_message %}
+                            <p><strong>Personal Message:</strong> {{ invitation.custom_message }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-primary">Venue & Contact</h6>
+                            {% if invitation.venue_name %}
+                            <p><strong>Venue:</strong> {{ invitation.venue_name }}</p>
+                            {% endif %}
+                            {% if invitation.venue_address %}
+                            <p><strong>Address:</strong> {{ invitation.venue_address }}</p>
+                            {% endif %}
+                            <p><strong>Host:</strong> {{ invitation.host_name }}</p>
+                            {% if invitation.host_email %}
+                            <p><strong>Email:</strong> {{ invitation.host_email }}</p>
+                            {% endif %}
+                            {% if invitation.host_phone %}
+                            <p><strong>Phone:</strong> {{ invitation.host_phone }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Copy link functionality
+    function copyLink() {
+        const linkInput = document.getElementById('shareLink');
+        linkInput.select();
+        linkInput.setSelectionRange(0, 99999); // For mobile devices
+        
+        navigator.clipboard.writeText(linkInput.value).then(function() {
+            // Show success feedback
+            const button = event.target.closest('button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+            button.classList.add('btn-success');
+            button.classList.remove('btn-light');
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-light');
+            }, 2000);
+        });
+    }
+
+    // RSVP Chart
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('rsvpChart').getContext('2d');
+        
+        const attending = {{ invitation.attending_count }};
+        const notAttending = {{ invitation.not_attending_count }};
+        const maybe = {{ invitation.maybe_count }};
+        
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Attending', 'Maybe', 'Not Attending'],
+                datasets: [{
+                    data: [attending, maybe, notAttending],
+                    backgroundColor: [
+                        '#10b981', // success green
+                        '#f59e0b', // warning yellow
+                        '#ef4444'  // danger red
+                    ],
+                    borderWidth: 0,
+                    cutout: '60%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            font: {
+                                size: 14,
+                                weight: '500'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = attending + maybe + notAttending;
+                                const percentage = total > 0 ? Math.round((context.parsed / total) * 100) : 0;
+                                return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Animate stats on load
+        const statNumbers = document.querySelectorAll('.stat-number');
+        statNumbers.forEach(stat => {
+            const finalValue = parseInt(stat.textContent);
+            let currentValue = 0;
+            const increment = Math.ceil(finalValue / 20) || 1;
+            
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= finalValue) {
+                    currentValue = finalValue;
+                    clearInterval(timer);
+                }
+                stat.textContent = currentValue;
+            }, 50);
+        });
+
+        // Auto-refresh RSVP data every 30 seconds
+        setInterval(function() {
+            fetch(`/api/invitation/{{ invitation.invitation_code }}/stats`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update stats without page reload
+                    document.querySelectorAll('.stat-number')[0].textContent = data.total_rsvps;
+                    document.querySelectorAll('.stat-number')[1].textContent = data.attending;
+                    document.querySelectorAll('.stat-number')[2].textContent = data.maybe;
+                    document.querySelectorAll('.stat-number')[3].textContent = data.not_attending;
+                })
+                .catch(error => console.log('Auto-refresh failed:', error));
+        }, 30000);
+    });
+</script>
+{% endblock %}

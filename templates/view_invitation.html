@@ -1,0 +1,446 @@
+{% extends "base.html" %}
+
+{% block title %}{{ invitation.title }} - InviteMe{% endblock %}
+
+{% block extra_css %}
+<style>
+    .invitation-card {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+    
+    .invitation-header {
+        padding: 3rem 2rem 2rem;
+        text-align: center;
+        position: relative;
+    }
+    
+    .invitation-body {
+        padding: 2rem;
+    }
+    
+    /* Template Styles */
+    .template-classic {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .template-modern {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+    }
+    
+    .template-floral {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        color: white;
+    }
+    
+    .template-vintage {
+        background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+        color: #5a4a42;
+    }
+    
+    .template-festive {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        color: #d63384;
+    }
+    
+    .template-corporate {
+        background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+        color: white;
+    }
+    
+    .template-luxury {
+        background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+        color: #5a4a42;
+    }
+    
+    .template-ocean {
+        background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        color: white;
+    }
+    
+    .template-sunset {
+        background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+        color: white;
+    }
+    
+    .template-neon {
+        background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+        color: white;
+    }
+    
+    .template-forest {
+        background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        color: white;
+    }
+    
+    .event-details {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        backdrop-filter: blur(10px);
+    }
+    
+    .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 0.5rem 0;
+    }
+    
+    .detail-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .detail-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .rsvp-form {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .rsvp-status-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .rsvp-status-btn {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid #e5e7eb;
+        background: white;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    .rsvp-status-btn:hover {
+        border-color: var(--primary);
+        transform: translateY(-2px);
+    }
+    
+    .rsvp-status-btn.selected {
+        border-color: var(--primary);
+        background: var(--primary);
+        color: white;
+    }
+    
+    .rsvp-status-btn.attending.selected {
+        background: var(--success);
+        border-color: var(--success);
+    }
+    
+    .rsvp-status-btn.not-attending.selected {
+        background: var(--danger);
+        border-color: var(--danger);
+    }
+    
+    .rsvp-status-btn.maybe.selected {
+        background: var(--warning);
+        border-color: var(--warning);
+    }
+    
+    @media (max-width: 768px) {
+        .invitation-header {
+            padding: 2rem 1rem 1rem;
+        }
+        
+        .invitation-body {
+            padding: 1rem;
+        }
+        
+        .rsvp-status-buttons {
+            flex-direction: column;
+        }
+        
+        .detail-item {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .detail-icon {
+            margin-right: 0;
+            margin-bottom: 0.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="invitation-card">
+        <!-- Invitation Header -->
+        <div class="invitation-header template-{{ invitation.template_id }}">
+            <div class="mb-4">
+                {% if invitation.event_type == 'wedding' %}
+                    <i class="fas fa-heart fa-3x mb-3"></i>
+                {% elif invitation.event_type == 'birthday' %}
+                    <i class="fas fa-birthday-cake fa-3x mb-3"></i>
+                {% elif invitation.event_type == 'corporate' %}
+                    <i class="fas fa-briefcase fa-3x mb-3"></i>
+                {% elif invitation.event_type == 'graduation' %}
+                    <i class="fas fa-graduation-cap fa-3x mb-3"></i>
+                {% elif invitation.event_type == 'baby_shower' %}
+                    <i class="fas fa-baby fa-3x mb-3"></i>
+                {% else %}
+                    <i class="fas fa-star fa-3x mb-3"></i>
+                {% endif %}
+            </div>
+            
+            <h1 class="font-script display-4 fw-bold mb-3">{{ invitation.title }}</h1>
+            
+            {% if invitation.description %}
+            <p class="lead mb-4">{{ invitation.description }}</p>
+            {% endif %}
+            
+            <div class="event-details">
+                {% if invitation.event_date %}
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div>
+                        <strong>{{ invitation.event_date.strftime('%A, %B %d, %Y') }}</strong>
+                        {% if invitation.event_time %}
+                        <br><span>at {{ invitation.event_time }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if invitation.venue_name or invitation.venue_address %}
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        {% if invitation.venue_name %}
+                        <strong>{{ invitation.venue_name }}</strong><br>
+                        {% endif %}
+                        {% if invitation.venue_address %}
+                        <span>{{ invitation.venue_address }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <strong>Hosted by {{ invitation.host_name }}</strong>
+                        {% if invitation.host_email or invitation.host_phone %}
+                        <br>
+                        {% if invitation.host_email %}
+                        <small>{{ invitation.host_email }}</small>
+                        {% endif %}
+                        {% if invitation.host_phone %}
+                        <small>{{ invitation.host_phone }}</small>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            {% if invitation.custom_message %}
+            <div class="mt-4 p-3" style="background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
+                <p class="mb-0 fst-italic">"{{ invitation.custom_message }}"</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- RSVP Form -->
+        <div class="invitation-body">
+            <div class="rsvp-form">
+                <h3 class="fw-bold mb-4 text-center">
+                    <i class="fas fa-reply me-2" style="color: var(--primary);"></i>
+                    Please RSVP
+                </h3>
+                
+                <form method="POST" action="{{ url_for('submit_rsvp', code=invitation.invitation_code) }}" id="rsvpForm">
+                    <!-- RSVP Status Selection -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Will you be attending? *</label>
+                        <div class="rsvp-status-buttons">
+                            <div class="rsvp-status-btn attending" data-status="attending">
+                                <i class="fas fa-check-circle fa-2x mb-2 d-block"></i>
+                                <strong>Yes, I'll be there!</strong>
+                            </div>
+                            <div class="rsvp-status-btn not-attending" data-status="not_attending">
+                                <i class="fas fa-times-circle fa-2x mb-2 d-block"></i>
+                                <strong>Sorry, can't make it</strong>
+                            </div>
+                            <div class="rsvp-status-btn maybe" data-status="maybe">
+                                <i class="fas fa-question-circle fa-2x mb-2 d-block"></i>
+                                <strong>Maybe</strong>
+                            </div>
+                        </div>
+                        <input type="hidden" name="status" id="rsvpStatus" required>
+                    </div>
+                    
+                    <!-- Guest Information -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="guest_name" class="form-label">Your Name *</label>
+                            <input type="text" class="form-control" id="guest_name" name="guest_name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="guest_email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="guest_email" name="guest_email">
+                        </div>
+                    </div>
+                    
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="guest_phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="guest_phone" name="guest_phone">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="guest_count" class="form-label">Number of Guests</label>
+                            <select class="form-select" id="guest_count" name="guest_count">
+                                <option value="1">Just me</option>
+                                <option value="2">2 people</option>
+                                <option value="3">3 people</option>
+                                <option value="4">4 people</option>
+                                <option value="5">5+ people</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Information -->
+                    <div class="mb-3">
+                        <label for="dietary_requirements" class="form-label">Dietary Requirements</label>
+                        <input type="text" class="form-control" id="dietary_requirements" name="dietary_requirements"
+                               placeholder="e.g., Vegetarian, Gluten-free, None">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="special_requests" class="form-label">Special Requests</label>
+                        <textarea class="form-control" id="special_requests" name="special_requests" rows="2"
+                                  placeholder="Any special accommodations needed?"></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="message" class="form-label">Message for Host</label>
+                        <textarea class="form-control" id="message" name="message" rows="3"
+                                  placeholder="Leave a message for {{ invitation.host_name }}..."></textarea>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">
+                            <i class="fas fa-paper-plane me-2"></i>Send RSVP
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Event Stats -->
+            <div class="text-center mt-4">
+                <div class="row g-3">
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="stat-number text-success">{{ invitation.attending_count }}</div>
+                            <div class="stat-label">Attending</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="stat-number text-warning">{{ invitation.maybe_count }}</div>
+                            <div class="stat-label">Maybe</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="stat-number text-danger">{{ invitation.not_attending_count }}</div>
+                            <div class="stat-label">Can't Attend</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // RSVP Status Selection
+        const statusButtons = document.querySelectorAll('.rsvp-status-btn');
+        const statusInput = document.getElementById('rsvpStatus');
+        
+        statusButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove selected class from all buttons
+                statusButtons.forEach(btn => btn.classList.remove('selected'));
+                // Add selected class to clicked button
+                this.classList.add('selected');
+                // Set hidden input value
+                statusInput.value = this.dataset.status;
+            });
+        });
+        
+        // Form validation
+        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+            const status = statusInput.value;
+            const guestName = document.getElementById('guest_name').value.trim();
+            
+            if (!status) {
+                e.preventDefault();
+                alert('Please select your attendance status');
+                return false;
+            }
+            
+            if (!guestName) {
+                e.preventDefault();
+                alert('Please enter your name');
+                return false;
+            }
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+            submitBtn.disabled = true;
+        });
+        
+        // Add animation to stats
+        const statNumbers = document.querySelectorAll('.stat-number');
+        statNumbers.forEach(stat => {
+            const finalValue = parseInt(stat.textContent);
+            let currentValue = 0;
+            const increment = Math.ceil(finalValue / 20);
+            
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= finalValue) {
+                    currentValue = finalValue;
+                    clearInterval(timer);
+                }
+                stat.textContent = currentValue;
+            }, 50);
+        });
+    });
+</script>
+{% endblock %}

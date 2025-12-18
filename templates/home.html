@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container hero-content">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="animate-fade-in-up">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Create <span class="font-script">Beautiful</span> Invitations
+                    </h1>
+                    <p class="lead mb-4">
+                        Design stunning invitations, share them instantly, and manage RSVPs effortlessly. 
+                        Perfect for weddings, birthdays, parties, and any celebration.
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="{{ url_for('create_invitation') }}" class="btn btn-light btn-lg">
+                            <i class="fas fa-plus me-2"></i>Create Invitation
+                        </a>
+                        <a href="{{ url_for('template_gallery') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-palette me-2"></i>View Templates
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <i class="fas fa-envelope-open-text" style="font-size: 12rem; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="fw-bold mb-3">Why Choose InviteMe?</h2>
+                <p class="lead text-muted">Everything you need to create and manage perfect invitations</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <i class="fas fa-palette fa-3x" style="color: var(--primary);"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Beautiful Templates</h5>
+                        <p class="text-muted">
+                            Choose from our collection of professionally designed templates. 
+                            Perfect for weddings, birthdays, corporate events, and more.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <i class="fas fa-share-alt fa-3x" style="color: var(--secondary);"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Easy Sharing</h5>
+                        <p class="text-muted">
+                            Share your invitations via link, QR code, or social media. 
+                            Your guests can RSVP instantly from any device.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <i class="fas fa-chart-bar fa-3x" style="color: var(--success);"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">RSVP Management</h5>
+                        <p class="text-muted">
+                            Track responses in real-time with detailed analytics. 
+                            Know exactly who's coming and plan accordingly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="fw-bold mb-3">How It Works</h2>
+                <p class="lead text-muted">Create your perfect invitation in just 3 simple steps</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="mb-4">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center" 
+                         style="width: 80px; height: 80px; background: var(--gradient-primary); color: white;">
+                        <span class="fw-bold fs-3">1</span>
+                    </div>
+                </div>
+                <h5 class="fw-bold mb-3">Choose Template</h5>
+                <p class="text-muted">
+                    Select from our beautiful collection of invitation templates 
+                    designed for every occasion and style.
+                </p>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div class="mb-4">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center" 
+                         style="width: 80px; height: 80px; background: var(--gradient-secondary); color: white;">
+                        <span class="fw-bold fs-3">2</span>
+                    </div>
+                </div>
+                <h5 class="fw-bold mb-3">Customize Details</h5>
+                <p class="text-muted">
+                    Add your event details, customize colors, and personalize 
+                    your invitation with your own message.
+                </p>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div class="mb-4">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center" 
+                         style="width: 80px; height: 80px; background: var(--gradient-success); color: white;">
+                        <span class="fw-bold fs-3">3</span>
+                    </div>
+                </div>
+                <h5 class="fw-bold mb-3">Share & Track</h5>
+                <p class="text-muted">
+                    Share your invitation and watch RSVPs come in. 
+                    Track responses and manage your guest list effortlessly.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Template Preview Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="fw-bold mb-3">Popular Templates</h2>
+                <p class="lead text-muted">Get inspired by our most loved invitation designs</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card template-card">
+                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <i class="fas fa-heart fa-2x mb-3"></i>
+                        <h5 class="fw-bold">Elegant Wedding</h5>
+                        <p class="mb-0">Perfect for romantic celebrations</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card template-card">
+                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                        <i class="fas fa-birthday-cake fa-2x mb-3"></i>
+                        <h5 class="fw-bold">Birthday Party</h5>
+                        <p class="mb-0">Fun and colorful celebrations</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card template-card">
+                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                        <i class="fas fa-briefcase fa-2x mb-3"></i>
+                        <h5 class="fw-bold">Corporate Event</h5>
+                        <p class="mb-0">Professional and sophisticated</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('template_gallery') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-palette me-2"></i>View All Templates
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5" style="background: var(--gradient-warm);">
+    <div class="container text-center text-white">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-3">Ready to Create Your Invitation?</h2>
+                <p class="lead mb-4">
+                    Join thousands of happy users who trust InviteMe for their special events. 
+                    It's free, easy, and takes just minutes to get started.
+                </p>
+                <a href="{{ url_for('create_invitation') }}" class="btn btn-light btn-lg">
+                    <i class="fas fa-rocket me-2"></i>Start Creating Now
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add animation delays to cards
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+            card.classList.add('animate-fade-in-up');
+        });
+    });
+</script>
+{% endblock %}

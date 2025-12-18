@@ -1,148 +1,306 @@
-# Email Analyzer - Job Application Tracker
+# 🎉 InviteMe - Beautiful Invitation & RSVP Platform
 
-A Python Flask web application that monitors your email accounts and automatically tracks job applications, replies, and their status. Perfect for job seekers who want to stay organized and track their application progress.
+Create stunning invitations and manage RSVPs with ease. A modern, free, and user-friendly platform for all your celebration needs.
 
-## Features
+![InviteMe Banner](https://via.placeholder.com/800x200/667eea/ffffff?text=InviteMe+-+Beautiful+Invitations)
 
-- **Multi-Email Support**: Configure multiple email accounts to monitor
-- **Automatic Email Classification**: Automatically detects job applications, replies, and other emails
-- **Status Tracking**: Track application status (Pending, Interview, Accepted, Rejected)
-- **Real-time Monitoring**: Continuously monitors your email accounts for new messages
-- **Interactive Dashboard**: View statistics and manage your email configurations
-- **Manual Status Updates**: Update email status manually through the web interface
-- **Responsive Design**: Works on desktop and mobile devices
+## ✨ Features
 
-## Setup Instructions
+### 🎨 **Beautiful Templates**
+- **6 Professional Templates**: Classic, Modern, Floral, Vintage, Festive, and Corporate
+- **Fully Customizable**: Change colors, fonts, and layouts
+- **Mobile Responsive**: Perfect on any device
+- **Event-Specific Icons**: Automatic icons based on event type
 
-### 1. Local Development
+### 📱 **Easy Sharing**
+- **Unique Links**: Each invitation gets a unique, shareable URL
+- **QR Code Generation**: Instant QR codes for easy sharing
+- **Social Media Integration**: Share on WhatsApp, Facebook, Twitter, Email
+- **No Registration Required**: Guests can RSVP without creating accounts
 
-1. **Clone or download the project files**
+### 📊 **RSVP Management**
+- **Real-time Tracking**: See responses as they come in
+- **Detailed Analytics**: Beautiful charts and statistics
+- **Guest Information**: Collect names, emails, dietary requirements
+- **Status Options**: Attending, Not Attending, Maybe
+- **Guest Count Tracking**: Handle plus-ones and families
 
-2. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+### 🎯 **Event Types**
+- **Weddings**: Elegant designs for your special day
+- **Birthday Parties**: Fun and colorful celebrations
+- **Corporate Events**: Professional business invitations
+- **Baby Showers**: Sweet and gentle designs
+- **Graduations**: Achievement celebration templates
+- **Holiday Parties**: Festive seasonal designs
+- **Custom Events**: Flexible for any occasion
 
-3. **Set up environment variables**:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
+## 🚀 Quick Start
 
-4. **Run the application**:
-   ```bash
-   python app.py
-   ```
+### 1. Installation
 
-5. **Access the application**:
-   Open your browser and go to `http://localhost:5000`
+```bash
+# Clone or download the project
+git clone <repository-url>
+cd inviteme
 
-### 2. PythonAnywhere Deployment
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-1. **Upload files to PythonAnywhere**:
-   - Upload all project files to your PythonAnywhere account
-   - Place them in `/home/yourusername/mysite/`
+# Install dependencies
+pip install -r requirements.txt
 
-2. **Install dependencies**:
-   ```bash
-   pip3.10 install --user -r requirements.txt
-   ```
+# Initialize database
+python migrate_db.py init
+```
 
-3. **Configure the web app**:
-   - Go to the "Web" tab in your PythonAnywhere dashboard
-   - Create a new web app (Flask, Python 3.10)
-   - Set the source code directory to `/home/yourusername/mysite`
-   - Set the WSGI configuration file to `/home/yourusername/mysite/wsgi.py`
+### 2. Run the Application
 
-4. **Update wsgi.py**:
-   - Edit `wsgi.py` and update the `project_home` path to match your directory
+```bash
+# Activate virtual environment
+source venv/bin/activate
 
-5. **Set up environment variables**:
-   - Create a `.env` file with your configuration
-   - Update `SECRET_KEY` with a secure random string
+# Start the server
+python app.py
+```
 
-6. **Configure database** (optional):
-   - For production, consider using MySQL instead of SQLite
-   - Update `DATABASE_URL` in `.env` accordingly
+### 3. Open in Browser
 
-7. **Reload the web app** in PythonAnywhere dashboard
+Visit `http://localhost:5000` and start creating beautiful invitations!
 
-## Email Configuration
+## 📖 How to Use
 
-### Gmail Setup
-1. Enable 2-factor authentication on your Google account
-2. Generate an app password:
-   - Go to Google Account settings
-   - Security → 2-Step Verification → App passwords
-   - Generate a password for "Mail"
-3. Use your email and the generated app password in the application
+### Creating an Invitation
 
-### Other Email Providers
-- **Outlook/Hotmail**: Use app password if 2FA is enabled
-- **Yahoo**: Generate app password in Account Security settings
-- **Custom IMAP**: Enter your provider's IMAP server details
+1. **Visit the Homepage**: Go to `http://localhost:5000`
+2. **Click "Create Invitation"**: Start the creation process
+3. **Fill Event Details**:
+   - Event title and description
+   - Date, time, and venue information
+   - Host contact details
+4. **Choose Design**:
+   - Select from 6 beautiful templates
+   - Pick your favorite color scheme
+   - Add a personal message
+5. **Set Preferences**:
+   - Maximum guest limit (optional)
+   - RSVP requirements
+6. **Create & Share**: Get your unique invitation link instantly!
 
-## How It Works
+### Managing RSVPs
 
-1. **Email Monitoring**: The application connects to your email accounts using IMAP
-2. **Classification**: Emails are automatically classified based on keywords:
-   - Job applications: Contains keywords like "application", "job", "position"
-   - Replies: Contains "re:", "reply", "response"
-   - Status detection: Automatically detects rejections, interviews, acceptances
+1. **Access Management Dashboard**: Use the link provided after creation
+2. **View Real-time Stats**: See who's attending, maybe, or can't make it
+3. **Share Your Invitation**:
+   - Copy the unique link
+   - Share via social media
+   - Use the QR code for easy scanning
+4. **Track Responses**: Monitor guest details, dietary requirements, and messages
 
-3. **Database Storage**: All emails are stored in a local database with metadata
-4. **Web Interface**: Access statistics, manage configurations, and update statuses
+### Guest Experience
 
-## Security Notes
+1. **Receive Invitation**: Guests get a beautiful, mobile-friendly invitation
+2. **Easy RSVP**: Simple form with attendance status selection
+3. **Provide Details**: Name, contact info, guest count, dietary needs
+4. **Leave Messages**: Personal messages for the host
+5. **Instant Confirmation**: Immediate feedback after submitting
 
-- App passwords are stored encrypted in the database
-- Use environment variables for sensitive configuration
-- The application only reads emails, it doesn't send or modify them
-- Consider using HTTPS in production (PythonAnywhere provides this automatically)
+## 🎨 Template Gallery
 
-## Customization
+### Classic Elegance
+- **Perfect for**: Weddings, formal events
+- **Style**: Timeless, sophisticated
+- **Colors**: Royal blues and purples
 
-The application is designed to be extensible. You can:
+### Modern Minimalist
+- **Perfect for**: Corporate events, contemporary celebrations
+- **Style**: Clean, professional
+- **Colors**: Cool blues and teals
 
-- Modify email classification rules in the `_analyze_email` method
-- Add new email types and statuses
-- Customize the web interface templates
-- Add new features like email notifications or export functionality
+### Floral Garden
+- **Perfect for**: Garden parties, spring events
+- **Style**: Nature-inspired, romantic
+- **Colors**: Warm pinks and yellows
 
-## Troubleshooting
+### Vintage Charm
+- **Perfect for**: Retro parties, nostalgic events
+- **Style**: Classic, warm
+- **Colors**: Soft pastels and earth tones
 
-### Common Issues
+### Festive Celebration
+- **Perfect for**: Birthday parties, fun events
+- **Style**: Colorful, energetic
+- **Colors**: Bright pinks and purples
 
-1. **Email connection fails**:
-   - Verify app password is correct
-   - Ensure IMAP is enabled in your email provider
-   - Check firewall settings
+### Corporate Professional
+- **Perfect for**: Business events, conferences
+- **Style**: Sophisticated, clean
+- **Colors**: Professional grays and blues
 
-2. **Database errors**:
-   - Ensure write permissions in the application directory
-   - For MySQL on PythonAnywhere, verify connection string
+## 🛠 Technical Details
 
-3. **Application not starting**:
-   - Check Python version compatibility
-   - Verify all dependencies are installed
-   - Check error logs in PythonAnywhere
+### Built With
+- **Backend**: Flask (Python web framework)
+- **Database**: SQLite (lightweight, no setup required)
+- **Frontend**: Bootstrap 5 + Custom CSS
+- **Charts**: Chart.js for analytics
+- **QR Codes**: Python qrcode library
+- **Icons**: Font Awesome
 
-### Support
+### Database Schema
 
-For issues specific to:
-- **PythonAnywhere**: Check their help documentation
-- **Email providers**: Refer to their IMAP setup guides
-- **Application bugs**: Check the code comments and error messages
+#### Invitations Table
+- Basic event information (title, description, type)
+- Date, time, and venue details
+- Host contact information
+- Design preferences (template, colors)
+- Sharing settings and limits
 
-## Future Enhancements
+#### RSVPs Table
+- Guest information and contact details
+- Attendance status and guest count
+- Dietary requirements and special requests
+- Response timestamp and messages
 
-Planned features for future versions:
-- Email content analysis using AI
-- Integration with job boards
-- Email templates for follow-ups
-- Advanced reporting and analytics
-- Mobile app companion
+### File Structure
+```
+inviteme/
+├── app.py                 # Main Flask application
+├── migrate_db.py          # Database management script
+├── requirements.txt       # Python dependencies
+├── templates/            # HTML templates
+│   ├── base.html         # Base template with navigation
+│   ├── home.html         # Homepage
+│   ├── create_invitation.html
+│   ├── view_invitation.html
+│   ├── manage_invitation.html
+│   └── template_gallery.html
+├── static/               # Static assets (CSS, JS, images)
+└── inviteme.db          # SQLite database (created automatically)
+```
 
-## License
+## 🔧 Database Management
 
-This project is open source and available under the MIT License.
+The `migrate_db.py` script provides easy database management:
+
+```bash
+# Initialize database (first time setup)
+python migrate_db.py init
+
+# Reset database (delete all data)
+python migrate_db.py reset
+
+# Create backup
+python migrate_db.py backup
+
+# Restore from backup
+python migrate_db.py restore
+
+# Check database status
+python migrate_db.py status
+```
+
+## 🌟 Key Features in Detail
+
+### Real-time Analytics
+- **Live Updates**: RSVP counts update automatically
+- **Visual Charts**: Beautiful pie charts showing response breakdown
+- **Guest Lists**: Detailed view of all responses with timestamps
+- **Export Ready**: Easy to copy guest information
+
+### Mobile-First Design
+- **Responsive Layout**: Perfect on phones, tablets, and desktops
+- **Touch-Friendly**: Easy navigation on mobile devices
+- **Fast Loading**: Optimized for all connection speeds
+- **Offline Viewing**: Invitations work without internet once loaded
+
+### Security & Privacy
+- **No Registration**: Guests don't need to create accounts
+- **Unique URLs**: Each invitation has a secure, unique identifier
+- **Local Storage**: All data stored locally, no external tracking
+- **Optional Information**: Guests choose what information to share
+
+## 🎯 Use Cases
+
+### Personal Events
+- **Weddings**: Elegant invitations with RSVP management
+- **Birthday Parties**: Fun designs for all ages
+- **Anniversary Celebrations**: Romantic templates
+- **Holiday Gatherings**: Seasonal designs
+
+### Professional Events
+- **Corporate Meetings**: Professional, clean designs
+- **Conferences**: Information-rich layouts
+- **Team Building**: Casual, friendly styles
+- **Product Launches**: Modern, exciting templates
+
+### Family Events
+- **Baby Showers**: Sweet, gentle designs
+- **Graduations**: Achievement-focused templates
+- **Reunions**: Nostalgic, warm styles
+- **Milestone Birthdays**: Special celebration designs
+
+## 🚀 Deployment Options
+
+### Local Development
+- Perfect for personal use
+- No external dependencies
+- Run on your computer
+
+### Cloud Deployment
+- Deploy to Heroku, PythonAnywhere, or similar
+- Add custom domain
+- Scale for larger events
+
+### Self-Hosted
+- Run on your own server
+- Full control over data
+- Customize as needed
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. **Report Bugs**: Found an issue? Let us know!
+2. **Suggest Features**: Have ideas for improvements?
+3. **Submit Code**: Fork, improve, and submit pull requests
+4. **Improve Documentation**: Help make the docs better
+5. **Share Templates**: Create new invitation designs
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🎉 Why Choose InviteMe?
+
+### ✅ **Completely Free**
+- No subscription fees
+- No hidden costs
+- No feature limitations
+
+### ✅ **No Registration Required**
+- Start creating immediately
+- Guests RSVP without accounts
+- Privacy-focused approach
+
+### ✅ **Beautiful & Professional**
+- Designer-quality templates
+- Mobile-responsive design
+- Professional appearance
+
+### ✅ **Easy to Use**
+- Intuitive interface
+- Quick setup process
+- Instant sharing
+
+### ✅ **Powerful Features**
+- Real-time analytics
+- QR code generation
+- Social media integration
+- Detailed guest management
+
+---
+
+**Made with ❤️ for celebrations everywhere**
+
+*InviteMe - Where every invitation is perfect*

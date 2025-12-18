@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block title %}Create Invitation - InviteMe{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="fw-bold mb-3">Create Your <span class="font-script">Perfect</span> Invitation</h1>
+                <p class="lead text-muted">Fill in the details below to create a beautiful invitation for your event</p>
+            </div>
+
+            <!-- Creation Form -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0 fw-bold">
+                        <i class="fas fa-edit me-2" style="color: var(--primary);"></i>Event Details
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" id="invitationForm">
+                        <!-- Basic Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="fw-bold mb-3 text-primary">
+                                    <i class="fas fa-info-circle me-2"></i>Basic Information
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-8">
+                                <label for="title" class="form-label">Event Title *</label>
+                                <input type="text" class="form-control" id="title" name="title" required
+                                       placeholder="e.g., Sarah & John's Wedding">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="event_type" class="form-label">Event Type *</label>
+                                <select class="form-select" id="event_type" name="event_type" required>
+                                    <option value="">Select type</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="birthday">Birthday Party</option>
+                                    <option value="anniversary">Anniversary</option>
+                                    <option value="baby_shower">Baby Shower</option>
+                                    <option value="graduation">Graduation</option>
+                                    <option value="corporate">Corporate Event</option>
+                                    <option value="holiday">Holiday Party</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="description" class="form-label">Event Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"
+                                      placeholder="Tell your guests about your special event..."></textarea>
+                        </div>
+
+                        <!-- Date & Time -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="fw-bold mb-3 text-primary">
+                                    <i class="fas fa-calendar me-2"></i>Date & Time
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="event_date" class="form-label">Event Date *</label>
+                                <input type="date" class="form-control" id="event_date" name="event_date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="event_time" class="form-label">Event Time</label>
+                                <input type="time" class="form-control" id="event_time" name="event_time">
+                            </div>
+                        </div>
+
+                        <!-- Venue Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="fw-bold mb-3 text-primary">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Venue Information
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="venue_name" class="form-label">Venue Name</label>
+                                <input type="text" class="form-control" id="venue_name" name="venue_name"
+                                       placeholder="e.g., Grand Ballroom">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="venue_address" class="form-label">Venue Address</label>
+                                <textarea class="form-control" id="venue_address" name="venue_address" rows="2"
+                                          placeholder="Full address with city, state, zip"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Host Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="fw-bold mb-3 text-primary">
+                                    <i class="fas fa-user me-2"></i>Host Information
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="host_name" class="form-label">Host Name *</label>
+                                <input type="text" class="form-control" id="host_name" name="host_name" required
+                                       placeholder="Your name">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="host_email" class="form-label">Host Email</label>
+                                <input type="email" class="form-control" id="host_email" name="host_email"
+                                       placeholder="your@email.com">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="host_phone" class="form-label">Host Phone</label>
+                                <input type="tel" class="form-control" id="host_phone" name="host_phone"
+                                       placeholder="(555) 123-4567">
+                            </div>
+                        </div>
+
+                        <!-- Design & Customization -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="fw-bold mb-3 text-primary">
+                                    <i class="fas fa-palette me-2"></i>Design & Customization
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="template_id" class="form-label">Template Style</label>
+                                <select class="form-select" id="template_id" name="template_id">
+                                    <option value="classic">Classic Elegance</option>
+                                    <option value="modern">Modern Minimalist</option>
+                                    <option value="floral">Floral Garden</option>
+                                    <option value="vintage">Vintage Charm</option>
+                                    <option value="festive">Festive Celebration</option>
+                                    <option value="corporate">Corporate Professional</option>
+                                    <option value="luxury">Luxury Gold</option>
+                                    <option value="ocean">Ocean Breeze</option>
+                                    <option value="sunset">Sunset Romance</option>
+                                    <option value="neon">Neon Party</option>
+                                    <option value="forest">Forest Green</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="color_scheme" class="form-label">Color Scheme</label>
+                                <select class="form-select" id="color_scheme" name="color_scheme">
+                                    <option value="blue">Ocean Blue</option>
+                                    <option value="pink">Rose Pink</option>
+                                    <option value="purple">Royal Purple</option>
+                                    <option value="green">Forest Green</option>
+                                    <option value="gold">Golden Sunset</option>
+                                    <option value="red">Crimson Red</option>
+                                    <option value="teal">Teal Breeze</option>
+                                    <option value="orange">Sunset Orange</option>
+                                    <option value="indigo">Deep Indigo</option>
+                                    <option value="emerald">Emerald Green</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="custom_message" class="form-label">Personal Message</label>
+                            <textarea class="form-control" id="custom_message" name="custom_message" rows="3"
+                                      placeholder="Add a personal touch with your own message to guests..."></textarea>
+                        </div>
+
+                        <!-- Settings -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="fw-bold mb-3 text-primary">
+                                    <i class="fas fa-cog me-2"></i>Invitation Settings
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="max_guests" class="form-label">Maximum Guests (Optional)</label>
+                                <input type="number" class="form-control" id="max_guests" name="max_guests" min="1"
+                                       placeholder="Leave empty for unlimited">
+                            </div>
+                        </div>
+
+                        <!-- Template Preview -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Template Preview</h6>
+                            <div class="row g-3" id="templatePreview">
+                                <div class="col-md-4">
+                                    <div class="template-card card" data-template="classic">
+                                        <div class="card-body text-center p-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                            <i class="fas fa-crown fa-2x mb-2"></i>
+                                            <h6 class="fw-bold mb-1">Classic</h6>
+                                            <small>Timeless elegance</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="template-card card" data-template="modern">
+                                        <div class="card-body text-center p-3" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                                            <i class="fas fa-gem fa-2x mb-2"></i>
+                                            <h6 class="fw-bold mb-1">Modern</h6>
+                                            <small>Clean & minimal</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="template-card card" data-template="floral">
+                                        <div class="card-body text-center p-3" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+                                            <i class="fas fa-leaf fa-2x mb-2"></i>
+                                            <h6 class="fw-bold mb-1">Floral</h6>
+                                            <small>Nature inspired</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-magic me-2"></i>Create My Invitation
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('event_date').setAttribute('min', today);
+        
+        // Template selection
+        const templateCards = document.querySelectorAll('.template-card');
+        const templateSelect = document.getElementById('template_id');
+        
+        templateCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selected class from all cards
+                templateCards.forEach(c => c.classList.remove('selected'));
+                // Add selected class to clicked card
+                this.classList.add('selected');
+                // Update select value
+                templateSelect.value = this.dataset.template;
+            });
+        });
+        
+        // Set default selected template
+        document.querySelector('[data-template="classic"]').classList.add('selected');
+        
+        // Form validation
+        document.getElementById('invitationForm').addEventListener('submit', function(e) {
+            const title = document.getElementById('title').value.trim();
+            const eventType = document.getElementById('event_type').value;
+            const eventDate = document.getElementById('event_date').value;
+            const hostName = document.getElementById('host_name').value.trim();
+            
+            if (!title || !eventType || !eventDate || !hostName) {
+                e.preventDefault();
+                alert('Please fill in all required fields marked with *');
+                return false;
+            }
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating...';
+            submitBtn.disabled = true;
+        });
+        
+        // Auto-update template selection when dropdown changes
+        templateSelect.addEventListener('change', function() {
+            templateCards.forEach(c => c.classList.remove('selected'));
+            const selectedCard = document.querySelector(`[data-template="${this.value}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+        });
+    });
+</script>
+{% endblock %}
