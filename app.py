@@ -322,6 +322,15 @@ def generate_qr_code(url):
     return base64.b64encode(buffer.getvalue()).decode()
 
 # Authentication Routes
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('404.html'), 500
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """User login"""
