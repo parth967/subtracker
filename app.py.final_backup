@@ -36,7 +36,6 @@ load_dotenv('.env.production' if os.path.exists('.env.production') else '.env')
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-this')
 # FORCE CORRECT DATABASE - NO FALLBACK
-# FIXED: Force correct InviteMe database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://Parth967:khushali979797@Parth967.mysql.pythonanywhere-services.com/Parth967$inviteme?charset=utf8mb4'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
@@ -322,15 +321,6 @@ def generate_qr_code(url):
     return base64.b64encode(buffer.getvalue()).decode()
 
 # Authentication Routes
-@app.errorhandler(404)
-def not_found_error(error):
-    return render_template('404.html'), 404
-
-@app.errorhandler(500)
-def internal_error(error):
-    db.session.rollback()
-    return render_template('404.html'), 500
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """User login"""
@@ -360,12 +350,6 @@ def register():
         return redirect(url_for('dashboard'))
     
     if request.method == 'POST':
-        # Check user limit (cap at 1000 users)
-        user_count = User.query.count()
-        if user_count >= 1000:
-            flash('Sorry! We\'ve reached our beta user limit of 1000 users. Join our waitlist!', 'error')
-            return render_template('auth/register.html')
-        
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']

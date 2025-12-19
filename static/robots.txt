@@ -2,7 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
-Disallow: /dashboard/
 
 Sitemap: https://parth967.pythonanywhere.com/static/sitemap.xml
 
