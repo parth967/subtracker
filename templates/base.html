@@ -340,6 +340,72 @@
     </style>
     
     {% block extra_css %}{% endblock %}
+
+    <!-- Microsoft Clarity Tracking -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "uo5aqd8wr4");
+    </script>
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "RSVP Hub",
+        "description": "Free online invitation maker and RSVP management platform with beautiful templates for all events",
+        "url": "https://parth967.pythonanywhere.com",
+        "applicationCategory": "EventManagement",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Create beautiful invitations",
+            "11+ stunning templates",
+            "QR code generation",
+            "Real-time RSVP tracking",
+            "Guest management",
+            "Mobile responsive design",
+            "Free to use"
+        ],
+        "author": {
+            "@type": "Organization",
+            "name": "RSVP Hub"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "RSVP Hub"
+        }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "RSVP Hub",
+        "url": "https://parth967.pythonanywhere.com",
+        "description": "Leading free online invitation and RSVP management platform",
+        "sameAs": [
+            "https://twitter.com/RSVPHub",
+            "https://facebook.com/RSVPHub"
+        ]
+    }
+    </script>
+
+    <!-- Performance Optimizations -->
+    <link rel="preload" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" as="style">
+    <link rel="preload" href="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}" as="script">
+    
+    <!-- Resource Hints -->
+    <link rel="prefetch" href="{{ url_for('template_gallery') }}">
+    <link rel="prefetch" href="{{ url_for('register') }}">
 </head>
 <body>
     <!-- Navigation -->
