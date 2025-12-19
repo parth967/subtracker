@@ -55,6 +55,137 @@ login_manager.login_message_category = 'info'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
+# Extended Template Gallery with 15+ Beautiful Templates
+INVITATION_TEMPLATES = {
+    'classic': {
+        'name': 'Classic Elegance',
+        'description': 'Timeless and sophisticated design perfect for formal events',
+        'category': 'formal',
+        'colors': ['#2c3e50', '#ecf0f1', '#3498db'],
+        'preview': 'classic-preview.jpg'
+    },
+    'modern': {
+        'name': 'Modern Minimalist',
+        'description': 'Clean, contemporary design with bold typography',
+        'category': 'modern',
+        'colors': ['#34495e', '#ffffff', '#e74c3c'],
+        'preview': 'modern-preview.jpg'
+    },
+    'floral': {
+        'name': 'Floral Garden',
+        'description': 'Beautiful botanical elements perfect for spring events',
+        'category': 'nature',
+        'colors': ['#27ae60', '#f8c471', '#e8f5e8'],
+        'preview': 'floral-preview.jpg'
+    },
+    'vintage': {
+        'name': 'Vintage Charm',
+        'description': 'Nostalgic design with classic typography and ornaments',
+        'category': 'vintage',
+        'colors': ['#8b4513', '#f4e4bc', '#d2691e'],
+        'preview': 'vintage-preview.jpg'
+    },
+    'festive': {
+        'name': 'Festive Celebration',
+        'description': 'Vibrant and joyful design for parties and celebrations',
+        'category': 'party',
+        'colors': ['#ff6b6b', '#4ecdc4', '#45b7d1'],
+        'preview': 'festive-preview.jpg'
+    },
+    'corporate': {
+        'name': 'Corporate Professional',
+        'description': 'Professional design perfect for business events',
+        'category': 'business',
+        'colors': ['#2c3e50', '#3498db', '#ecf0f1'],
+        'preview': 'corporate-preview.jpg'
+    },
+    'luxury': {
+        'name': 'Luxury Gold',
+        'description': 'Elegant gold accents for premium events',
+        'category': 'luxury',
+        'colors': ['#000000', '#ffd700', '#ffffff'],
+        'preview': 'luxury-preview.jpg'
+    },
+    'ocean': {
+        'name': 'Ocean Breeze',
+        'description': 'Refreshing blue tones inspired by the sea',
+        'category': 'nature',
+        'colors': ['#0077be', '#87ceeb', '#f0f8ff'],
+        'preview': 'ocean-preview.jpg'
+    },
+    'sunset': {
+        'name': 'Sunset Romance',
+        'description': 'Warm sunset colors perfect for romantic events',
+        'category': 'romantic',
+        'colors': ['#ff6b35', '#f7931e', '#ffb347'],
+        'preview': 'sunset-preview.jpg'
+    },
+    'neon': {
+        'name': 'Neon Party',
+        'description': 'Electric neon colors for energetic celebrations',
+        'category': 'party',
+        'colors': ['#ff0080', '#00ff80', '#8000ff'],
+        'preview': 'neon-preview.jpg'
+    },
+    'forest': {
+        'name': 'Forest Green',
+        'description': 'Natural green tones for outdoor events',
+        'category': 'nature',
+        'colors': ['#228b22', '#90ee90', '#f0fff0'],
+        'preview': 'forest-preview.jpg'
+    },
+    'royal': {
+        'name': 'Royal Purple',
+        'description': 'Majestic purple design for elegant occasions',
+        'category': 'luxury',
+        'colors': ['#663399', '#dda0dd', '#f8f0ff'],
+        'preview': 'royal-preview.jpg'
+    },
+    'cherry': {
+        'name': 'Cherry Blossom',
+        'description': 'Delicate pink cherry blossom theme',
+        'category': 'nature',
+        'colors': ['#ffb7c5', '#ffc0cb', '#fff0f5'],
+        'preview': 'cherry-preview.jpg'
+    },
+    'midnight': {
+        'name': 'Midnight Glamour',
+        'description': 'Sophisticated dark theme with silver accents',
+        'category': 'luxury',
+        'colors': ['#191970', '#c0c0c0', '#f5f5f5'],
+        'preview': 'midnight-preview.jpg'
+    },
+    'tropical': {
+        'name': 'Tropical Paradise',
+        'description': 'Vibrant tropical colors for summer events',
+        'category': 'nature',
+        'colors': ['#ff7f50', '#32cd32', '#ffd700'],
+        'preview': 'tropical-preview.jpg'
+    },
+    'rustic': {
+        'name': 'Rustic Barn',
+        'description': 'Warm rustic design perfect for country weddings',
+        'category': 'rustic',
+        'colors': ['#8b4513', '#daa520', '#f5deb3'],
+        'preview': 'rustic-preview.jpg'
+    },
+    'galaxy': {
+        'name': 'Galaxy Dreams',
+        'description': 'Cosmic theme with stars and nebula colors',
+        'category': 'modern',
+        'colors': ['#191970', '#9370db', '#4169e1'],
+        'preview': 'galaxy-preview.jpg'
+    },
+    'autumn': {
+        'name': 'Autumn Leaves',
+        'description': 'Warm autumn colors perfect for fall events',
+        'category': 'nature',
+        'colors': ['#ff8c00', '#dc143c', '#ffd700'],
+        'preview': 'autumn-preview.jpg'
+    }
+}
+
 # Database Models
 class User(UserMixin, db.Model):
     """User authentication model"""

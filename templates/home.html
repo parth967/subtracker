@@ -1,32 +1,82 @@
 {% extends "base.html" %}
 
+{% block title %}RSVP Hub - Beautiful Event Invitations & RSVP Management{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
-<section class="hero">
-    <div class="container hero-content">
-        <div class="row align-items-center">
+<section class="hero-section position-relative overflow-hidden">
+    <div class="hero-bg position-absolute w-100 h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); opacity: 0.9;"></div>
+    <div class="hero-pattern position-absolute w-100 h-100" style="background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');"></div>
+    
+    <div class="container position-relative" style="z-index: 2; padding: 6rem 0;">
+        <div class="row align-items-center min-vh-75">
             <div class="col-lg-6">
-                <div class="animate-fade-in-up">
-                    <h1 class="display-4 fw-bold mb-4">
-                        Create <span class="font-script">Beautiful</span> Invitations
+                <div class="hero-content text-white">
+                    <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInUp">
+                        Create <span class="text-warning">Beautiful</span><br>
+                        Event Invitations
                     </h1>
-                    <p class="lead mb-4">
-                        Design stunning invitations, share them instantly, and manage RSVPs effortlessly. 
-                        Perfect for weddings, birthdays, parties, and any celebration.
+                    <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+                        Design stunning invitations, manage RSVPs effortlessly, and make every celebration memorable. 
+                        <strong>Completely free</strong> with 15+ gorgeous templates.
                     </p>
-                    <div class="d-flex gap-3 flex-wrap">
-                        <a href="{{ url_for('create_invitation') }}" class="btn btn-light btn-lg">
-                            <i class="fas fa-plus me-2"></i>Create Invitation
+                    
+                    <div class="hero-stats mb-4 animate__animated animate__fadeInUp animate__delay-2s">
+                        <div class="row g-3">
+                            <div class="col-4">
+                                <div class="stat-item text-center">
+                                    <div class="stat-number h4 fw-bold text-warning mb-1">15+</div>
+                                    <div class="stat-label small">Templates</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-item text-center">
+                                    <div class="stat-number h4 fw-bold text-warning mb-1">1000+</div>
+                                    <div class="stat-label small">Happy Users</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-item text-center">
+                                    <div class="stat-number h4 fw-bold text-warning mb-1">100%</div>
+                                    <div class="stat-label small">Free</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-actions animate__animated animate__fadeInUp animate__delay-3s">
+                        <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg me-3 mb-2">
+                            <i class="fas fa-rocket me-2"></i>Start Creating Free
                         </a>
-                        <a href="{{ url_for('template_gallery') }}" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-palette me-2"></i>View Templates
+                        <a href="{{ url_for('template_gallery') }}" class="btn btn-outline-light btn-lg mb-2">
+                            <i class="fas fa-palette me-2"></i>Browse Templates
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 text-center">
-                <div class="animate-fade-in-up" style="animation-delay: 0.2s;">
-                    <i class="fas fa-envelope-open-text" style="font-size: 12rem; opacity: 0.3;"></i>
+            
+            <div class="col-lg-6">
+                <div class="hero-image text-center animate__animated animate__fadeInRight animate__delay-1s">
+                    <div class="invitation-preview-stack">
+                        <div class="preview-card shadow-lg" style="transform: rotate(-5deg); background: linear-gradient(45deg, #ff6b6b, #feca57);">
+                            <div class="card-body text-white text-center p-4">
+                                <h5 class="mb-2">🎉 Birthday Bash</h5>
+                                <p class="small mb-0">Join us for an amazing celebration!</p>
+                            </div>
+                        </div>
+                        <div class="preview-card shadow-lg" style="transform: rotate(3deg); background: linear-gradient(45deg, #a8edea, #fed6e3); margin-top: -60px; margin-left: 20px;">
+                            <div class="card-body text-dark text-center p-4">
+                                <h5 class="mb-2">💒 Wedding Day</h5>
+                                <p class="small mb-0">You're invited to our special day</p>
+                            </div>
+                        </div>
+                        <div class="preview-card shadow-lg" style="transform: rotate(-2deg); background: linear-gradient(45deg, #667eea, #764ba2); margin-top: -60px; margin-left: -10px;">
+                            <div class="card-body text-white text-center p-4">
+                                <h5 class="mb-2">🏢 Corporate Event</h5>
+                                <p class="small mb-0">Professional networking mixer</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -34,57 +84,82 @@
 </section>
 
 <!-- Features Section -->
-<section class="py-5">
+<section class="features-section py-5 bg-light">
     <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-12">
-                <h2 class="fw-bold mb-3">Why Choose InviteMe?</h2>
-                <p class="lead text-muted">Everything you need to create and manage perfect invitations</p>
-            </div>
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Why Choose RSVP Hub?</h2>
+            <p class="lead text-muted">Everything you need to create perfect invitations</p>
         </div>
         
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 text-center">
-                    <div class="card-body">
-                        <div class="mb-4">
-                            <i class="fas fa-palette fa-3x" style="color: var(--primary);"></i>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-palette fa-3x text-primary"></i>
                         </div>
-                        <h5 class="fw-bold mb-3">Beautiful Templates</h5>
-                        <p class="text-muted">
-                            Choose from our collection of professionally designed templates. 
-                            Perfect for weddings, birthdays, corporate events, and more.
-                        </p>
+                        <h5 class="card-title">15+ Beautiful Templates</h5>
+                        <p class="card-text text-muted">From elegant weddings to fun birthday parties, we have the perfect design for every occasion.</p>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-4">
-                <div class="card h-100 text-center">
-                    <div class="card-body">
-                        <div class="mb-4">
-                            <i class="fas fa-share-alt fa-3x" style="color: var(--secondary);"></i>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-mobile-alt fa-3x text-success"></i>
                         </div>
-                        <h5 class="fw-bold mb-3">Easy Sharing</h5>
-                        <p class="text-muted">
-                            Share your invitations via link, QR code, or social media. 
-                            Your guests can RSVP instantly from any device.
-                        </p>
+                        <h5 class="card-title">Mobile Responsive</h5>
+                        <p class="card-text text-muted">Your invitations look perfect on every device - desktop, tablet, and mobile.</p>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-4">
-                <div class="card h-100 text-center">
-                    <div class="card-body">
-                        <div class="mb-4">
-                            <i class="fas fa-chart-bar fa-3x" style="color: var(--success);"></i>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-qrcode fa-3x text-warning"></i>
                         </div>
-                        <h5 class="fw-bold mb-3">RSVP Management</h5>
-                        <p class="text-muted">
-                            Track responses in real-time with detailed analytics. 
-                            Know exactly who's coming and plan accordingly.
-                        </p>
+                        <h5 class="card-title">QR Code Sharing</h5>
+                        <p class="card-text text-muted">Generate QR codes for easy sharing via social media, email, or print.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-chart-line fa-3x text-info"></i>
+                        </div>
+                        <h5 class="card-title">Real-time Analytics</h5>
+                        <p class="card-text text-muted">Track RSVPs in real-time with detailed analytics and guest management.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-users fa-3x text-danger"></i>
+                        </div>
+                        <h5 class="card-title">Guest Management</h5>
+                        <p class="card-text text-muted">Manage guest lists, dietary requirements, and special requests effortlessly.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-heart fa-3x text-pink"></i>
+                        </div>
+                        <h5 class="card-title">100% Free</h5>
+                        <p class="card-text text-muted">No hidden costs, no premium plans. Everything is completely free forever.</p>
                     </div>
                 </div>
             </div>
@@ -92,105 +167,69 @@
     </div>
 </section>
 
-<!-- How It Works Section -->
-<section class="py-5 bg-light">
+<!-- Templates Preview Section -->
+<section class="templates-preview py-5">
     <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-12">
-                <h2 class="fw-bold mb-3">How It Works</h2>
-                <p class="lead text-muted">Create your perfect invitation in just 3 simple steps</p>
-            </div>
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Stunning Templates for Every Occasion</h2>
+            <p class="lead text-muted">Choose from our collection of professionally designed templates</p>
         </div>
         
         <div class="row g-4">
-            <div class="col-md-4 text-center">
-                <div class="mb-4">
-                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center" 
-                         style="width: 80px; height: 80px; background: var(--gradient-primary); color: white;">
-                        <span class="fw-bold fs-3">1</span>
-                    </div>
-                </div>
-                <h5 class="fw-bold mb-3">Choose Template</h5>
-                <p class="text-muted">
-                    Select from our beautiful collection of invitation templates 
-                    designed for every occasion and style.
-                </p>
-            </div>
-            
-            <div class="col-md-4 text-center">
-                <div class="mb-4">
-                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center" 
-                         style="width: 80px; height: 80px; background: var(--gradient-secondary); color: white;">
-                        <span class="fw-bold fs-3">2</span>
-                    </div>
-                </div>
-                <h5 class="fw-bold mb-3">Customize Details</h5>
-                <p class="text-muted">
-                    Add your event details, customize colors, and personalize 
-                    your invitation with your own message.
-                </p>
-            </div>
-            
-            <div class="col-md-4 text-center">
-                <div class="mb-4">
-                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center" 
-                         style="width: 80px; height: 80px; background: var(--gradient-success); color: white;">
-                        <span class="fw-bold fs-3">3</span>
-                    </div>
-                </div>
-                <h5 class="fw-bold mb-3">Share & Track</h5>
-                <p class="text-muted">
-                    Share your invitation and watch RSVPs come in. 
-                    Track responses and manage your guest list effortlessly.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Template Preview Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-12">
-                <h2 class="fw-bold mb-3">Popular Templates</h2>
-                <p class="lead text-muted">Get inspired by our most loved invitation designs</p>
-            </div>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card template-card">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-                        <i class="fas fa-heart fa-2x mb-3"></i>
-                        <h5 class="fw-bold">Elegant Wedding</h5>
-                        <p class="mb-0">Perfect for romantic celebrations</p>
+            <div class="col-lg-3 col-md-6">
+                <div class="template-preview-card">
+                    <div class="template-image" style="background: linear-gradient(45deg, #ff9a9e, #fecfef); height: 200px; border-radius: 12px;">
+                        <div class="template-overlay d-flex align-items-center justify-content-center h-100">
+                            <div class="text-center text-white">
+                                <h6>💒 Wedding</h6>
+                                <p class="small mb-0">Elegant & Romantic</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-4">
-                <div class="card template-card">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
-                        <i class="fas fa-birthday-cake fa-2x mb-3"></i>
-                        <h5 class="fw-bold">Birthday Party</h5>
-                        <p class="mb-0">Fun and colorful celebrations</p>
+            <div class="col-lg-3 col-md-6">
+                <div class="template-preview-card">
+                    <div class="template-image" style="background: linear-gradient(45deg, #a8edea, #fed6e3); height: 200px; border-radius: 12px;">
+                        <div class="template-overlay d-flex align-items-center justify-content-center h-100">
+                            <div class="text-center text-dark">
+                                <h6>🎂 Birthday</h6>
+                                <p class="small mb-0">Fun & Colorful</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-4">
-                <div class="card template-card">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
-                        <i class="fas fa-briefcase fa-2x mb-3"></i>
-                        <h5 class="fw-bold">Corporate Event</h5>
-                        <p class="mb-0">Professional and sophisticated</p>
+            <div class="col-lg-3 col-md-6">
+                <div class="template-preview-card">
+                    <div class="template-image" style="background: linear-gradient(45deg, #667eea, #764ba2); height: 200px; border-radius: 12px;">
+                        <div class="template-overlay d-flex align-items-center justify-content-center h-100">
+                            <div class="text-center text-white">
+                                <h6>🏢 Corporate</h6>
+                                <p class="small mb-0">Professional & Clean</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="template-preview-card">
+                    <div class="template-image" style="background: linear-gradient(45deg, #ffecd2, #fcb69f); height: 200px; border-radius: 12px;">
+                        <div class="template-overlay d-flex align-items-center justify-content-center h-100">
+                            <div class="text-center text-dark">
+                                <h6>🎉 Party</h6>
+                                <p class="small mb-0">Vibrant & Exciting</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="text-center mt-4">
+        <div class="text-center mt-5">
             <a href="{{ url_for('template_gallery') }}" class="btn btn-primary btn-lg">
                 <i class="fas fa-palette me-2"></i>View All Templates
             </a>
@@ -199,271 +238,80 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-5" style="background: var(--gradient-warm);">
-    <div class="container text-center text-white">
-        <div class="row justify-content-center">
+<section class="cta-section py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container">
+        <div class="row align-items-center">
             <div class="col-lg-8">
-                <h2 class="fw-bold mb-3">Ready to Create Your Invitation?</h2>
-                <p class="lead mb-4">
-                    Join thousands of happy users who trust InviteMe for their special events. 
-                    It's free, easy, and takes just minutes to get started.
-                </p>
-                <a href="{{ url_for('create_invitation') }}" class="btn btn-light btn-lg">
-                    <i class="fas fa-rocket me-2"></i>Start Creating Now
+                <div class="text-white">
+                    <h2 class="display-6 fw-bold mb-3">Ready to Create Your Perfect Invitation?</h2>
+                    <p class="lead mb-0">Join thousands of happy users who trust RSVP Hub for their special events.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+                    <i class="fas fa-rocket me-2"></i>Get Started Free
                 </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- SEO Content Section -->
-<section class="seo-content py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="h3 mb-4">Why Choose RSVP Hub for Your Event Invitations?</h2>
-                
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <h3 class="h5">🎨 Beautiful Templates</h3>
-                        <p>Choose from 11+ professionally designed invitation templates perfect for weddings, birthday parties, corporate events, baby showers, and more.</p>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <h3 class="h5">📱 Mobile-First Design</h3>
-                        <p>All invitations are fully responsive and look stunning on desktop, tablet, and mobile devices.</p>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <h3 class="h5">📊 Real-Time Analytics</h3>
-                        <p>Track RSVPs in real-time with detailed analytics and guest management features.</p>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <h3 class="h5">🔗 QR Code Sharing</h3>
-                        <p>Generate QR codes for easy invitation sharing via social media, email, or print.</p>
-                    </div>
-                </div>
-                
-                <h2 class="h3 mt-5 mb-4">Perfect for Every Event Type</h2>
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-body text-center">
-                                <h4 class="h6">💒 Wedding Invitations</h4>
-                                <p class="small">Elegant designs for your special day</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-body text-center">
-                                <h4 class="h6">🎂 Birthday Parties</h4>
-                                <p class="small">Fun templates for all ages</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-body text-center">
-                                <h4 class="h6">🏢 Corporate Events</h4>
-                                <p class="small">Professional designs for business</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-5">
-                    <h2 class="h3 mb-3">Start Creating Your Perfect Invitation Today</h2>
-                    <p class="lead">Join thousands of event organizers who trust RSVP Hub for their invitation needs.</p>
-                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started Free</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<style>
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
 
-<!-- FAQ Section for SEO -->
-<section class="faq-section py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="h3 mb-4 text-center">Frequently Asked Questions</h2>
-                
-                <div class="accordion" id="faqAccordion">
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                Is RSVP Hub really free to use?
-                            </button>
-                        </h3>
-                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Yes! RSVP Hub is completely free to use. Create unlimited invitations, manage RSVPs, and access all templates at no cost.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                How many invitation templates are available?
-                            </button>
-                        </h3>
-                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                We offer 11+ beautiful templates including Classic, Modern, Floral, Vintage, Festive, Corporate, Luxury Gold, Ocean Breeze, Sunset Romance, Neon Party, and Forest Green designs.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                Can I track RSVPs in real-time?
-                            </button>
-                        </h3>
-                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Absolutely! RSVP Hub provides real-time RSVP tracking with detailed analytics, guest management, and response statistics.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endblock %}
+.preview-card {
+    width: 200px;
+    height: 120px;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
 
-{% block extra_js %}
-<script>
-    // Add animation delays to cards
-    document.addEventListener('DOMContentLoaded', function() {
-        const cards = document.querySelectorAll('.card');
-        cards.forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.1}s`;
-            card.classList.add('animate-fade-in-up');
-        });
-    });
-</script>
+.preview-card:hover {
+    transform: scale(1.05) !important;
+}
 
-<!-- SEO Content Section -->
-<section class="seo-content py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="h3 mb-4">Why Choose RSVP Hub for Your Event Invitations?</h2>
-                
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <h3 class="h5">🎨 Beautiful Templates</h3>
-                        <p>Choose from 11+ professionally designed invitation templates perfect for weddings, birthday parties, corporate events, baby showers, and more.</p>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <h3 class="h5">📱 Mobile-First Design</h3>
-                        <p>All invitations are fully responsive and look stunning on desktop, tablet, and mobile devices.</p>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <h3 class="h5">📊 Real-Time Analytics</h3>
-                        <p>Track RSVPs in real-time with detailed analytics and guest management features.</p>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <h3 class="h5">🔗 QR Code Sharing</h3>
-                        <p>Generate QR codes for easy invitation sharing via social media, email, or print.</p>
-                    </div>
-                </div>
-                
-                <h2 class="h3 mt-5 mb-4">Perfect for Every Event Type</h2>
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-body text-center">
-                                <h4 class="h6">💒 Wedding Invitations</h4>
-                                <p class="small">Elegant designs for your special day</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-body text-center">
-                                <h4 class="h6">🎂 Birthday Parties</h4>
-                                <p class="small">Fun templates for all ages</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-body text-center">
-                                <h4 class="h6">🏢 Corporate Events</h4>
-                                <p class="small">Professional designs for business</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-5">
-                    <h2 class="h3 mb-3">Start Creating Your Perfect Invitation Today</h2>
-                    <p class="lead">Join thousands of event organizers who trust RSVP Hub for their invitation needs.</p>
-                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started Free</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+.feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-<!-- FAQ Section for SEO -->
-<section class="faq-section py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="h3 mb-4 text-center">Frequently Asked Questions</h2>
-                
-                <div class="accordion" id="faqAccordion">
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                Is RSVP Hub really free to use?
-                            </button>
-                        </h3>
-                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Yes! RSVP Hub is completely free to use. Create unlimited invitations, manage RSVPs, and access all templates at no cost.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                How many invitation templates are available?
-                            </button>
-                        </h3>
-                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                We offer 11+ beautiful templates including Classic, Modern, Floral, Vintage, Festive, Corporate, Luxury Gold, Ocean Breeze, Sunset Romance, Neon Party, and Forest Green designs.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                Can I track RSVPs in real-time?
-                            </button>
-                        </h3>
-                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Absolutely! RSVP Hub provides real-time RSVP tracking with detailed analytics, guest management, and response statistics.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+}
+
+.template-preview-card {
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.template-preview-card:hover {
+    transform: translateY(-5px);
+}
+
+.text-pink {
+    color: #e91e63 !important;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 3rem 0;
+    }
+    
+    .display-3 {
+        font-size: 2.5rem;
+    }
+    
+    .preview-card {
+        width: 150px;
+        height: 90px;
+    }
+}
+</style>
+
+<!-- Add animate.css for animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 {% endblock %}

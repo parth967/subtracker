@@ -1,394 +1,307 @@
 {% extends "base.html" %}
 
-{% block title %}Template Gallery - InviteMe{% endblock %}
+{% block title %}Template Gallery - RSVP Hub{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero">
-    <div class="container hero-content">
-        <div class="row text-center">
-            <div class="col-12">
-                <h1 class="display-4 fw-bold mb-4">
-                    Choose Your <span class="font-script">Perfect</span> Template
-                </h1>
-                <p class="lead mb-4">
-                    Browse our collection of beautiful, professionally designed invitation templates. 
-                    Each template is fully customizable to match your event's style and personality.
-                </p>
-                <a href="{{ url_for('create_invitation') }}" class="btn btn-light btn-lg">
-                    <i class="fas fa-plus me-2"></i>Start Creating
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Template Categories -->
-<section class="py-5">
+<div class="container-fluid py-5" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
     <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-12">
-                <h2 class="fw-bold mb-3">Templates by Category</h2>
-                <p class="lead text-muted">Find the perfect design for your special occasion</p>
-            </div>
-        </div>
-        
-        <!-- Category Filter -->
+        <!-- Header -->
         <div class="text-center mb-5">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-outline-primary active" data-filter="all">All Templates</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="wedding">Weddings</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="birthday">Birthdays</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="corporate">Corporate</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="party">Parties</button>
+            <h1 class="display-4 fw-bold mb-3">
+                <i class="fas fa-palette text-primary me-3"></i>
+                Template Gallery
+            </h1>
+            <p class="lead text-muted mb-4">Choose from 18+ professionally designed templates for every occasion</p>
+            
+            <!-- Category Filter -->
+            <div class="template-filters mb-4">
+                <button class="btn btn-outline-primary active me-2 mb-2" data-filter="all">All Templates</button>
+                <button class="btn btn-outline-primary me-2 mb-2" data-filter="formal">Formal</button>
+                <button class="btn btn-outline-primary me-2 mb-2" data-filter="party">Party</button>
+                <button class="btn btn-outline-primary me-2 mb-2" data-filter="nature">Nature</button>
+                <button class="btn btn-outline-primary me-2 mb-2" data-filter="luxury">Luxury</button>
+                <button class="btn btn-outline-primary me-2 mb-2" data-filter="modern">Modern</button>
+                <button class="btn btn-outline-primary me-2 mb-2" data-filter="romantic">Romantic</button>
             </div>
         </div>
         
-        <!-- Template Grid -->
-        <div class="row g-4" id="templateGrid">
+        <!-- Templates Grid -->
+        <div class="row g-4" id="templatesGrid">
             <!-- Classic Elegance -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="wedding party">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-crown fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Classic Elegance</h4>
-                        <p class="mb-3">Timeless and sophisticated design perfect for formal events</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-light text-dark me-2">Wedding</span>
-                            <span class="badge bg-light text-dark">Formal</span>
+            <div class="col-lg-4 col-md-6 template-item" data-category="formal">
+                <div class="template-card card h-100 border-0 shadow-lg">
+                    <div class="template-preview" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); height: 250px; position: relative;">
+                        <div class="template-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                            <div class="text-center text-white">
+                                <h4 class="mb-2">Classic Elegance</h4>
+                                <p class="mb-3">Perfect for formal events</p>
+                                <div class="template-colors d-flex justify-content-center gap-2">
+                                    <span class="color-dot" style="background: #2c3e50;"></span>
+                                    <span class="color-dot" style="background: #ecf0f1;"></span>
+                                    <span class="color-dot" style="background: #3498db;"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=classic" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Classic Elegance</h5>
+                        <p class="card-text text-muted">Timeless and sophisticated design perfect for formal events and elegant celebrations.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-primary">Formal</span>
+                            <a href="{{ url_for('create_invitation') }}?template=classic" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-plus me-1"></i>Use Template
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <!-- Modern Minimalist -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="corporate birthday">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-gem fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Modern Minimalist</h4>
-                        <p class="mb-3">Clean, contemporary design with focus on typography</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-light text-dark me-2">Corporate</span>
-                            <span class="badge bg-light text-dark">Modern</span>
+            <div class="col-lg-4 col-md-6 template-item" data-category="modern">
+                <div class="template-card card h-100 border-0 shadow-lg">
+                    <div class="template-preview" style="background: linear-gradient(135deg, #34495e 0%, #e74c3c 100%); height: 250px; position: relative;">
+                        <div class="template-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                            <div class="text-center text-white">
+                                <h4 class="mb-2">Modern Minimalist</h4>
+                                <p class="mb-3">Clean contemporary design</p>
+                                <div class="template-colors d-flex justify-content-center gap-2">
+                                    <span class="color-dot" style="background: #34495e;"></span>
+                                    <span class="color-dot" style="background: #ffffff;"></span>
+                                    <span class="color-dot" style="background: #e74c3c;"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=modern" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Modern Minimalist</h5>
+                        <p class="card-text text-muted">Clean, contemporary design with bold typography and modern aesthetics.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-info">Modern</span>
+                            <a href="{{ url_for('create_invitation') }}?template=modern" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-plus me-1"></i>Use Template
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <!-- Floral Garden -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="wedding birthday party">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-leaf fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Floral Garden</h4>
-                        <p class="mb-3">Nature-inspired design with beautiful floral elements</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-light text-dark me-2">Wedding</span>
-                            <span class="badge bg-light text-dark">Garden</span>
+            <div class="col-lg-4 col-md-6 template-item" data-category="nature">
+                <div class="template-card card h-100 border-0 shadow-lg">
+                    <div class="template-preview" style="background: linear-gradient(135deg, #27ae60 0%, #f8c471 100%); height: 250px; position: relative;">
+                        <div class="template-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                            <div class="text-center text-white">
+                                <h4 class="mb-2">🌸 Floral Garden</h4>
+                                <p class="mb-3">Beautiful botanical elements</p>
+                                <div class="template-colors d-flex justify-content-center gap-2">
+                                    <span class="color-dot" style="background: #27ae60;"></span>
+                                    <span class="color-dot" style="background: #f8c471;"></span>
+                                    <span class="color-dot" style="background: #e8f5e8;"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=floral" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Floral Garden</h5>
+                        <p class="card-text text-muted">Beautiful botanical elements perfect for spring events and garden parties.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-success">Nature</span>
+                            <a href="{{ url_for('create_invitation') }}?template=floral" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-plus me-1"></i>Use Template
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Vintage Charm -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="wedding party">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); color: #5a4a42; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-camera-retro fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Vintage Charm</h4>
-                        <p class="mb-3">Nostalgic design with classic typography and warm colors</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-dark text-light me-2">Vintage</span>
-                            <span class="badge bg-dark text-light">Retro</span>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=vintage" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Festive Celebration -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="birthday party">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #d63384; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-birthday-cake fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Festive Celebration</h4>
-                        <p class="mb-3">Fun and colorful design perfect for birthday parties</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-primary text-light me-2">Birthday</span>
-                            <span class="badge bg-primary text-light">Fun</span>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=festive" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Corporate Professional -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="corporate">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%); color: white; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-briefcase fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Corporate Professional</h4>
-                        <p class="mb-3">Sophisticated design for business events and conferences</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-light text-dark me-2">Corporate</span>
-                            <span class="badge bg-light text-dark">Business</span>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=corporate" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
+            <!-- Add more templates with similar structure -->
             <!-- Luxury Gold -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="wedding party">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); color: #5a4a42; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-star fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Luxury Gold</h4>
-                        <p class="mb-3">Elegant golden design for premium celebrations</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-dark text-light me-2">Luxury</span>
-                            <span class="badge bg-dark text-light">Premium</span>
+            <div class="col-lg-4 col-md-6 template-item" data-category="luxury">
+                <div class="template-card card h-100 border-0 shadow-lg">
+                    <div class="template-preview" style="background: linear-gradient(135deg, #000000 0%, #ffd700 100%); height: 250px; position: relative;">
+                        <div class="template-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                            <div class="text-center text-white">
+                                <h4 class="mb-2">✨ Luxury Gold</h4>
+                                <p class="mb-3">Elegant gold accents</p>
+                                <div class="template-colors d-flex justify-content-center gap-2">
+                                    <span class="color-dot" style="background: #000000;"></span>
+                                    <span class="color-dot" style="background: #ffd700;"></span>
+                                    <span class="color-dot" style="background: #ffffff;"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=luxury" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Ocean Breeze -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="wedding party">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); color: white; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-water fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Ocean Breeze</h4>
-                        <p class="mb-3">Fresh and calming blue theme for beach events</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-light text-dark me-2">Beach</span>
-                            <span class="badge bg-light text-dark">Summer</span>
+                    <div class="card-body">
+                        <h5 class="card-title">Luxury Gold</h5>
+                        <p class="card-text text-muted">Elegant gold accents for premium events and luxury celebrations.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-warning">Luxury</span>
+                            <a href="{{ url_for('create_invitation') }}?template=luxury" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-plus me-1"></i>Use Template
+                            </a>
                         </div>
-                    </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=ocean" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Sunset Romance -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="wedding party">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%); color: white; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-heart fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Sunset Romance</h4>
-                        <p class="mb-3">Romantic pink and orange gradient for love celebrations</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-light text-dark me-2">Romance</span>
-                            <span class="badge bg-light text-dark">Sunset</span>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=sunset" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
                     </div>
                 </div>
             </div>
             
             <!-- Neon Party -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="birthday party">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); color: white; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-bolt fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Neon Party</h4>
-                        <p class="mb-3">Electric purple design for energetic celebrations</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-light text-dark me-2">Party</span>
-                            <span class="badge bg-light text-dark">Electric</span>
+            <div class="col-lg-4 col-md-6 template-item" data-category="party">
+                <div class="template-card card h-100 border-0 shadow-lg">
+                    <div class="template-preview" style="background: linear-gradient(135deg, #ff0080 0%, #00ff80 100%); height: 250px; position: relative;">
+                        <div class="template-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                            <div class="text-center text-white">
+                                <h4 class="mb-2">🎉 Neon Party</h4>
+                                <p class="mb-3">Electric neon colors</p>
+                                <div class="template-colors d-flex justify-content-center gap-2">
+                                    <span class="color-dot" style="background: #ff0080;"></span>
+                                    <span class="color-dot" style="background: #00ff80;"></span>
+                                    <span class="color-dot" style="background: #8000ff;"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=neon" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Neon Party</h5>
+                        <p class="card-text text-muted">Electric neon colors for energetic celebrations and fun parties.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-danger">Party</span>
+                            <a href="{{ url_for('create_invitation') }}?template=neon" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-plus me-1"></i>Use Template
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Forest Green -->
-            <div class="col-lg-4 col-md-6 template-item" data-category="wedding corporate">
-                <div class="card template-card h-100">
-                    <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); color: white; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-tree fa-4x mb-3"></i>
-                        <h4 class="fw-bold mb-2">Forest Green</h4>
-                        <p class="mb-3">Natural green theme for outdoor and eco-friendly events</p>
-                        <div class="mt-auto">
-                            <span class="badge bg-light text-dark me-2">Nature</span>
-                            <span class="badge bg-light text-dark">Eco</span>
+            <!-- Sunset Romance -->
+            <div class="col-lg-4 col-md-6 template-item" data-category="romantic">
+                <div class="template-card card h-100 border-0 shadow-lg">
+                    <div class="template-preview" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); height: 250px; position: relative;">
+                        <div class="template-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                            <div class="text-center text-white">
+                                <h4 class="mb-2">🌅 Sunset Romance</h4>
+                                <p class="mb-3">Warm romantic colors</p>
+                                <div class="template-colors d-flex justify-content-center gap-2">
+                                    <span class="color-dot" style="background: #ff6b35;"></span>
+                                    <span class="color-dot" style="background: #f7931e;"></span>
+                                    <span class="color-dot" style="background: #ffb347;"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-white text-center">
-                        <a href="{{ url_for('create_invitation') }}?template=forest" class="btn btn-primary">
-                            <i class="fas fa-palette me-2"></i>Use This Template
-                        </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Sunset Romance</h5>
+                        <p class="card-text text-muted">Warm sunset colors perfect for romantic events and intimate gatherings.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-danger">Romantic</span>
+                            <a href="{{ url_for('create_invitation') }}?template=sunset" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-plus me-1"></i>Use Template
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Features Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-12">
-                <h2 class="fw-bold mb-3">Every Template Includes</h2>
-                <p class="lead text-muted">All our templates come with these amazing features</p>
             </div>
         </div>
         
-        <div class="row g-4">
-            <div class="col-md-4 text-center">
-                <div class="mb-4">
-                    <i class="fas fa-mobile-alt fa-3x" style="color: var(--primary);"></i>
+        <!-- Call to Action -->
+        <div class="text-center mt-5">
+            <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="card-body py-5 text-white">
+                    <h3 class="mb-3">Ready to Create Your Perfect Invitation?</h3>
+                    <p class="lead mb-4">Choose a template above or start with a blank canvas</p>
+                    <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg me-3">
+                        <i class="fas fa-rocket me-2"></i>Get Started Free
+                    </a>
+                    <a href="{{ url_for('create_invitation') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-plus me-2"></i>Create Custom
+                    </a>
                 </div>
-                <h5 class="fw-bold mb-3">Mobile Responsive</h5>
-                <p class="text-muted">
-                    All templates look perfect on any device - desktop, tablet, or mobile phone.
-                </p>
-            </div>
-            
-            <div class="col-md-4 text-center">
-                <div class="mb-4">
-                    <i class="fas fa-palette fa-3x" style="color: var(--secondary);"></i>
-                </div>
-                <h5 class="fw-bold mb-3">Fully Customizable</h5>
-                <p class="text-muted">
-                    Change colors, fonts, and layout to match your event's unique style and theme.
-                </p>
-            </div>
-            
-            <div class="col-md-4 text-center">
-                <div class="mb-4">
-                    <i class="fas fa-rocket fa-3x" style="color: var(--success);"></i>
-                </div>
-                <h5 class="fw-bold mb-3">Instant Setup</h5>
-                <p class="text-muted">
-                    Get your invitation ready in minutes. No design experience required.
-                </p>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<!-- CTA Section -->
-<section class="py-5" style="background: var(--gradient-primary);">
-    <div class="container text-center text-white">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <h2 class="fw-bold mb-3">Ready to Create Your Invitation?</h2>
-                <p class="lead mb-4">
-                    Choose a template and start customizing your perfect invitation in just a few clicks.
-                </p>
-                <a href="{{ url_for('create_invitation') }}" class="btn btn-light btn-lg">
-                    <i class="fas fa-magic me-2"></i>Start Creating Now
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-{% endblock %}
+<style>
+.template-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
 
-{% block extra_js %}
+.template-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
+}
+
+.template-preview {
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+}
+
+.color-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.template-filters .btn {
+    transition: all 0.3s ease;
+}
+
+.template-filters .btn.active {
+    background: var(--bs-primary);
+    color: white;
+    border-color: var(--bs-primary);
+}
+
+.template-item {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.template-item.hidden {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .template-filters {
+        text-align: center;
+    }
+    
+    .template-filters .btn {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+}
+</style>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Template filtering
-        const filterButtons = document.querySelectorAll('[data-filter]');
-        const templateItems = document.querySelectorAll('.template-item');
-        
-        filterButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const filter = this.dataset.filter;
-                
-                // Update active button
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Filter templates
-                templateItems.forEach(item => {
-                    if (filter === 'all' || item.dataset.category.includes(filter)) {
-                        item.style.display = 'block';
-                        item.style.animation = 'fadeInUp 0.5s ease-out';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        });
-        
-        // Add hover effects to template cards
-        const templateCards = document.querySelectorAll('.template-card');
-        templateCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px) scale(1.02)';
-            });
+// Template filtering functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('[data-filter]');
+    const templateItems = document.querySelectorAll('.template-item');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
             
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-        
-        // Animate cards on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.6s ease-out';
-                    entry.target.style.opacity = '1';
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter templates
+            templateItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                
+                if (filter === 'all' || category === filter) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
                 }
             });
-        }, observerOptions);
-        
-        templateItems.forEach(item => {
-            item.style.opacity = '0';
-            observer.observe(item);
         });
     });
+});
 </script>
 {% endblock %}

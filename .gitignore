@@ -1,8 +1,10 @@
-# Environment files with sensitive data
+# Environment files - NEVER commit these!
 .env
-.env.production
 .env.local
 .env.development
+.env.production
+.env.staging
+*.env
 
 # Python
 __pycache__/
@@ -34,12 +36,6 @@ ENV/
 env.bak/
 venv.bak/
 
-# Database files
-*.db
-*.sqlite
-*.sqlite3
-instance/
-
 # IDE
 .vscode/
 .idea/
@@ -60,11 +56,48 @@ Thumbs.db
 *.log
 logs/
 
-# ML Models (if any)
-*.joblib
-*.pkl
-*.pickle
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.backup
+*.bak
 
 # Temporary files
 *.tmp
 *.temp
+
+# Flask
+instance/
+.webassets-cache
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
