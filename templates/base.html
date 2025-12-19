@@ -346,7 +346,7 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('home') }}">
-                <i class="fas fa-envelope-open-text me-2"></i>InviteMe
+                <i class="fas fa-calendar-check me-2"></i>RSVP Hub
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -432,35 +432,56 @@
     <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <h5 class="font-script fs-3 mb-3">InviteMe</h5>
-                    <p class="mb-3">Create beautiful invitations and manage RSVPs with ease. Free, simple, and elegant.</p>
+                <div class="col-md-4">
+                    <h5 class="font-script fs-3 mb-3">RSVP Hub</h5>
+                    <p class="mb-3">Create beautiful event invitations and manage RSVPs with ease. Free, simple, and elegant.</p>
+                    <div class="social-links">
+                        <a href="#" class="me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
                 </div>
                 <div class="col-md-3">
                     <h6 class="mb-3">Quick Links</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{{ url_for('home') }}">Home</a></li>
-                        <li><a href="{{ url_for('template_gallery') }}">Templates</a></li>
-                        <li><a href="{{ url_for('create_invitation') }}">Create Invitation</a></li>
+                        <li class="mb-2"><a href="{{ url_for('home') }}"><i class="fas fa-home me-2"></i>Home</a></li>
+                        <li class="mb-2"><a href="{{ url_for('template_gallery') }}"><i class="fas fa-palette me-2"></i>Templates</a></li>
+                        <li class="mb-2"><a href="{{ url_for('create_invitation') }}"><i class="fas fa-plus me-2"></i>Create Invitation</a></li>
+                        <li class="mb-2"><a href="{{ url_for('register') }}"><i class="fas fa-user-plus me-2"></i>Sign Up</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
                     <h6 class="mb-3">Features</h6>
                     <ul class="list-unstyled">
-                        <li>Beautiful Templates</li>
-                        <li>RSVP Management</li>
-                        <li>QR Code Sharing</li>
-                        <li>Mobile Responsive</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>11+ Beautiful Templates</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>RSVP Management</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>QR Code Sharing</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Mobile Responsive</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Real-time Analytics</li>
+                    </ul>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="mb-3">Event Types</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">💒 Weddings</li>
+                        <li class="mb-2">🎂 Birthdays</li>
+                        <li class="mb-2">🏢 Corporate</li>
+                        <li class="mb-2">🎉 Parties</li>
+                        <li class="mb-2">👶 Baby Showers</li>
                     </ul>
                 </div>
             </div>
-            <hr class="my-4">
+            <hr class="my-4 border-secondary">
             <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="mb-0">&copy; 2024 InviteMe. Made with <i class="fas fa-heart text-danger"></i> for celebrations.</p>
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2024 RSVP Hub. Made with <i class="fas fa-heart text-danger"></i> for celebrations.</p>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="mb-0">Free forever • No signup required</p>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">
+                        <span class="badge bg-success me-2">Free Forever</span>
+                        <span class="badge bg-primary">Trusted by Thousands</span>
+                    </p>
                 </div>
             </div>
         </div>
