@@ -35,7 +35,9 @@ load_dotenv('.env.production' if os.path.exists('.env.production') else '.env')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-this')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///inviteme.db')
+# FORCE CORRECT DATABASE - NO FALLBACK
+# FIXED: Force correct InviteMe database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://Parth967:khushali979797@Parth967.mysql.pythonanywhere-services.com/Parth967$inviteme?charset=utf8mb4'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     'pool_recycle': 280,
