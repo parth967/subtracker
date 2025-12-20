@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} | RSVP Hub Blog{% endblock %}
+
+{% block extra_css %}
+<meta name="description" content="{{ post.meta_description }}">
+<meta name="keywords" content="best RSVP tools, small wedding RSVP, free RSVP tools, wedding RSVP comparison, online RSVP tools">
+<link rel="canonical" href="https://parth967.pythonanywhere.com/blog/{{ slug }}">
+
+<!-- Open Graph -->
+<meta property="og:title" content="{{ post.title }}">
+<meta property="og:description" content="{{ post.meta_description }}">
+<meta property="og:url" content="https://parth967.pythonanywhere.com/blog/{{ slug }}">
+<meta property="og:type" content="article">
+{% endblock %}
+
+{% block content %}
+<article class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('blog') }}">Blog</a></li>
+                        <li class="breadcrumb-item active">{{ post.category }}</li>
+                    </ol>
+                </nav>
+
+                <!-- Header -->
+                <header class="mb-4">
+                    <span class="badge bg-primary mb-2">{{ post.category }}</span>
+                    <h1 class="display-4 fw-bold mb-3">{{ post.title }}</h1>
+                    <div class="text-muted mb-4">
+                        <i class="fas fa-calendar me-2"></i>{{ post.date }}
+                        <span class="ms-3"><i class="fas fa-user me-2"></i>RSVP Hub Team</span>
+                    </div>
+                </header>
+
+                <!-- Content -->
+                <div class="article-content">
+                    <p class="lead">Planning a small wedding? Finding the right RSVP tool can make all the difference. In this guide, we compare the best free RSVP tools for small weddings, helping you choose the perfect solution for your intimate celebration.</p>
+
+                    <h2 class="h3 mt-5 mb-3">What Makes a Great RSVP Tool for Small Weddings?</h2>
+                    <p>When planning a small wedding (typically 50 guests or fewer), you need an RSVP tool that's:</p>
+                    <ul>
+                        <li><strong>Easy to Use:</strong> Simple for both you and your guests</li>
+                        <li><strong>Free or Affordable:</strong> No need for expensive wedding planning software</li>
+                        <li><strong>Mobile-Friendly:</strong> Guests should be able to RSVP from their phones</li>
+                        <li><strong>Quick Setup:</strong> Get started in minutes, not hours</li>
+                        <li><strong>Real-Time Tracking:</strong> See responses as they come in</li>
+                    </ul>
+
+                    <h2 class="h3 mt-5 mb-3">Top Free RSVP Tools for Small Weddings</h2>
+                    
+                    <h3 class="h5 mt-4 mb-3">1. RSVP Hub</h3>
+                    <p><strong>Best For:</strong> Couples who want beautiful templates and easy management</p>
+                    <ul>
+                        <li>15+ elegant wedding invitation templates</li>
+                        <li>Real-time RSVP tracking</li>
+                        <li>QR code generation</li>
+                        <li>Mobile-responsive design</li>
+                        <li>100% free forever</li>
+                    </ul>
+                    <p><strong>Price:</strong> Free</p>
+
+                    <h3 class="h5 mt-4 mb-3">2. Google Forms</h3>
+                    <p><strong>Best For:</strong> Simple, no-frills RSVP collection</p>
+                    <ul>
+                        <li>Completely free</li>
+                        <li>Easy to set up</li>
+                        <li>Automatic data collection in spreadsheets</li>
+                        <li>No design customization</li>
+                    </ul>
+                    <p><strong>Price:</strong> Free</p>
+
+                    <h3 class="h5 mt-4 mb-3">3. Paperless Post</h3>
+                    <p><strong>Best For:</strong> Couples who want premium designs</p>
+                    <ul>
+                        <li>Beautiful invitation designs</li>
+                        <li>RSVP tracking included</li>
+                        <li>Limited free options</li>
+                        <li>Premium features require payment</li>
+                    </ul>
+                    <p><strong>Price:</strong> Free (limited), Paid plans available</p>
+
+                    <h2 class="h3 mt-5 mb-3">Comparison Table</h2>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>RSVP Hub</th>
+                                    <th>Google Forms</th>
+                                    <th>Paperless Post</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Price</td>
+                                    <td>Free</td>
+                                    <td>Free</td>
+                                    <td>Free (limited)</td>
+                                </tr>
+                                <tr>
+                                    <td>Templates</td>
+                                    <td>15+</td>
+                                    <td>None</td>
+                                    <td>Many</td>
+                                </tr>
+                                <tr>
+                                    <td>RSVP Tracking</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>Mobile-Friendly</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>QR Codes</td>
+                                    <td>Yes</td>
+                                    <td>No</td>
+                                    <td>No</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 class="h3 mt-5 mb-3">Tips for Using RSVP Tools for Small Weddings</h2>
+                    <ul>
+                        <li><strong>Keep It Simple:</strong> Don't overwhelm guests with too many questions</li>
+                        <li><strong>Set a Deadline:</strong> Give guests 4-6 weeks to respond</li>
+                        <li><strong>Send Reminders:</strong> Follow up with guests who haven't RSVPed</li>
+                        <li><strong>Test First:</strong> Send yourself a test invitation to ensure everything works</li>
+                        <li><strong>Have a Backup:</strong> Keep a spreadsheet as backup for tracking</li>
+                    </ul>
+
+                    <h2 class="h3 mt-5 mb-3">Conclusion</h2>
+                    <p>For small weddings, free RSVP tools like RSVP Hub offer everything you need without the complexity or cost of expensive wedding planning software. Choose a tool that's easy to use, mobile-friendly, and provides real-time tracking to make your wedding planning stress-free.</p>
+
+                    <!-- CTA -->
+                    <div class="card bg-primary text-white mt-5 mb-4">
+                        <div class="card-body text-center p-4">
+                            <h3 class="h4 mb-3">Try RSVP Hub Free Today</h3>
+                            <p class="mb-3">Create beautiful wedding RSVP invitations in minutes</p>
+                            <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+                                <i class="fas fa-heart me-2"></i>Get Started Free
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Posts -->
+                <div class="mt-5 pt-4 border-top">
+                    <h3 class="h5 mb-4">Related Articles</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{{ url_for('blog_post', slug='how-to-create-wedding-rsvp-online') }}" class="text-decoration-none">
+                                            How to Create Wedding RSVP Online
+                                        </a>
+                                    </h5>
+                                    <p class="text-muted small mb-0">Complete step-by-step guide to creating wedding RSVPs...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{{ url_for('blog') }}" class="text-decoration-none">
+                                            View All Blog Posts
+                                        </a>
+                                    </h5>
+                                    <p class="text-muted small mb-0">Browse our complete collection of wedding planning guides...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock %}
+

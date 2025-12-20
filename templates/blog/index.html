@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}RSVP & Event Planning Blog - Tips, Guides & Templates | RSVP Hub{% endblock %}
+
+{% block extra_css %}
+<meta name="description" content="Read our blog for wedding RSVP tips, event planning guides, invitation templates, and best practices. Learn how to create perfect invitations and manage RSVPs effectively.">
+<meta name="keywords" content="wedding RSVP blog, event planning tips, invitation guides, RSVP management, event planning blog, wedding planning">
+<link rel="canonical" href="https://parth967.pythonanywhere.com/blog">
+
+<!-- Open Graph -->
+<meta property="og:title" content="RSVP & Event Planning Blog - Tips, Guides & Templates">
+<meta property="og:description" content="Read our blog for wedding RSVP tips, event planning guides, invitation templates, and best practices.">
+<meta property="og:url" content="https://parth967.pythonanywhere.com/blog">
+<meta property="og:type" content="website">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container text-white text-center">
+        <h1 class="display-4 fw-bold mb-4">RSVP & Event Planning Blog</h1>
+        <p class="lead">Expert tips, guides, and templates for creating perfect invitations and managing RSVPs</p>
+    </div>
+</section>
+
+<!-- Blog Posts -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            {% for post in blog_posts %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <span class="badge bg-primary mb-2">{{ post.category }}</span>
+                        <h3 class="h5 card-title mb-3">
+                            <a href="{{ url_for('blog_post', slug=post.slug) }}" class="text-decoration-none text-dark">
+                                {{ post.title }}
+                            </a>
+                        </h3>
+                        <p class="text-muted small mb-3">{{ post.excerpt }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>{{ post.date }}
+                            </small>
+                            <a href="{{ url_for('blog_post', slug=post.slug) }}" class="btn btn-sm btn-outline-primary">
+                                Read More <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Categories -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">Browse by Category</h2>
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <i class="fas fa-heart fa-3x text-danger mb-3"></i>
+                        <h5>Weddings</h5>
+                        <p class="text-muted small mb-0">Wedding planning tips and RSVP guides</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <i class="fas fa-birthday-cake fa-3x text-warning mb-3"></i>
+                        <h5>Birthdays</h5>
+                        <p class="text-muted small mb-0">Birthday party ideas and invitations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <i class="fas fa-briefcase fa-3x text-primary mb-3"></i>
+                        <h5>Corporate</h5>
+                        <p class="text-muted small mb-0">Business event planning guides</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <i class="fas fa-lightbulb fa-3x text-info mb-3"></i>
+                        <h5>Tips & Tricks</h5>
+                        <p class="text-muted small mb-0">Event planning best practices</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container text-center text-white">
+        <h2 class="display-5 fw-bold mb-4">Ready to Create Your Invitation?</h2>
+        <p class="lead mb-4">Put our tips into practice with our free invitation maker</p>
+        <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+            <i class="fas fa-rocket me-2"></i>Get Started Free
+        </a>
+    </div>
+</section>
+{% endblock %}
+

@@ -15,10 +15,51 @@
     </script>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="RSVP Hub - Create beautiful event invitations and manage RSVPs effortlessly. Free online invitation maker with 15+ stunning templates for weddings, parties, corporate events, and more.">
-    <meta name="keywords" content="RSVP, invitation maker, event planning, wedding invitations, party invitations, free invitations, online RSVP, event management, invitation templates, digital invitations, QR code invitations">
+    <meta name="description" content="{% block meta_description %}RSVP Hub - Create beautiful event invitations and manage RSVPs effortlessly. Free online invitation maker with 15+ stunning templates for weddings, parties, corporate events, and more.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}RSVP, invitation maker, event planning, wedding invitations, party invitations, free invitations, online RSVP, event management, invitation templates, digital invitations, QR code invitations, wedding RSVP website, online invitation with RSVP, free RSVP tool{% endblock %}">
     <meta name="author" content="RSVP Hub">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="bingbot" content="index, follow">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://parth967.pythonanywhere.com{{ request.path }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="https://parth967.pythonanywhere.com{{ request.path }}">
+    <meta property="og:title" content="{% block og_title %}{% block title %}RSVP Hub - Beautiful Event Invitations & RSVP Management{% endblock %}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Create stunning event invitations and manage RSVPs with ease. 15+ beautiful templates, QR codes, real-time tracking. Completely free!{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://parth967.pythonanywhere.com{{ url_for('static', filename='images/favicon.svg') }}{% endblock %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="RSVP Hub">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://parth967.pythonanywhere.com{{ request.path }}">
+    <meta name="twitter:title" content="{% block twitter_title %}{% block title %}RSVP Hub - Free Online Invitation Maker{% endblock %}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Create beautiful event invitations and manage RSVPs effortlessly. Free templates, QR codes, real-time tracking.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}https://parth967.pythonanywhere.com{{ url_for('static', filename='images/favicon.svg') }}{% endblock %}">
+    <meta name="twitter:creator" content="@RSVPHub">
+    <meta name="twitter:site" content="@RSVPHub">
+    
+    <!-- Additional SEO -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="msapplication-TileColor" content="#6366f1">
+    <meta name="application-name" content="RSVP Hub">
+    <meta name="apple-mobile-web-app-title" content="RSVP Hub">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="//www.clarity.ms">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
@@ -419,12 +460,16 @@
     </script>
 
     <!-- Performance Optimizations -->
-    <link rel="preload" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" as="style">
-    <link rel="preload" href="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" as="script">
     
     <!-- Resource Hints -->
     <link rel="prefetch" href="{{ url_for('template_gallery') }}">
     <link rel="prefetch" href="{{ url_for('register') }}">
+    <link rel="prefetch" href="{{ url_for('wedding_rsvp') }}">
+    <link rel="prefetch" href="{{ url_for('birthday_invitation') }}">
+    <link rel="prefetch" href="{{ url_for('corporate_events') }}">
+    <link rel="prefetch" href="{{ url_for('blog') }}">
 </head>
 <body>
     <!-- Navigation -->
@@ -534,6 +579,7 @@
                         <li class="mb-2"><a href="{{ url_for('template_gallery') }}"><i class="fas fa-palette me-2"></i>Templates</a></li>
                         <li class="mb-2"><a href="{{ url_for('create_invitation') }}"><i class="fas fa-plus me-2"></i>Create Invitation</a></li>
                         <li class="mb-2"><a href="{{ url_for('register') }}"><i class="fas fa-user-plus me-2"></i>Sign Up</a></li>
+                        <li class="mb-2"><a href="{{ url_for('blog') }}"><i class="fas fa-blog me-2"></i>Blog</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
@@ -549,11 +595,16 @@
                 <div class="col-md-2">
                     <h6 class="mb-3">Event Types</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2">💒 Weddings</li>
-                        <li class="mb-2">🎂 Birthdays</li>
-                        <li class="mb-2">🏢 Corporate</li>
+                        <li class="mb-2"><a href="{{ url_for('wedding_rsvp') }}" class="text-decoration-none">💒 Weddings</a></li>
+                        <li class="mb-2"><a href="{{ url_for('birthday_invitation') }}" class="text-decoration-none">🎂 Birthdays</a></li>
+                        <li class="mb-2"><a href="{{ url_for('corporate_events') }}" class="text-decoration-none">🏢 Corporate</a></li>
                         <li class="mb-2">🎉 Parties</li>
                         <li class="mb-2">👶 Baby Showers</li>
+                    </ul>
+                    <h6 class="mb-3 mt-4">Resources</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{ url_for('blog') }}" class="text-decoration-none"><i class="fas fa-blog me-2"></i>Blog</a></li>
+                        <li class="mb-2"><a href="{{ url_for('template_gallery') }}" class="text-decoration-none"><i class="fas fa-palette me-2"></i>Templates</a></li>
                     </ul>
                 </div>
             </div>

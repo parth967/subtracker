@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}Corporate Event Invitations - Professional Business Event RSVP Tool | RSVP Hub{% endblock %}
+
+{% block extra_css %}
+<meta name="description" content="Create professional corporate event invitations online for free. Business event RSVP management with elegant templates. Perfect for conferences, meetings, networking events, and corporate parties.">
+<meta name="keywords" content="corporate event invitations, business event RSVP, corporate event management, professional invitations, business event planning, corporate RSVP tool">
+<link rel="canonical" href="https://parth967.pythonanywhere.com/corporate-events">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Corporate Event Invitations - Professional Business Event RSVP Tool">
+<meta property="og:description" content="Create professional corporate event invitations online for free. Business event RSVP management with elegant templates.">
+<meta property="og:url" content="https://parth967.pythonanywhere.com/corporate-events">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Corporate Event Invitations - Professional Business Event RSVP Tool">
+<meta name="twitter:description" content="Create professional corporate event invitations online for free. Business event RSVP management.">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Corporate Event Invitations - Professional Business Event RSVP Tool",
+    "description": "Create professional corporate event invitations online for free. Business event RSVP management with elegant templates.",
+    "author": {
+        "@type": "Organization",
+        "name": "RSVP Hub"
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero py-5" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-white">
+                <h1 class="display-4 fw-bold mb-4">Corporate Event Invitations</h1>
+                <p class="lead mb-4">Create professional business event invitations online for free. Perfect for conferences, networking events, corporate parties, and team meetings. Professional RSVP management included.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+                        <i class="fas fa-briefcase me-2"></i>Create Free Corporate Invitation
+                    </a>
+                    <a href="{{ url_for('template_gallery') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-palette me-2"></i>View Templates
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-4 mt-lg-0">
+                <div class="card shadow-lg border-0" style="background: white; border-radius: 20px; padding: 2rem;">
+                    <h3 class="mb-3">🏢 Corporate Event Preview</h3>
+                    <div style="background: linear-gradient(45deg, #2c3e50, #3498db); border-radius: 15px; padding: 2rem; color: white;">
+                        <h4 class="mb-2">Annual Conference 2024</h4>
+                        <p class="mb-2">You're invited to our corporate event</p>
+                        <p class="mb-3">Friday, August 10, 2024 at 9 AM</p>
+                        <a href="#" class="btn btn-light btn-sm">RSVP Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">Professional Corporate Event Management</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-palette fa-3x text-primary mb-3"></i>
+                        <h5>Professional Templates</h5>
+                        <p class="text-muted">Elegant, business-appropriate invitation templates perfect for corporate events, conferences, and professional gatherings.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                        <h5>RSVP Management</h5>
+                        <p class="text-muted">Track corporate event RSVPs in real-time. Manage attendee lists, dietary requirements, and special accommodations.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-users fa-3x text-warning mb-3"></i>
+                        <h5>Attendee Analytics</h5>
+                        <p class="text-muted">Get detailed analytics on RSVP responses, attendance rates, and guest demographics for better event planning.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-envelope fa-3x text-info mb-3"></i>
+                        <h5>Bulk Email Integration</h5>
+                        <p class="text-muted">Send professional corporate invitations via email. Track opens, clicks, and RSVP responses all in one place.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-file-export fa-3x text-danger mb-3"></i>
+                        <h5>Export & Reporting</h5>
+                        <p class="text-muted">Export attendee lists, RSVP data, and generate professional reports for your corporate records.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                        <h5>Secure & Professional</h5>
+                        <p class="text-muted">Enterprise-grade security and privacy. Your corporate event data is safe and confidential.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Event Types -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">Perfect for All Corporate Events</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="display-4 mb-3">📊</div>
+                        <h5>Conferences</h5>
+                        <p class="text-muted small">Professional invitations for corporate conferences and seminars</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="display-4 mb-3">🤝</div>
+                        <h5>Networking Events</h5>
+                        <p class="text-muted small">Elegant invitations for business networking and mixers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="display-4 mb-3">🎉</div>
+                        <h5>Corporate Parties</h5>
+                        <p class="text-muted small">Professional yet festive invitations for company celebrations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="display-4 mb-3">💼</div>
+                        <h5>Team Meetings</h5>
+                        <p class="text-muted small">Streamlined invitations for corporate meetings and workshops</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEO Content -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="h3 mb-4">Streamline Your Corporate Event Planning</h2>
+                <p class="lead">Planning corporate events can be time-consuming and expensive. Our free corporate event invitation tool simplifies the process, allowing you to create professional invitations, manage RSVPs, and track attendance all in one place.</p>
+                
+                <h3 class="h5 mt-4 mb-3">Why Use RSVP Hub for Corporate Events?</h3>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Cost-Effective:</strong> Free alternative to expensive event management software</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Time-Saving:</strong> Create and send invitations in minutes, not hours</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Professional Appearance:</strong> Elegant templates that reflect your company's brand</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Real-Time Tracking:</strong> Monitor RSVPs and attendance in real-time</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Easy Management:</strong> Export attendee lists and generate reports effortlessly</li>
+                </ul>
+                
+                <h3 class="h5 mt-4 mb-3">Perfect for Event Planners and HR Teams</h3>
+                <p>Whether you're an event planner managing multiple corporate events or an HR professional organizing company gatherings, RSVP Hub provides the tools you need to streamline your workflow and impress your attendees with professional invitations.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);">
+    <div class="container text-center text-white">
+        <h2 class="display-5 fw-bold mb-4">Ready to Plan Your Corporate Event?</h2>
+        <p class="lead mb-4">Join businesses worldwide who trust RSVP Hub for their corporate event management</p>
+        <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+            <i class="fas fa-briefcase me-2"></i>Start Creating Free
+        </a>
+    </div>
+</section>
+
+<!-- Related Links -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="text-center">
+            <p class="mb-2"><strong>Related:</strong></p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{{ url_for('home') }}" class="text-decoration-none">Home</a>
+                <span>•</span>
+                <a href="{{ url_for('wedding_rsvp') }}" class="text-decoration-none">Wedding RSVP</a>
+                <span>•</span>
+                <a href="{{ url_for('birthday_invitation') }}" class="text-decoration-none">Birthday Invitations</a>
+                <span>•</span>
+                <a href="{{ url_for('template_gallery') }}" class="text-decoration-none">Corporate Templates</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

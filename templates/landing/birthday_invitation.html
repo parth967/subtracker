@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}Free Birthday Invitation Maker - Online Birthday Party Invitations | RSVP Hub{% endblock %}
+
+{% block extra_css %}
+<meta name="description" content="Create beautiful birthday party invitations online for free. Fun birthday invitation templates with RSVP tracking. Perfect for kids and adult birthday parties. Start free!">
+<meta name="keywords" content="birthday invitation, online birthday invitation, free birthday invitation maker, birthday party invitation, digital birthday invite, birthday RSVP">
+<link rel="canonical" href="https://parth967.pythonanywhere.com/birthday-invitation">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Free Birthday Invitation Maker - Online Birthday Party Invitations">
+<meta property="og:description" content="Create beautiful birthday party invitations online for free. Fun templates with RSVP tracking for all ages.">
+<meta property="og:url" content="https://parth967.pythonanywhere.com/birthday-invitation">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Birthday Invitation Maker - Online Birthday Party Invitations">
+<meta name="twitter:description" content="Create beautiful birthday party invitations online for free. Fun templates with RSVP tracking.">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Free Birthday Invitation Maker - Online Birthday Party Invitations",
+    "description": "Create beautiful birthday party invitations online for free. Fun templates with RSVP tracking for all ages.",
+    "author": {
+        "@type": "Organization",
+        "name": "RSVP Hub"
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero py-5" style="background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-white">
+                <h1 class="display-4 fw-bold mb-4">Free Birthday Invitation Maker</h1>
+                <p class="lead mb-4">Create fun and colorful birthday party invitations online for free. Perfect for kids' birthdays, milestone celebrations, and adult parties. RSVP tracking included!</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+                        <i class="fas fa-birthday-cake me-2"></i>Create Free Birthday Invitation
+                    </a>
+                    <a href="{{ url_for('template_gallery') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-palette me-2"></i>View Templates
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-4 mt-lg-0">
+                <div class="card shadow-lg border-0" style="background: white; border-radius: 20px; padding: 2rem;">
+                    <h3 class="mb-3">🎂 Birthday Invitation Preview</h3>
+                    <div style="background: linear-gradient(45deg, #feca57, #ff9ff3); border-radius: 15px; padding: 2rem; color: white;">
+                        <h4 class="mb-2">You're Invited!</h4>
+                        <p class="mb-2">Join us for a birthday celebration</p>
+                        <p class="mb-3">Saturday, July 20, 2024 at 2 PM</p>
+                        <a href="#" class="btn btn-light btn-sm">RSVP Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">Why Choose RSVP Hub for Birthday Invitations?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-palette fa-3x text-primary mb-3"></i>
+                        <h5>Fun Birthday Templates</h5>
+                        <p class="text-muted">Choose from colorful birthday invitation templates perfect for kids' parties, milestone birthdays, and adult celebrations.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                        <h5>Easy RSVP Tracking</h5>
+                        <p class="text-muted">Track birthday party RSVPs in real-time. Know exactly how many guests are coming and manage your party planning.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-share-alt fa-3x text-warning mb-3"></i>
+                        <h5>Quick Sharing</h5>
+                        <p class="text-muted">Share birthday invitations via email, text, social media, or QR code. Guests can RSVP instantly from any device.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-child fa-3x text-info mb-3"></i>
+                        <h5>Perfect for All Ages</h5>
+                        <p class="text-muted">Templates for kids' birthday parties, teen celebrations, milestone birthdays, and adult parties. Something for everyone!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-mobile-alt fa-3x text-danger mb-3"></i>
+                        <h5>Mobile-Friendly</h5>
+                        <p class="text-muted">Your birthday invitations look great on phones, tablets, and computers. Guests can RSVP on the go!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-gift fa-3x text-pink mb-3"></i>
+                        <h5>100% Free</h5>
+                        <p class="text-muted">Create unlimited birthday invitations for free. No hidden costs, no premium plans. Perfect for budget-conscious party planners.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Birthday Types -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">Birthday Invitations for Every Celebration</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="display-4 mb-3">🎂</div>
+                        <h5>Kids' Birthday Parties</h5>
+                        <p class="text-muted small">Colorful, fun templates perfect for children's birthday celebrations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="display-4 mb-3">🎉</div>
+                        <h5>Teen Birthdays</h5>
+                        <p class="text-muted small">Modern, trendy designs for teenage birthday parties</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="display-4 mb-3">🎊</div>
+                        <h5>Milestone Birthdays</h5>
+                        <p class="text-muted small">Elegant templates for 30th, 40th, 50th, and other milestone celebrations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="display-4 mb-3">🍰</div>
+                        <h5>Adult Parties</h5>
+                        <p class="text-muted small">Sophisticated designs for adult birthday celebrations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEO Content -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="h3 mb-4">Create Beautiful Birthday Invitations in Minutes</h2>
+                <p class="lead">Planning a birthday party? Skip the expensive printing and create beautiful digital birthday invitations online for free. Our birthday invitation maker makes it easy to design, customize, and share your party invites.</p>
+                
+                <h3 class="h5 mt-4 mb-3">Why Use an Online Birthday Invitation Maker?</h3>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Save Money:</strong> No printing costs or postage fees</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Save Time:</strong> Create and send invitations in minutes, not days</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Track RSVPs:</strong> Know who's coming without making phone calls</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Easy Updates:</strong> Change party details instantly and notify all guests</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Eco-Friendly:</strong> Digital invitations are better for the environment</li>
+                </ul>
+                
+                <h3 class="h5 mt-4 mb-3">Perfect for All Birthday Party Types</h3>
+                <p>Whether you're planning a small family gathering or a large celebration, our free birthday invitation maker has everything you need. Choose from fun templates for kids' parties, elegant designs for milestone birthdays, or modern styles for adult celebrations.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);">
+    <div class="container text-center text-white">
+        <h2 class="display-5 fw-bold mb-4">Ready to Create Your Birthday Invitation?</h2>
+        <p class="lead mb-4">Join thousands of party planners who use RSVP Hub for their birthday celebrations</p>
+        <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+            <i class="fas fa-birthday-cake me-2"></i>Start Creating Free
+        </a>
+    </div>
+</section>
+
+<!-- Related Links -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="text-center">
+            <p class="mb-2"><strong>Related:</strong></p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{{ url_for('home') }}" class="text-decoration-none">Home</a>
+                <span>•</span>
+                <a href="{{ url_for('wedding_rsvp') }}" class="text-decoration-none">Wedding RSVP</a>
+                <span>•</span>
+                <a href="{{ url_for('corporate_events') }}" class="text-decoration-none">Corporate Events</a>
+                <span>•</span>
+                <a href="{{ url_for('template_gallery') }}" class="text-decoration-none">All Templates</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

@@ -582,6 +582,173 @@ def template_gallery():
     """Template gallery page"""
     return render_template('template_gallery.html')
 
+# SEO Landing Pages
+@app.route('/wedding-rsvp')
+def wedding_rsvp():
+    """Wedding RSVP landing page for SEO"""
+    return render_template('landing/wedding_rsvp.html')
+
+@app.route('/birthday-invitation')
+def birthday_invitation():
+    """Birthday invitation landing page for SEO"""
+    return render_template('landing/birthday_invitation.html')
+
+@app.route('/corporate-events')
+def corporate_events():
+    """Corporate events landing page for SEO"""
+    return render_template('landing/corporate_events.html')
+
+# Blog Routes
+@app.route('/blog')
+def blog():
+    """Blog listing page"""
+    blog_posts = [
+        {
+            'slug': 'how-to-create-wedding-rsvp-online',
+            'title': 'How to Create Wedding RSVP Online: Complete Guide 2024',
+            'excerpt': 'Learn how to create beautiful wedding RSVP invitations online for free. Step-by-step guide with templates and tips.',
+            'date': '2024-12-19',
+            'category': 'Weddings'
+        },
+        {
+            'slug': 'best-rsvp-tools-for-small-weddings',
+            'title': 'Best RSVP Tools for Small Weddings: Free & Easy Solutions',
+            'excerpt': 'Discover the best free RSVP tools for small weddings. Compare features, templates, and find the perfect solution.',
+            'date': '2024-12-18',
+            'category': 'Weddings'
+        },
+        {
+            'slug': 'free-online-invitation-maker-guide',
+            'title': 'Free Online Invitation Maker: Create Stunning Invites in Minutes',
+            'excerpt': 'Complete guide to using free online invitation makers. Learn how to create professional invitations without design skills.',
+            'date': '2024-12-17',
+            'category': 'Tutorials'
+        },
+        {
+            'slug': 'digital-vs-paper-invitations',
+            'title': 'Digital vs Paper Invitations: Which is Better for Your Event?',
+            'excerpt': 'Compare digital and paper invitations. Learn the pros and cons of each and make the best choice for your event.',
+            'date': '2024-12-16',
+            'category': 'Tips'
+        },
+        {
+            'slug': 'birthday-party-invitation-ideas',
+            'title': 'Birthday Party Invitation Ideas: Creative Templates & Tips',
+            'excerpt': 'Get inspired with creative birthday party invitation ideas. Templates, themes, and tips for memorable invites.',
+            'date': '2024-12-15',
+            'category': 'Birthdays'
+        },
+        {
+            'slug': 'corporate-event-invitation-etiquette',
+            'title': 'Corporate Event Invitation Etiquette: Professional Guide',
+            'excerpt': 'Master corporate event invitation etiquette. Learn how to create professional invites that make the right impression.',
+            'date': '2024-12-14',
+            'category': 'Corporate'
+        },
+        {
+            'slug': 'rsvp-tracking-best-practices',
+            'title': 'RSVP Tracking Best Practices: Manage Guest Responses Like a Pro',
+            'excerpt': 'Learn RSVP tracking best practices to manage guest responses efficiently. Tools, tips, and strategies for event planners.',
+            'date': '2024-12-13',
+            'category': 'Tips'
+        },
+        {
+            'slug': 'qr-code-invitations-guide',
+            'title': 'QR Code Invitations: Modern Way to Share Your Event',
+            'excerpt': 'Everything you need to know about QR code invitations. How to create, share, and use QR codes for events.',
+            'date': '2024-12-12',
+            'category': 'Technology'
+        },
+        {
+            'slug': 'wedding-invitation-templates-free',
+            'title': 'Free Wedding Invitation Templates: 15+ Beautiful Designs',
+            'excerpt': 'Browse our collection of free wedding invitation templates. Elegant designs for every wedding style and theme.',
+            'date': '2024-12-11',
+            'category': 'Weddings'
+        },
+        {
+            'slug': 'event-planning-rsvp-checklist',
+            'title': 'Event Planning RSVP Checklist: Never Miss a Guest Response',
+            'excerpt': 'Complete RSVP checklist for event planners. Track responses, manage guest lists, and ensure perfect attendance.',
+            'date': '2024-12-10',
+            'category': 'Tips'
+        },
+        {
+            'slug': 'online-rsvp-vs-traditional-methods',
+            'title': 'Online RSVP vs Traditional Methods: Which Should You Choose?',
+            'excerpt': 'Compare online RSVP systems with traditional methods. Discover why digital RSVPs are becoming the new standard.',
+            'date': '2024-12-09',
+            'category': 'Technology'
+        },
+        {
+            'slug': 'baby-shower-invitation-ideas',
+            'title': 'Baby Shower Invitation Ideas: Cute Templates & Themes',
+            'excerpt': 'Adorable baby shower invitation ideas and templates. Gender reveal, themed parties, and creative design inspiration.',
+            'date': '2024-12-08',
+            'category': 'Baby Showers'
+        },
+        {
+            'slug': 'holiday-party-invitation-tips',
+            'title': 'Holiday Party Invitation Tips: Spread the Festive Cheer',
+            'excerpt': 'Create perfect holiday party invitations with our tips and templates. Christmas, New Year, and seasonal celebration ideas.',
+            'date': '2024-12-07',
+            'category': 'Holidays'
+        },
+        {
+            'slug': 'rsvp-reminder-email-templates',
+            'title': 'RSVP Reminder Email Templates: Get More Responses',
+            'excerpt': 'Professional RSVP reminder email templates that get results. Learn when and how to send effective reminders.',
+            'date': '2024-12-06',
+            'category': 'Tips'
+        },
+        {
+            'slug': 'mobile-friendly-invitations-importance',
+            'title': 'Why Mobile-Friendly Invitations Matter: Statistics & Tips',
+            'excerpt': 'Discover why mobile-friendly invitations are essential. Statistics, best practices, and responsive design tips.',
+            'date': '2024-12-05',
+            'category': 'Technology'
+        }
+    ]
+    return render_template('blog/index.html', blog_posts=blog_posts)
+
+@app.route('/blog/<slug>')
+def blog_post(slug):
+    """Individual blog post page"""
+    # Map slugs to blog post data
+    blog_posts_map = {
+        'how-to-create-wedding-rsvp-online': {
+            'title': 'How to Create Wedding RSVP Online: Complete Guide 2024',
+            'content': 'wedding_rsvp_guide',
+            'date': '2024-12-19',
+            'category': 'Weddings',
+            'meta_description': 'Learn how to create beautiful wedding RSVP invitations online for free. Step-by-step guide with templates and tips for your special day.'
+        },
+        'best-rsvp-tools-for-small-weddings': {
+            'title': 'Best RSVP Tools for Small Weddings: Free & Easy Solutions',
+            'content': 'best_rsvp_tools',
+            'date': '2024-12-18',
+            'category': 'Weddings',
+            'meta_description': 'Discover the best free RSVP tools for small weddings. Compare features, templates, and find the perfect solution for intimate celebrations.'
+        }
+    }
+    
+    post = blog_posts_map.get(slug)
+    if not post:
+        return render_template('404.html'), 404
+    
+    return render_template(f'blog/{post["content"]}.html', post=post, slug=slug)
+
+# SEO Routes
+@app.route('/sitemap.xml')
+def sitemap():
+    """Serve sitemap.xml for search engines"""
+    return app.send_static_file('sitemap.xml')
+
+@app.route('/robots.txt')
+def robots():
+    """Serve robots.txt for search engines"""
+    return app.send_static_file('robots.txt')
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

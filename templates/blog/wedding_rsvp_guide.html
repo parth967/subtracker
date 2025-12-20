@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} | RSVP Hub Blog{% endblock %}
+
+{% block extra_css %}
+<meta name="description" content="{{ post.meta_description }}">
+<meta name="keywords" content="wedding RSVP, online wedding invitations, wedding RSVP tool, free wedding invitations, wedding planning, digital wedding invitations">
+<link rel="canonical" href="https://parth967.pythonanywhere.com/blog/{{ slug }}">
+
+<!-- Open Graph -->
+<meta property="og:title" content="{{ post.title }}">
+<meta property="og:description" content="{{ post.meta_description }}">
+<meta property="og:url" content="https://parth967.pythonanywhere.com/blog/{{ slug }}">
+<meta property="og:type" content="article">
+{% endblock %}
+
+{% block content %}
+<article class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('blog') }}">Blog</a></li>
+                        <li class="breadcrumb-item active">{{ post.category }}</li>
+                    </ol>
+                </nav>
+
+                <!-- Header -->
+                <header class="mb-4">
+                    <span class="badge bg-primary mb-2">{{ post.category }}</span>
+                    <h1 class="display-4 fw-bold mb-3">{{ post.title }}</h1>
+                    <div class="text-muted mb-4">
+                        <i class="fas fa-calendar me-2"></i>{{ post.date }}
+                        <span class="ms-3"><i class="fas fa-user me-2"></i>RSVP Hub Team</span>
+                    </div>
+                </header>
+
+                <!-- Content -->
+                <div class="article-content">
+                    <p class="lead">Planning a wedding is exciting, but managing RSVPs can be overwhelming. In this complete guide, you'll learn how to create beautiful wedding RSVP invitations online for free, track responses in real-time, and manage your guest list effortlessly.</p>
+
+                    <h2 class="h3 mt-5 mb-3">Why Use an Online Wedding RSVP Tool?</h2>
+                    <p>Traditional paper invitations and phone calls for RSVPs are time-consuming and expensive. Online wedding RSVP tools offer several advantages:</p>
+                    <ul>
+                        <li><strong>Save Money:</strong> No printing or postage costs</li>
+                        <li><strong>Save Time:</strong> Create and send invitations in minutes</li>
+                        <li><strong>Real-Time Tracking:</strong> See who's attending instantly</li>
+                        <li><strong>Guest Convenience:</strong> Guests can RSVP anytime, anywhere</li>
+                        <li><strong>Easy Updates:</strong> Change details and notify all guests instantly</li>
+                    </ul>
+
+                    <h2 class="h3 mt-5 mb-3">Step-by-Step: How to Create Wedding RSVP Online</h2>
+                    
+                    <h3 class="h5 mt-4 mb-3">Step 1: Choose Your Platform</h3>
+                    <p>Select a free online wedding RSVP tool like RSVP Hub. Look for features like:</p>
+                    <ul>
+                        <li>Beautiful wedding invitation templates</li>
+                        <li>Real-time RSVP tracking</li>
+                        <li>Mobile-responsive design</li>
+                        <li>QR code generation</li>
+                        <li>Guest management tools</li>
+                    </ul>
+
+                    <h3 class="h5 mt-4 mb-3">Step 2: Select a Wedding Template</h3>
+                    <p>Choose from elegant wedding invitation templates that match your wedding style. Popular options include:</p>
+                    <ul>
+                        <li>Classic Elegance - Perfect for traditional weddings</li>
+                        <li>Modern Minimalist - Clean and contemporary</li>
+                        <li>Floral Garden - Beautiful botanical designs</li>
+                        <li>Luxury Gold - Premium and sophisticated</li>
+                        <li>Rustic Barn - Perfect for country weddings</li>
+                    </ul>
+
+                    <h3 class="h5 mt-4 mb-3">Step 3: Customize Your Invitation</h3>
+                    <p>Add your wedding details:</p>
+                    <ul>
+                        <li>Couple names</li>
+                        <li>Wedding date and time</li>
+                        <li>Venue name and address</li>
+                        <li>RSVP deadline</li>
+                        <li>Personal message</li>
+                    </ul>
+
+                    <h3 class="h5 mt-4 mb-3">Step 4: Share Your Invitation</h3>
+                    <p>Share your wedding RSVP invitation via:</p>
+                    <ul>
+                        <li>Email - Send directly to guests</li>
+                        <li>Social Media - Share on Facebook, Instagram, etc.</li>
+                        <li>QR Code - Print on save-the-dates or additional materials</li>
+                        <li>Direct Link - Copy and paste the invitation URL</li>
+                    </ul>
+
+                    <h3 class="h5 mt-4 mb-3">Step 5: Track RSVPs</h3>
+                    <p>Monitor responses in real-time:</p>
+                    <ul>
+                        <li>See who's attending</li>
+                        <li>Track guest counts</li>
+                        <li>Manage dietary requirements</li>
+                        <li>Send reminders to guests who haven't responded</li>
+                    </ul>
+
+                    <h2 class="h3 mt-5 mb-3">Best Practices for Wedding RSVPs</h2>
+                    <ul>
+                        <li><strong>Set a Clear Deadline:</strong> Give guests 4-6 weeks to respond</li>
+                        <li><strong>Send Reminders:</strong> Follow up with guests who haven't RSVPed</li>
+                        <li><strong>Track Plus-Ones:</strong> Clearly indicate if guests can bring a date</li>
+                        <li><strong>Collect Dietary Info:</strong> Ask about allergies and dietary restrictions</li>
+                        <li><strong>Keep It Simple:</strong> Make the RSVP process quick and easy</li>
+                    </ul>
+
+                    <h2 class="h3 mt-5 mb-3">Common Wedding RSVP Questions</h2>
+                    
+                    <h3 class="h5 mt-4 mb-3">When should I send wedding invitations?</h3>
+                    <p>Send wedding invitations 6-8 weeks before your wedding date. For destination weddings, send them 3-4 months in advance.</p>
+
+                    <h3 class="h5 mt-4 mb-3">What information should I include?</h3>
+                    <p>Include the couple's names, wedding date and time, venue address, RSVP deadline, dress code (if applicable), and any special instructions.</p>
+
+                    <h3 class="h5 mt-4 mb-3">How do I handle late RSVPs?</h3>
+                    <p>Send a friendly reminder email or text message. If guests still don't respond, follow up with a phone call.</p>
+
+                    <h2 class="h3 mt-5 mb-3">Conclusion</h2>
+                    <p>Creating wedding RSVP invitations online is easier than ever. With free tools like RSVP Hub, you can create beautiful invitations, track responses, and manage your guest list all in one place. Start planning your perfect wedding today!</p>
+
+                    <!-- CTA -->
+                    <div class="card bg-primary text-white mt-5 mb-4">
+                        <div class="card-body text-center p-4">
+                            <h3 class="h4 mb-3">Ready to Create Your Wedding RSVP?</h3>
+                            <p class="mb-3">Join thousands of couples who use RSVP Hub for their wedding invitations</p>
+                            <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+                                <i class="fas fa-heart me-2"></i>Create Free Wedding RSVP
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Posts -->
+                <div class="mt-5 pt-4 border-top">
+                    <h3 class="h5 mb-4">Related Articles</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{{ url_for('blog_post', slug='best-rsvp-tools-for-small-weddings') }}" class="text-decoration-none">
+                                            Best RSVP Tools for Small Weddings
+                                        </a>
+                                    </h5>
+                                    <p class="text-muted small mb-0">Discover the best free RSVP tools for small weddings...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{{ url_for('blog') }}" class="text-decoration-none">
+                                            View All Blog Posts
+                                        </a>
+                                    </h5>
+                                    <p class="text-muted small mb-0">Browse our complete collection of event planning guides...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock %}
+

@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block title %}Free Wedding RSVP Website - Online Wedding Invitation RSVP Tool | RSVP Hub{% endblock %}
+
+{% block extra_css %}
+<meta name="description" content="Create beautiful wedding RSVP invitations online for free. Professional wedding invitation templates with RSVP tracking. Perfect for small and large weddings. Start free today!">
+<meta name="keywords" content="wedding RSVP website, online wedding RSVP, wedding invitation RSVP, free wedding RSVP tool, digital wedding invitations, wedding RSVP management">
+<link rel="canonical" href="https://parth967.pythonanywhere.com/wedding-rsvp">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Free Wedding RSVP Website - Online Wedding Invitation Tool">
+<meta property="og:description" content="Create beautiful wedding RSVP invitations online for free. Professional templates with real-time RSVP tracking.">
+<meta property="og:url" content="https://parth967.pythonanywhere.com/wedding-rsvp">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Wedding RSVP Website - Online Wedding Invitation Tool">
+<meta name="twitter:description" content="Create beautiful wedding RSVP invitations online for free. Professional templates with real-time RSVP tracking.">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Free Wedding RSVP Website - Online Wedding Invitation Tool",
+    "description": "Create beautiful wedding RSVP invitations online for free. Professional templates with real-time RSVP tracking.",
+    "author": {
+        "@type": "Organization",
+        "name": "RSVP Hub"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "RSVP Hub"
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://parth967.pythonanywhere.com/wedding-rsvp"
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero py-5" style="background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-white">
+                <h1 class="display-4 fw-bold mb-4">Free Wedding RSVP Website</h1>
+                <p class="lead mb-4">Create beautiful wedding invitation RSVPs online for free. Professional templates, real-time tracking, and easy guest management for your special day.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+                        <i class="fas fa-heart me-2"></i>Create Free Wedding RSVP
+                    </a>
+                    <a href="{{ url_for('template_gallery') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-palette me-2"></i>View Templates
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-4 mt-lg-0">
+                <div class="card shadow-lg border-0" style="background: white; border-radius: 20px; padding: 2rem;">
+                    <h3 class="mb-3">💒 Wedding Invitation Preview</h3>
+                    <div style="background: linear-gradient(45deg, #ff6b9d, #c44569); border-radius: 15px; padding: 2rem; color: white;">
+                        <h4 class="mb-2">Sarah & John</h4>
+                        <p class="mb-2">Request the pleasure of your company</p>
+                        <p class="mb-3">Saturday, June 15, 2024</p>
+                        <a href="#" class="btn btn-light btn-sm">RSVP Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">Why Choose RSVP Hub for Your Wedding?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-palette fa-3x text-primary mb-3"></i>
+                        <h5>Elegant Wedding Templates</h5>
+                        <p class="text-muted">Choose from 15+ beautiful wedding invitation templates. From classic elegance to modern romance, find the perfect design for your style.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                        <h5>Real-Time RSVP Tracking</h5>
+                        <p class="text-muted">Track wedding RSVPs in real-time. See who's attending, manage guest counts, and handle dietary requirements all in one place.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-qrcode fa-3x text-warning mb-3"></i>
+                        <h5>Easy QR Code Sharing</h5>
+                        <p class="text-muted">Generate QR codes for your wedding invitations. Share via social media, email, or print. Guests can RSVP instantly with one scan.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-mobile-alt fa-3x text-info mb-3"></i>
+                        <h5>Mobile-Friendly Design</h5>
+                        <p class="text-muted">Your wedding invitations look perfect on every device. Guests can RSVP easily from their phones, tablets, or computers.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-users fa-3x text-danger mb-3"></i>
+                        <h5>Guest Management</h5>
+                        <p class="text-muted">Manage your wedding guest list effortlessly. Track responses, dietary requirements, plus-ones, and special requests.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-heart fa-3x text-pink mb-3"></i>
+                        <h5>100% Free Forever</h5>
+                        <p class="text-muted">No hidden costs, no premium plans. Create unlimited wedding invitations and manage RSVPs completely free.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">How to Create Your Wedding RSVP Online</h2>
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: bold;">1</div>
+                <h5>Sign Up Free</h5>
+                <p class="text-muted">Create your free account in seconds. No credit card required.</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="step-number bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: bold;">2</div>
+                <h5>Choose Template</h5>
+                <p class="text-muted">Select from 15+ beautiful wedding invitation templates.</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="step-number bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: bold;">3</div>
+                <h5>Customize Details</h5>
+                <p class="text-muted">Add your wedding date, venue, and personal message.</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="step-number bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: bold;">4</div>
+                <h5>Share & Track</h5>
+                <p class="text-muted">Share your invitation link and track RSVPs in real-time.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEO Content Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="h3 mb-4">Perfect for All Wedding Sizes</h2>
+                <p class="lead">Whether you're planning an intimate wedding with 20 guests or a grand celebration with 200+, RSVP Hub makes managing your wedding RSVPs effortless.</p>
+                
+                <h3 class="h5 mt-4 mb-3">Small Wedding RSVP Management</h3>
+                <p>Planning an intimate wedding? Our free wedding RSVP tool is perfect for small weddings. Track responses, manage guest lists, and ensure everyone RSVPs on time - all without the complexity of expensive wedding planning software.</p>
+                
+                <h3 class="h5 mt-4 mb-3">Large Wedding RSVP Tracking</h3>
+                <p>Managing RSVPs for a large wedding can be overwhelming. With RSVP Hub, you get real-time analytics, automatic guest counting, and easy export options. See at a glance how many guests are attending, who hasn't responded, and manage dietary requirements effortlessly.</p>
+                
+                <h3 class="h5 mt-4 mb-3">Why Use an Online Wedding RSVP Tool?</h3>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Save Time:</strong> No more manual tracking or phone calls to confirm attendance</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Reduce Costs:</strong> Free alternative to expensive wedding planning software</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Better Organization:</strong> All RSVPs in one place with real-time updates</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Guest Convenience:</strong> Guests can RSVP anytime, anywhere from their devices</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Professional Appearance:</strong> Beautiful digital invitations that impress your guests</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);">
+    <div class="container text-center text-white">
+        <h2 class="display-5 fw-bold mb-4">Ready to Create Your Wedding RSVP?</h2>
+        <p class="lead mb-4">Join thousands of couples who trust RSVP Hub for their wedding invitations</p>
+        <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg">
+            <i class="fas fa-heart me-2"></i>Start Creating Free
+        </a>
+    </div>
+</section>
+
+<!-- Related Links -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="text-center">
+            <p class="mb-2"><strong>Related:</strong></p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{{ url_for('home') }}" class="text-decoration-none">Home</a>
+                <span>•</span>
+                <a href="{{ url_for('template_gallery') }}" class="text-decoration-none">Wedding Templates</a>
+                <span>•</span>
+                <a href="{{ url_for('blog') }}" class="text-decoration-none">Wedding Planning Blog</a>
+                <span>•</span>
+                <a href="{{ url_for('birthday_invitation') }}" class="text-decoration-none">Birthday Invitations</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
