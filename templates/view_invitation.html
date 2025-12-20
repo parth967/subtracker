@@ -17,6 +17,13 @@
         padding: 3rem 2rem 2rem;
         text-align: center;
         position: relative;
+        min-height: 300px;
+    }
+    
+    .invitation-header:not([style*="background-image"]) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
     
     .invitation-body {
@@ -191,8 +198,11 @@
 <div class="container py-5">
     <div class="invitation-card">
         <!-- Invitation Header -->
-        <div class="invitation-header template-{{ invitation.template_id }}">
-            <div class="mb-4">
+        <div class="invitation-header template-{{ invitation.template_id }}" {% if invitation.custom_image %}style="background-image: url('{{ url_for('static', filename=invitation.custom_image) }}'); background-size: cover; background-position: center; position: relative; min-height: 400px;"{% endif %}>
+            {% if invitation.custom_image %}
+            <div style="background: rgba(0,0,0,0.5); padding: 3rem 2rem 2rem; position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 20px 20px 0 0; color: white;">
+            {% endif %}
+            <div class="mb-4" {% if invitation.custom_image %}style="color: white;"{% endif %}>
                 {% if invitation.event_type == 'wedding' %}
                     <i class="fas fa-heart fa-3x mb-3"></i>
                 {% elif invitation.event_type == 'birthday' %}
@@ -208,13 +218,13 @@
                 {% endif %}
             </div>
             
-            <h1 class="font-script display-4 fw-bold mb-3">{{ invitation.title }}</h1>
+            <h1 class="font-script display-4 fw-bold mb-3" {% if invitation.custom_image %}style="color: white; position: relative; z-index: 2;"{% endif %}>{{ invitation.title }}</h1>
             
             {% if invitation.description %}
-            <p class="lead mb-4">{{ invitation.description }}</p>
+            <p class="lead mb-4" {% if invitation.custom_image %}style="color: white; position: relative; z-index: 2;"{% endif %}>{{ invitation.description }}</p>
             {% endif %}
             
-            <div class="event-details">
+            <div class="event-details" {% if invitation.custom_image %}style="color: white; position: relative; z-index: 2;"{% endif %}>
                 {% if invitation.event_date %}
                 <div class="detail-item">
                     <div class="detail-icon">
@@ -267,6 +277,9 @@
             {% if invitation.custom_message %}
             <div class="mt-4 p-3" style="background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
                 <p class="mb-0 fst-italic">"{{ invitation.custom_message }}"</p>
+            </div>
+            {% endif %}
+            {% if invitation.custom_image %}
             </div>
             {% endif %}
         </div>

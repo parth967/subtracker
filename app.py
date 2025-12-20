@@ -16,7 +16,8 @@ Author: InviteMe Team
 License: MIT
 """
 
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session, send_from_directory
+from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -57,6 +58,15 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     'pool_recycle': 280,
     'pool_pre_ping': True,
 }
+
+# File upload configuration
+UPLOAD_FOLDER = 'static/uploads/invitations'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+
+# Create upload directory if it doesn't exist
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 db = SQLAlchemy(app)
 
@@ -291,6 +301,8 @@ class Invitation(db.Model):
     template_id = db.Column(db.String(50), default='classic')
     color_scheme = db.Column(db.String(20), default='blue')
     custom_message = db.Column(db.Text)
+    custom_image = db.Column(db.String(255))  # Path to uploaded custom image
+    design_data = db.Column(db.Text)  # JSON data for drag-and-drop editor
     
     # Sharing & Privacy
     invitation_code = db.Column(db.String(20), unique=True, nullable=False)
@@ -376,6 +388,29 @@ def generate_qr_code(url):
     buffer.seek(0)
     
     return base64.b64encode(buffer.getvalue()).decode()
+
+def allowed_file(filename):
+    """Check if file extension is allowed"""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def save_uploaded_image(file, user_id, invitation_id=None):
+    """Save uploaded image and return filename"""
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        # Create unique filename: user_id_timestamp_filename
+        timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+        unique_filename = f"{user_id}_{timestamp}_{filename}"
+        
+        # Create user-specific directory
+        user_upload_dir = os.path.join(UPLOAD_FOLDER, str(user_id))
+        os.makedirs(user_upload_dir, exist_ok=True)
+        
+        filepath = os.path.join(user_upload_dir, unique_filename)
+        file.save(filepath)
+        
+        # Return relative path for database
+        return f"uploads/invitations/{user_id}/{unique_filename}"
+    return None
 
 # Authentication Routes
 @app.errorhandler(404)
@@ -541,7 +576,60 @@ def dashboard():
 @login_required
 def create_invitation():
     """Create new invitation form"""
-    return render_template('create_invitation.html')
+    # Get design data from editor if available
+    design_data = session.get('editor_design_data', None)
+    return render_template('create_invitation.html', design_data=design_data)
+
+@app.route('/editor')
+@login_required
+def invitation_editor():
+    """Drag-and-drop visual invitation editor"""
+    return render_template('editor/drag_drop_editor.html')
+
+@app.route('/api/upload-image', methods=['POST'])
+@login_required
+def upload_image():
+    """Handle image upload for invitations"""
+    if 'image' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+    
+    file = request.files['image']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    
+    try:
+        image_path = save_uploaded_image(file, current_user.id)
+        if image_path:
+            return jsonify({
+                'success': True,
+                'image_url': url_for('uploaded_file', filename=image_path),
+                'image_path': image_path
+            })
+        else:
+            return jsonify({'error': 'Invalid file type. Allowed: PNG, JPG, JPEG, GIF, WEBP, SVG'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    """Serve uploaded files"""
+    try:
+        return send_from_directory('static', filename)
+    except:
+        # Fallback if file doesn't exist
+        return "File not found", 404
+
+@app.route('/editor/save', methods=['POST'])
+@login_required
+def save_editor_design():
+    """Save design from visual editor"""
+    try:
+        design_data = request.json.get('design_data', '')
+        # Store in session temporarily or return to form
+        session['editor_design_data'] = design_data
+        return jsonify({'success': True, 'message': 'Design saved! Continue with invitation details.'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/create', methods=['POST'])
 @login_required

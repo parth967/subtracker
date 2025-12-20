@@ -1,0 +1,683 @@
+{% extends "base.html" %}
+
+{% block title %}Visual Invitation Editor - Drag & Drop | RSVP Hub{% endblock %}
+
+{% block extra_css %}
+<style>
+    .editor-container {
+        min-height: 100vh;
+        background: #f5f5f5;
+    }
+    
+    .editor-toolbar {
+        background: white;
+        border-bottom: 2px solid #e0e0e0;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .editor-canvas {
+        background: white;
+        min-height: 600px;
+        position: relative;
+        margin: 2rem auto;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .draggable-element {
+        position: absolute;
+        cursor: move;
+        border: 2px dashed transparent;
+        padding: 10px;
+        min-width: 100px;
+        min-height: 50px;
+    }
+    
+    .draggable-element:hover {
+        border-color: #667eea;
+    }
+    
+    .draggable-element.selected {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    }
+    
+    .element-controls {
+        position: absolute;
+        top: -30px;
+        right: 0;
+        background: #667eea;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        display: none;
+    }
+    
+    .draggable-element.selected .element-controls {
+        display: block;
+    }
+    
+    .toolbar-section {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .toolbar-btn {
+        padding: 0.5rem 1rem;
+        border: 2px solid #667eea;
+        background: white;
+        color: #667eea;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .toolbar-btn:hover {
+        background: #667eea;
+        color: white;
+    }
+    
+    .toolbar-btn.active {
+        background: #667eea;
+        color: white;
+    }
+    
+    .element-palette {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .palette-item {
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        background: #f8f9fa;
+        border-radius: 6px;
+        cursor: grab;
+        transition: all 0.2s;
+    }
+    
+    .palette-item:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+    }
+    
+    .palette-item:active {
+        cursor: grabbing;
+    }
+    
+    .image-upload-area {
+        border: 2px dashed #667eea;
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        background: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .image-upload-area:hover {
+        background: #e9ecef;
+        border-color: #764ba2;
+    }
+    
+    .image-upload-area.dragover {
+        background: #e0e7ff;
+        border-color: #764ba2;
+    }
+    
+    .preview-image {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="editor-container">
+    <!-- Toolbar -->
+    <div class="editor-toolbar">
+        <div class="container-fluid">
+            <div class="toolbar-section">
+                <h4 class="mb-0 me-3"><i class="fas fa-palette me-2"></i>Visual Editor</h4>
+                <button class="toolbar-btn" onclick="addTextElement()">
+                    <i class="fas fa-font me-1"></i>Add Text
+                </button>
+                <button class="toolbar-btn" onclick="addImageElement()">
+                    <i class="fas fa-image me-1"></i>Add Image
+                </button>
+                <button class="toolbar-btn" onclick="uploadBackground()">
+                    <i class="fas fa-image me-1"></i>Background
+                </button>
+                <div class="ms-auto">
+                    <button class="toolbar-btn active" onclick="saveDesign()">
+                        <i class="fas fa-save me-1"></i>Save Design
+                    </button>
+                    <button class="toolbar-btn" onclick="previewDesign()">
+                        <i class="fas fa-eye me-1"></i>Preview
+                    </button>
+                    <a href="{{ url_for('create_invitation') }}" class="toolbar-btn">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Form
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Element Palette -->
+            <div class="col-md-3">
+                <div class="element-palette">
+                    <h5 class="mb-3"><i class="fas fa-shapes me-2"></i>Elements</h5>
+                    
+                    <div class="palette-item" onclick="addTextElement()">
+                        <i class="fas fa-font me-2"></i><strong>Text</strong>
+                        <p class="small mb-0 text-muted">Add text element</p>
+                    </div>
+                    
+                    <div class="palette-item" onclick="addImageElement()">
+                        <i class="fas fa-image me-2"></i><strong>Image</strong>
+                        <p class="small mb-0 text-muted">Upload image</p>
+                    </div>
+                    
+                    <div class="palette-item" onclick="addShape('rectangle')">
+                        <i class="fas fa-square me-2"></i><strong>Shape</strong>
+                        <p class="small mb-0 text-muted">Add shape</p>
+                    </div>
+                    
+                    <div class="palette-item" onclick="addIcon()">
+                        <i class="fas fa-icons me-2"></i><strong>Icon</strong>
+                        <p class="small mb-0 text-muted">Add icon</p>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6 class="mb-2">Upload Custom Image</h6>
+                    <div class="image-upload-area" id="imageUploadArea" onclick="document.getElementById('imageFileInput').click()">
+                        <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                        <p class="mb-0">Click or drag image here</p>
+                        <p class="small text-muted">PNG, JPG, GIF up to 16MB</p>
+                    </div>
+                    <input type="file" id="imageFileInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                    <div id="uploadedImagePreview" class="mt-3"></div>
+                </div>
+            </div>
+            
+            <!-- Editor Canvas -->
+            <div class="col-md-9">
+                <div class="editor-canvas" id="editorCanvas" style="width: 100%; max-width: 800px; aspect-ratio: 4/3;">
+                    <!-- Canvas background -->
+                    <div id="canvasBackground" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                    
+                    <!-- Elements will be added here -->
+                </div>
+                
+                <!-- Design Data Form (hidden) -->
+                <form id="designForm" method="POST" action="{{ url_for('create_invitation_post') }}" style="display: none;">
+                    <input type="hidden" name="design_data" id="designDataInput">
+                    <!-- Other form fields will be added via JS -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Interact.js for drag and drop -->
+<script src="https://cdn.jsdelivr.net/npm/interact.js@latest/dist/interact.min.js"></script>
+
+<script>
+let selectedElement = null;
+let elementCounter = 0;
+let designElements = [];
+
+// Initialize interact.js for drag and drop (after elements are created)
+function initInteract() {
+    interact('.draggable-element').draggable({
+    listeners: {
+        start(event) {
+            event.target.classList.add('selected');
+            selectedElement = event.target;
+        },
+        move(event) {
+            const target = event.target;
+            const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+            const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+            
+            target.style.transform = `translate(${x}px, ${y}px)`;
+            target.setAttribute('data-x', x);
+            target.setAttribute('data-y', y);
+        },
+        end(event) {
+            updateElementData(event.target);
+        }
+    }
+    });
+    
+    // Make elements resizable
+    interact('.draggable-element').resizable({
+    edges: { left: true, right: true, top: true, bottom: true },
+    listeners: {
+        move(event) {
+            const target = event.target;
+            let x = (parseFloat(target.getAttribute('data-x')) || 0);
+            let y = (parseFloat(target.getAttribute('data-y')) || 0);
+            
+            target.style.width = event.rect.width + 'px';
+            target.style.height = event.rect.height + 'px';
+            
+            x += event.deltaRect.left;
+            y += event.deltaRect.bottom;
+            
+            target.style.transform = `translate(${x}px, ${y}px)`;
+            target.setAttribute('data-x', x);
+            target.setAttribute('data-y', y);
+        },
+        end(event) {
+            updateElementData(event.target);
+        }
+    }
+    });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    initInteract();
+});
+
+// Click to select element
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.draggable-element')) {
+        if (selectedElement) {
+            selectedElement.classList.remove('selected');
+        }
+        selectedElement = e.target.closest('.draggable-element');
+        selectedElement.classList.add('selected');
+    } else if (!e.target.closest('.element-controls')) {
+        if (selectedElement) {
+            selectedElement.classList.remove('selected');
+        }
+        selectedElement = null;
+    }
+});
+
+// Add text element
+function addTextElement() {
+    elementCounter++;
+    const element = document.createElement('div');
+    element.className = 'draggable-element';
+    element.id = `element-${elementCounter}`;
+    element.style.left = '50%';
+    element.style.top = '50%';
+    element.style.transform = 'translate(-50%, -50%)';
+    element.contentEditable = true;
+    element.innerHTML = '<h2 style="color: white; margin: 0;">Your Text Here</h2>';
+    element.style.color = 'white';
+    element.style.textAlign = 'center';
+    
+    const controls = document.createElement('div');
+    controls.className = 'element-controls';
+    controls.innerHTML = `
+        <button onclick="deleteElement('${element.id}')" style="background: red; border: none; color: white; padding: 2px 8px; border-radius: 3px; cursor: pointer;">
+            <i class="fas fa-trash"></i>
+        </button>
+    `;
+    element.appendChild(controls);
+    
+    document.getElementById('editorCanvas').appendChild(element);
+    interact(element).draggable({});
+    interact(element).resizable({});
+    
+    element.focus();
+    updateElementData(element);
+}
+
+// Add image element
+function addImageElement() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function(e) {
+        handleImageUpload(e, true);
+    };
+    input.click();
+}
+
+// Handle image upload
+function handleImageUpload(event, addToCanvas = false) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    fetch('{{ url_for("upload_image") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (addToCanvas) {
+                addImageToCanvas(data.image_url);
+            } else {
+                document.getElementById('uploadedImagePreview').innerHTML = `
+                    <img src="${data.image_url}" class="preview-image" alt="Uploaded">
+                    <button class="btn btn-primary btn-sm w-100 mt-2" onclick="addImageToCanvas('${data.image_url}')">
+                        Add to Canvas
+                    </button>
+                `;
+            }
+        } else {
+            alert('Error uploading image: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error uploading image');
+    });
+}
+
+// Add image to canvas
+function addImageToCanvas(imageUrl) {
+    elementCounter++;
+    const element = document.createElement('div');
+    element.className = 'draggable-element';
+    element.id = `element-${elementCounter}`;
+    element.style.left = '50%';
+    element.style.top = '50%';
+    element.style.transform = 'translate(-50%, -50%)';
+    element.innerHTML = `<img src="${imageUrl}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`;
+    element.style.width = '200px';
+    element.style.height = '200px';
+    
+    const controls = document.createElement('div');
+    controls.className = 'element-controls';
+    controls.innerHTML = `
+        <button onclick="deleteElement('${element.id}')" style="background: red; border: none; color: white; padding: 2px 8px; border-radius: 3px; cursor: pointer;">
+            <i class="fas fa-trash"></i>
+        </button>
+    `;
+    element.appendChild(controls);
+    
+    document.getElementById('editorCanvas').appendChild(element);
+    // Reinitialize interact for new element
+    interact(element).draggable({
+        listeners: {
+            move(event) {
+                const target = event.target;
+                const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+                const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+                target.style.transform = `translate(${x}px, ${y}px)`;
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            },
+            end(event) {
+                updateElementData(event.target);
+            }
+        }
+    });
+    interact(element).resizable({
+        edges: { left: true, right: true, top: true, bottom: true },
+        listeners: {
+            move(event) {
+                const target = event.target;
+                let x = (parseFloat(target.getAttribute('data-x')) || 0);
+                let y = (parseFloat(target.getAttribute('data-y')) || 0);
+                target.style.width = event.rect.width + 'px';
+                target.style.height = event.rect.height + 'px';
+                x += event.deltaRect.left;
+                y += event.deltaRect.bottom;
+                target.style.transform = `translate(${x}px, ${y}px)`;
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            },
+            end(event) {
+                updateElementData(event.target);
+            }
+        }
+    });
+    updateElementData(element);
+}
+
+// Add shape
+function addShape(type) {
+    elementCounter++;
+    const element = document.createElement('div');
+    element.className = 'draggable-element';
+    element.id = `element-${elementCounter}`;
+    element.style.left = '50%';
+    element.style.top = '50%';
+    element.style.transform = 'translate(-50%, -50%)';
+    element.style.width = '150px';
+    element.style.height = '150px';
+    element.style.background = 'rgba(255, 255, 255, 0.3)';
+    element.style.borderRadius = type === 'circle' ? '50%' : '8px';
+    
+    const controls = document.createElement('div');
+    controls.className = 'element-controls';
+    controls.innerHTML = `
+        <button onclick="deleteElement('${element.id}')" style="background: red; border: none; color: white; padding: 2px 8px; border-radius: 3px; cursor: pointer;">
+            <i class="fas fa-trash"></i>
+        </button>
+    `;
+    element.appendChild(controls);
+    
+    document.getElementById('editorCanvas').appendChild(element);
+    // Reinitialize interact for new element
+    interact(element).draggable({
+        listeners: {
+            move(event) {
+                const target = event.target;
+                const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+                const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+                target.style.transform = `translate(${x}px, ${y}px)`;
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            },
+            end(event) {
+                updateElementData(event.target);
+            }
+        }
+    });
+    interact(element).resizable({
+        edges: { left: true, right: true, top: true, bottom: true },
+        listeners: {
+            move(event) {
+                const target = event.target;
+                let x = (parseFloat(target.getAttribute('data-x')) || 0);
+                let y = (parseFloat(target.getAttribute('data-y')) || 0);
+                target.style.width = event.rect.width + 'px';
+                target.style.height = event.rect.height + 'px';
+                x += event.deltaRect.left;
+                y += event.deltaRect.bottom;
+                target.style.transform = `translate(${x}px, ${y}px)`;
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            },
+            end(event) {
+                updateElementData(event.target);
+            }
+        }
+    });
+    updateElementData(element);
+}
+
+// Add icon
+function addIcon() {
+    const icon = prompt('Enter Font Awesome icon class (e.g., fa-heart, fa-star):', 'fa-heart');
+    if (icon) {
+        elementCounter++;
+        const element = document.createElement('div');
+        element.className = 'draggable-element';
+        element.id = `element-${elementCounter}`;
+        element.style.left = '50%';
+        element.style.top = '50%';
+        element.style.transform = 'translate(-50%, -50%)';
+        element.innerHTML = `<i class="fas ${icon}" style="font-size: 48px; color: white;"></i>`;
+        element.style.textAlign = 'center';
+        
+        const controls = document.createElement('div');
+        controls.className = 'element-controls';
+        controls.innerHTML = `
+            <button onclick="deleteElement('${element.id}')" style="background: red; border: none; color: white; padding: 2px 8px; border-radius: 3px; cursor: pointer;">
+                <i class="fas fa-trash"></i>
+            </button>
+        `;
+        element.appendChild(controls);
+        
+        document.getElementById('editorCanvas').appendChild(element);
+        interact(element).draggable({});
+        interact(element).resizable({});
+        updateElementData(element);
+    }
+}
+
+// Delete element
+function deleteElement(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.remove();
+        designElements = designElements.filter(el => el.id !== elementId);
+    }
+}
+
+// Update element data
+function updateElementData(element) {
+    const rect = element.getBoundingClientRect();
+    const canvasRect = document.getElementById('editorCanvas').getBoundingClientRect();
+    
+    const data = {
+        id: element.id,
+        type: element.classList.contains('draggable-element') ? 'element' : 'unknown',
+        x: rect.left - canvasRect.left,
+        y: rect.top - canvasRect.top,
+        width: rect.width,
+        height: rect.height,
+        content: element.innerHTML,
+        style: element.style.cssText
+    };
+    
+    const index = designElements.findIndex(el => el.id === element.id);
+    if (index >= 0) {
+        designElements[index] = data;
+    } else {
+        designElements.push(data);
+    }
+}
+
+// Upload background
+function uploadBackground() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('canvasBackground').style.backgroundImage = `url(${e.target.result})`;
+                document.getElementById('canvasBackground').style.backgroundSize = 'cover';
+                document.getElementById('canvasBackground').style.backgroundPosition = 'center';
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
+}
+
+// Save design
+function saveDesign() {
+    // Collect all element data
+    const elements = document.querySelectorAll('.draggable-element');
+    const designData = {
+        background: document.getElementById('canvasBackground').style.cssText,
+        elements: []
+    };
+    
+    elements.forEach(element => {
+        const rect = element.getBoundingClientRect();
+        const canvasRect = document.getElementById('editorCanvas').getBoundingClientRect();
+        
+        designData.elements.push({
+            id: element.id,
+            x: rect.left - canvasRect.left,
+            y: rect.top - canvasRect.top,
+            width: rect.width,
+            height: rect.height,
+            content: element.innerHTML,
+            style: element.style.cssText
+        });
+    });
+    
+    // Store in hidden input
+    document.getElementById('designDataInput').value = JSON.stringify(designData);
+    
+    alert('Design saved! Now fill in the invitation details to create your invitation.');
+    window.location.href = '{{ url_for("create_invitation") }}?design_data=' + encodeURIComponent(JSON.stringify(designData));
+}
+
+// Preview design
+function previewDesign() {
+    const canvas = document.getElementById('editorCanvas');
+    const canvasData = canvas.innerHTML;
+    const previewWindow = window.open('', '_blank');
+    previewWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Invitation Preview</title>
+            <style>
+                body { margin: 0; padding: 20px; background: #f5f5f5; }
+                .preview-canvas { 
+                    background: white; 
+                    margin: 0 auto; 
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+                    max-width: 800px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="preview-canvas">
+                ${canvasData}
+            </div>
+        </body>
+        </html>
+    `);
+}
+
+// Drag and drop file upload
+const uploadArea = document.getElementById('imageUploadArea');
+uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+});
+
+uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('dragover');
+});
+
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        const input = document.getElementById('imageFileInput');
+        input.files = files;
+        handleImageUpload({ target: input });
+    }
+});
+</script>
+{% endblock %}
+

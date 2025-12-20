@@ -20,7 +20,7 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" id="invitationForm">
+                    <form method="POST" id="invitationForm" enctype="multipart/form-data">
                         <!-- Basic Information -->
                         <div class="row mb-4">
                             <div class="col-12">
@@ -175,6 +175,26 @@
                             <textarea class="form-control" id="custom_message" name="custom_message" rows="3"
                                       placeholder="Add a personal touch with your own message to guests..."></textarea>
                         </div>
+                        
+                        <!-- Custom Image Upload -->
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-image me-2"></i>Custom Invitation Image (Optional)
+                            </label>
+                            <div class="card border-2 border-dashed p-4 text-center" style="border-color: #667eea;">
+                                <input type="file" class="form-control" id="custom_image" name="custom_image" 
+                                       accept="image/*" onchange="previewImage(this)">
+                                <p class="text-muted small mt-2 mb-0">
+                                    Upload your own image to use as the invitation background or design
+                                </p>
+                                <div id="imagePreview" class="mt-3"></div>
+                            </div>
+                            <div class="mt-3">
+                                <a href="{{ url_for('invitation_editor') }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-magic me-2"></i>Or Use Visual Drag & Drop Editor
+                                </a>
+                            </div>
+                        </div>
 
                         <!-- Settings -->
                         <div class="row mb-4">
@@ -293,6 +313,23 @@
                 selectedCard.classList.add('selected');
             }
         });
+        
+        // Image preview function
+        window.previewImage = function(input) {
+            const preview = document.getElementById('imagePreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px;" alt="Preview">
+                        <p class="text-success small mt-2"><i class="fas fa-check-circle me-1"></i>Image selected</p>
+                    `;
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.innerHTML = '';
+            }
+        };
     });
 </script>
 {% endblock %}
