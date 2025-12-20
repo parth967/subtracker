@@ -1,0 +1,379 @@
+{% extends "base.html" %}
+
+{% block title %}Free RSVP - 100% Free Online RSVP Tool | RSVP Hub{% endblock %}
+
+{% block meta_description %}Free RSVP tool for all events. Create beautiful invitations, manage RSVPs, track guests - completely free forever. No credit card required. 15+ templates, QR codes, real-time tracking.{% endblock %}
+
+{% block meta_keywords %}free rsvp, free rsvp tool, free online rsvp, free rsvp website, free rsvp service, free invitation rsvp, free wedding rsvp, free event rsvp, free rsvp management, free rsvp tracker{% endblock %}
+
+{% block og_title %}Free RSVP Tool - 100% Free Forever | RSVP Hub{% endblock %}
+
+{% block og_description %}The best free RSVP tool online. Create invitations, manage RSVPs, track responses - all free. No hidden fees, no credit card needed. Start free today!{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 6rem 0;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center text-white">
+                <h1 class="display-3 fw-bold mb-4">
+                    <span class="text-warning">Free RSVP</span> Tool<br>
+                    For All Your Events
+                </h1>
+                <p class="lead mb-4 fs-4">
+                    Create beautiful invitations, manage RSVPs, and track guests - <strong>100% free forever</strong>. 
+                    No credit card required. No hidden fees. No limits.
+                </p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap mb-5">
+                    <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg px-5 py-3">
+                        <i class="fas fa-rocket me-2"></i>Start Free Now
+                    </a>
+                    <a href="#features" class="btn btn-outline-light btn-lg px-5 py-3">
+                        <i class="fas fa-info-circle me-2"></i>Learn More
+                    </a>
+                </div>
+                <div class="row g-4 mt-5">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-check-circle fa-3x text-warning mb-3"></i>
+                            <h4 class="fw-bold">100% Free</h4>
+                            <p class="mb-0">No credit card. No hidden fees. Forever free.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-bolt fa-3x text-warning mb-3"></i>
+                            <h4 class="fw-bold">Instant Setup</h4>
+                            <p class="mb-0">Create your first invitation in under 2 minutes.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-infinity fa-3x text-warning mb-3"></i>
+                            <h4 class="fw-bold">Unlimited Events</h4>
+                            <p class="mb-0">Create as many invitations as you need.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Free RSVP Section -->
+<section id="features" class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-5 fw-bold mb-3">Why Choose Our Free RSVP Tool?</h2>
+                <p class="lead text-muted">The most comprehensive free RSVP solution available online</p>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-palette fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">15+ Beautiful Templates</h4>
+                        <p class="text-muted">Choose from professionally designed templates for weddings, birthdays, corporate events, and more. All templates are completely free.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-qrcode fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Free QR Code Generation</h4>
+                        <p class="text-muted">Generate QR codes for your invitations instantly. Share easily and track responses in real-time - all included in our free plan.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-chart-line fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Real-Time RSVP Tracking</h4>
+                        <p class="text-muted">See who's attending, who's not, and who's maybe - all in real-time. Get instant notifications when guests RSVP.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-mobile-alt fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Mobile-Friendly</h4>
+                        <p class="text-muted">Your guests can RSVP from any device - phone, tablet, or computer. Our free RSVP tool works perfectly on all devices.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-shield-alt fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Secure & Private</h4>
+                        <p class="text-muted">Your event data is secure and private. We never share your information. Your free RSVP tool is completely safe to use.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-headset fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">No Support Limits</h4>
+                        <p class="text-muted">Get help when you need it. Our free plan includes full support - no restrictions, no premium tiers required.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-5 fw-bold mb-3">How Our Free RSVP Tool Works</h2>
+                <p class="lead text-muted">Get started in 3 simple steps - completely free</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                        <span class="display-4 fw-bold">1</span>
+                    </div>
+                    <h4 class="fw-bold mb-3">Sign Up Free</h4>
+                    <p class="text-muted">Create your free account in seconds. No credit card required. No commitment.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                        <span class="display-4 fw-bold">2</span>
+                    </div>
+                    <h4 class="fw-bold mb-3">Create Your Invitation</h4>
+                    <p class="text-muted">Choose a template, add your event details, and customize your free RSVP invitation.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                        <span class="display-4 fw-bold">3</span>
+                    </div>
+                    <h4 class="fw-bold mb-3">Share & Track</h4>
+                    <p class="text-muted">Share your invitation link or QR code. Track RSVPs in real-time - all free!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-5 text-center">Frequently Asked Questions About Free RSVP</h2>
+                
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Is the RSVP tool really free?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <strong>Yes, absolutely!</strong> Our RSVP tool is 100% free forever. There are no hidden fees, no credit card required, and no premium tiers. You can create unlimited invitations, manage unlimited RSVPs, and use all features completely free.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                What features are included in the free RSVP tool?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Our free RSVP tool includes: 15+ beautiful invitation templates, QR code generation, real-time RSVP tracking, guest management, mobile-responsive design, email notifications, unlimited invitations, unlimited RSVPs, and full customer support. Everything is free!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Do I need a credit card to use the free RSVP tool?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <strong>No credit card required!</strong> You can sign up and start using our free RSVP tool immediately without providing any payment information. The service is completely free with no strings attached.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                How many invitations can I create with the free RSVP tool?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <strong>Unlimited!</strong> With our free RSVP tool, you can create as many invitations as you need. There are no limits on the number of events, invitations, or RSVPs you can manage - all completely free.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                Can I use the free RSVP tool for commercial events?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! Our free RSVP tool can be used for any type of event - personal, commercial, corporate, or non-profit. There are no restrictions on how you use the free service.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                Is there a free RSVP tool for weddings?
+                            </button>
+                        </h2>
+                        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Absolutely! Our free RSVP tool is perfect for weddings. We have multiple wedding-specific templates, and you can track all your wedding RSVPs for free. Many couples use our free tool for their wedding invitations.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-4 fw-bold mb-4">Ready to Start Using Our Free RSVP Tool?</h2>
+                <p class="lead mb-4">Join thousands of users who trust our free RSVP service for their events</p>
+                <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg px-5 py-3">
+                    <i class="fas fa-rocket me-2"></i>Get Started Free Now
+                </a>
+                <p class="mt-3 mb-0">
+                    <i class="fas fa-check-circle me-2"></i>No credit card required
+                    <span class="mx-3">•</span>
+                    <i class="fas fa-check-circle me-2"></i>100% free forever
+                    <span class="mx-3">•</span>
+                    <i class="fas fa-check-circle me-2"></i>Setup in 2 minutes
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Schema.org FAQ Structured Data -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{
+        "@type": "Question",
+        "name": "Is the RSVP tool really free?",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, absolutely! Our RSVP tool is 100% free forever. There are no hidden fees, no credit card required, and no premium tiers. You can create unlimited invitations, manage unlimited RSVPs, and use all features completely free."
+        }
+    }, {
+        "@type": "Question",
+        "name": "What features are included in the free RSVP tool?",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our free RSVP tool includes: 15+ beautiful invitation templates, QR code generation, real-time RSVP tracking, guest management, mobile-responsive design, email notifications, unlimited invitations, unlimited RSVPs, and full customer support. Everything is free!"
+        }
+    }, {
+        "@type": "Question",
+        "name": "Do I need a credit card to use the free RSVP tool?",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No credit card required! You can sign up and start using our free RSVP tool immediately without providing any payment information. The service is completely free with no strings attached."
+        }
+    }, {
+        "@type": "Question",
+        "name": "How many invitations can I create with the free RSVP tool?",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Unlimited! With our free RSVP tool, you can create as many invitations as you need. There are no limits on the number of events, invitations, or RSVPs you can manage - all completely free."
+        }
+    }, {
+        "@type": "Question",
+        "name": "Is there a free RSVP tool for weddings?",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely! Our free RSVP tool is perfect for weddings. We have multiple wedding-specific templates, and you can track all your wedding RSVPs for free. Many couples use our free tool for their wedding invitations."
+        }
+    }]
+}
+</script>
+
+<!-- Service Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Free RSVP Tool",
+    "provider": {
+        "@type": "Organization",
+        "name": "RSVP Hub",
+        "url": "https://parth967.pythonanywhere.com"
+    },
+    "areaServed": "Worldwide",
+    "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Free RSVP Services",
+        "itemListElement": [{
+            "@type": "Offer",
+            "itemOffered": {
+                "@type": "Service",
+                "name": "Free RSVP Tool",
+                "description": "100% free online RSVP tool for all events"
+            },
+            "price": "0",
+            "priceCurrency": "USD"
+        }]
+    }
+}
+</script>
+{% endblock %}
+

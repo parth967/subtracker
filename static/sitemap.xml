@@ -3,8 +3,14 @@
     <!-- Main Pages -->
     <url>
         <loc>https://parth967.pythonanywhere.com/</loc>
-        <lastmod>2024-12-19</lastmod>
+        <lastmod>2024-12-20</lastmod>
         <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://parth967.pythonanywhere.com/free-rsvp</loc>
+        <lastmod>2024-12-20</lastmod>
+        <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
@@ -29,7 +35,7 @@
     <!-- SEO Landing Pages -->
     <url>
         <loc>https://parth967.pythonanywhere.com/wedding-rsvp</loc>
-        <lastmod>2024-12-19</lastmod>
+        <lastmod>2024-12-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.95</priority>
     </url>
@@ -58,6 +64,12 @@
         <lastmod>2024-12-19</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.85</priority>
+    </url>
+    <url>
+        <loc>https://parth967.pythonanywhere.com/blog/free-rsvp-tool-complete-guide</loc>
+        <lastmod>2024-12-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.95</priority>
     </url>
     <url>
         <loc>https://parth967.pythonanywhere.com/blog/best-rsvp-tools-for-small-weddings</loc>

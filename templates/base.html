@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}RSVP Hub - Beautiful Event Invitations & RSVP Management{% endblock %}</title>
+    <title>{% block title %}Free RSVP Tool - 100% Free Online RSVP | RSVP Hub{% endblock %}</title>
     
     <!-- Microsoft Clarity Tracking -->
     <script type="text/javascript">
@@ -15,8 +15,8 @@
     </script>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="{% block meta_description %}RSVP Hub - Create beautiful event invitations and manage RSVPs effortlessly. Free online invitation maker with 15+ stunning templates for weddings, parties, corporate events, and more.{% endblock %}">
-    <meta name="keywords" content="{% block meta_keywords %}RSVP, invitation maker, event planning, wedding invitations, party invitations, free invitations, online RSVP, event management, invitation templates, digital invitations, QR code invitations, wedding RSVP website, online invitation with RSVP, free RSVP tool{% endblock %}">
+    <meta name="description" content="{% block meta_description %}Free RSVP tool - 100% free forever. Create beautiful invitations, manage RSVPs, track guests - completely free. No credit card required. 15+ templates, QR codes, real-time tracking.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}free rsvp, free rsvp tool, free online rsvp, free rsvp website, free rsvp service, free invitation rsvp, free wedding rsvp, free event rsvp, free rsvp management, free rsvp tracker, RSVP, invitation maker, event planning, wedding invitations, party invitations, free invitations, online RSVP, event management, invitation templates, digital invitations, QR code invitations, wedding RSVP website, online invitation with RSVP{% endblock %}">
     <meta name="author" content="RSVP Hub">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
@@ -28,8 +28,8 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:url" content="https://parth967.pythonanywhere.com{{ request.path }}">
-    <meta property="og:title" content="{% block og_title %}RSVP Hub - Beautiful Event Invitations & RSVP Management{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Create stunning event invitations and manage RSVPs with ease. 15+ beautiful templates, QR codes, real-time tracking. Completely free!{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}Free RSVP Tool - 100% Free Forever | RSVP Hub{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}The best free RSVP tool online. Create invitations, manage RSVPs, track responses - all free. No credit card needed. Start free today!{% endblock %}">
     <meta property="og:image" content="{% block og_image %}https://parth967.pythonanywhere.com{{ url_for('static', filename='images/favicon.svg') }}{% endblock %}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -39,8 +39,8 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://parth967.pythonanywhere.com{{ request.path }}">
-    <meta name="twitter:title" content="{% block twitter_title %}RSVP Hub - Free Online Invitation Maker{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}Create beautiful event invitations and manage RSVPs effortlessly. Free templates, QR codes, real-time tracking.{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}Free RSVP Tool - 100% Free Forever{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}The best free RSVP tool online. Create invitations, manage RSVPs, track guests - completely free. No credit card required.{% endblock %}">
     <meta name="twitter:image" content="{% block twitter_image %}https://parth967.pythonanywhere.com{{ url_for('static', filename='images/favicon.svg') }}{% endblock %}">
     <meta name="twitter:creator" content="@RSVPHub">
     <meta name="twitter:site" content="@RSVPHub">
@@ -580,6 +580,7 @@
                     <h6 class="mb-3">Quick Links</h6>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="{{ url_for('home') }}"><i class="fas fa-home me-2"></i>Home</a></li>
+                        <li class="mb-2"><a href="{{ url_for('free_rsvp') }}"><i class="fas fa-gift me-2"></i>Free RSVP Tool</a></li>
                         <li class="mb-2"><a href="{{ url_for('template_gallery') }}"><i class="fas fa-palette me-2"></i>Templates</a></li>
                         <li class="mb-2"><a href="{{ url_for('create_invitation') }}"><i class="fas fa-plus me-2"></i>Create Invitation</a></li>
                         <li class="mb-2"><a href="{{ url_for('register') }}"><i class="fas fa-user-plus me-2"></i>Sign Up</a></li>

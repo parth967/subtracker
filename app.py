@@ -1072,6 +1072,11 @@ def corporate_events():
     """Corporate events landing page for SEO"""
     return render_template('landing/corporate_events.html')
 
+@app.route('/free-rsvp')
+def free_rsvp():
+    """Free RSVP landing page - optimized for 'free rsvp' keyword"""
+    return render_template('landing/free_rsvp.html')
+
 # Blog Routes
 @app.route('/blog')
 def blog():
@@ -1202,7 +1207,8 @@ def blog_post(slug):
             'content': 'best_rsvp_tools',
             'date': '2024-12-18',
             'category': 'Weddings',
-            'meta_description': 'Discover the best free RSVP tools for small weddings. Compare features, templates, and find the perfect solution for intimate celebrations.'
+            'meta_description': 'Complete guide to free RSVP tools. Learn everything about free online RSVP services - features, benefits, and how to use them for any event.',
+            'meta_keywords': 'free rsvp tool, free online rsvp, free rsvp guide, free rsvp service, how to use free rsvp'
         }
     }
     
