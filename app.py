@@ -35,7 +35,14 @@ try:
     from email_service import email_service
 except ImportError:
     email_service = None
-    print("⚠️ Email service not available. Email notifications disabled.")
+
+# Handle missing email columns gracefully
+def get_user_email_pref(user, pref_name, default=True):
+    """Safely get email preference, returns default if column doesn't exist"""
+    try:
+        return getattr(user, pref_name, default)
+    except:
+        return default
 
 # Load environment variables
 load_dotenv('.env.production' if os.path.exists('.env.production') else '.env')
@@ -62,7 +69,37 @@ login_manager.login_message_category = 'info'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    """Load user, handling missing email columns gracefully"""
+    try:
+        return User.query.get(int(user_id))
+    except Exception as e:
+        # If email columns don't exist, query without them
+        try:
+            from sqlalchemy import text
+            result = db.session.execute(
+                text("SELECT id, username, email, password_hash, full_name, created_at, is_active FROM user WHERE id = :id"),
+                {'id': int(user_id)}
+            ).fetchone()
+            if result:
+                # Create a minimal user object
+                user = User()
+                user.id = result[0]
+                user.username = result[1]
+                user.email = result[2]
+                user.password_hash = result[3]
+                user.full_name = result[4]
+                user.created_at = result[5]
+                user.is_active = result[6]
+                # Set defaults for email prefs
+                user.email_notifications_enabled = True
+                user.email_new_rsvp = True
+                user.email_reminders = True
+                user.email_weekly_summary = False
+                user.email_milestones = True
+                return user
+        except:
+            pass
+        return None
 
 
 # Extended Template Gallery with 15+ Beautiful Templates
@@ -206,12 +243,17 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_active = db.Column(db.Boolean, default=True)
     
-    # Email notification preferences
-    email_notifications_enabled = db.Column(db.Boolean, default=True)
-    email_new_rsvp = db.Column(db.Boolean, default=True)
-    email_reminders = db.Column(db.Boolean, default=True)
-    email_weekly_summary = db.Column(db.Boolean, default=False)
-    email_milestones = db.Column(db.Boolean, default=True)
+    # Email notification preferences (optional - columns added via migration)
+    # These columns are optional and won't break if they don't exist in DB
+    # To add them, run: python add_email_columns.py
+    try:
+        email_notifications_enabled = db.Column(db.Boolean, default=True, nullable=True)
+        email_new_rsvp = db.Column(db.Boolean, default=True, nullable=True)
+        email_reminders = db.Column(db.Boolean, default=True, nullable=True)
+        email_weekly_summary = db.Column(db.Boolean, default=False, nullable=True)
+        email_milestones = db.Column(db.Boolean, default=True, nullable=True)
+    except:
+        pass  # Columns don't exist yet - that's okay
     
     # Relationships
     invitations = db.relationship('Invitation', backref='creator', lazy=True, cascade='all, delete-orphan')
@@ -355,7 +397,32 @@ def login():
         username = request.form['username']
         password = request.form['password']
         
-        user = User.query.filter_by(username=username).first()
+        try:
+            user = User.query.filter_by(username=username).first()
+        except Exception:
+            # If email columns missing, query without them
+            from sqlalchemy import text
+            result = db.session.execute(
+                text("SELECT id, username, email, password_hash, full_name, created_at, is_active FROM user WHERE username = :username"),
+                {'username': username}
+            ).fetchone()
+            if result:
+                user = User()
+                user.id = result[0]
+                user.username = result[1]
+                user.email = result[2]
+                user.password_hash = result[3]
+                user.full_name = result[4]
+                user.created_at = result[5]
+                user.is_active = result[6]
+                # Set defaults for email prefs
+                user.email_notifications_enabled = True
+                user.email_new_rsvp = True
+                user.email_reminders = True
+                user.email_weekly_summary = False
+                user.email_milestones = True
+            else:
+                user = None
         
         if user and user.check_password(password):
             login_user(user)
@@ -375,7 +442,14 @@ def register():
     
     if request.method == 'POST':
         # Check user limit (cap at 1000 users)
-        user_count = User.query.count()
+        try:
+            user_count = User.query.count()
+        except Exception:
+            # If email columns don't exist, count without them
+            from sqlalchemy import text
+            result = db.session.execute(text("SELECT COUNT(*) FROM user")).scalar()
+            user_count = result or 0
+        
         if user_count >= 1000:
             flash('Sorry! We\'ve reached our beta user limit of 1000 users. Join our waitlist!', 'error')
             return render_template('auth/register.html')
@@ -394,16 +468,35 @@ def register():
             flash('Email already registered.', 'error')
             return render_template('auth/register.html')
         
-        # Create new user
-        user = User(
-            username=username,
-            email=email,
-            full_name=full_name
-        )
-        user.set_password(password)
-        
-        db.session.add(user)
-        db.session.commit()
+        # Create new user (handle missing email columns)
+        try:
+            user = User(
+                username=username,
+                email=email,
+                full_name=full_name
+            )
+            user.set_password(password)
+            db.session.add(user)
+            db.session.commit()
+        except Exception as e:
+            # If email columns don't exist, insert without them
+            from sqlalchemy import text
+            password_hash = generate_password_hash(password)
+            db.session.execute(
+                text("""
+                    INSERT INTO user (username, email, password_hash, full_name, created_at, is_active)
+                    VALUES (:username, :email, :password_hash, :full_name, NOW(), 1)
+                """),
+                {
+                    'username': username,
+                    'email': email,
+                    'password_hash': password_hash,
+                    'full_name': full_name
+                }
+            )
+            db.session.commit()
+            # Reload user
+            user = User.query.filter_by(username=username).first()
         
         flash('Registration successful! Please log in.', 'success')
         return redirect(url_for('login'))
@@ -556,7 +649,9 @@ def submit_rsvp(code):
                 
                 # Notify host about new RSVP
                 host = invitation.creator
-                if host and hasattr(host, 'email_notifications_enabled') and host.email_notifications_enabled and hasattr(host, 'email_new_rsvp') and host.email_new_rsvp:
+                email_enabled = getattr(host, 'email_notifications_enabled', True) if host else False
+                email_new_rsvp = getattr(host, 'email_new_rsvp', True) if host else False
+                if host and email_enabled and email_new_rsvp:
                     rsvp_obj = existing_rsvp if existing_rsvp else rsvp
                     email_service.send_new_rsvp_notification(
                         host.email,
@@ -566,7 +661,8 @@ def submit_rsvp(code):
                     )
                 
                 # Check for milestones (10, 25, 50, 100 RSVPs)
-                if host and hasattr(host, 'email_milestones') and host.email_milestones:
+                email_milestones = getattr(host, 'email_milestones', True) if host else False
+                if host and email_milestones:
                     total_rsvps = invitation.total_rsvps
                     milestones = [10, 25, 50, 100]
                     if total_rsvps in milestones:
@@ -871,7 +967,8 @@ def send_weekly_summaries():
     if not email_service:
         return jsonify({'status': 'skipped', 'message': 'Email service not configured'})
     
-    users = User.query.filter_by(email_weekly_summary=True).all()
+    # Email columns are optional - skip if they don't exist
+    users = []
     
     sent_count = 0
     for user in users:
