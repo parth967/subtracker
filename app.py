@@ -30,6 +30,13 @@ import io
 import base64
 from dotenv import load_dotenv
 
+# Import email service (optional - only if configured)
+try:
+    from email_service import email_service
+except ImportError:
+    email_service = None
+    print("⚠️ Email service not available. Email notifications disabled.")
+
 # Load environment variables
 load_dotenv('.env.production' if os.path.exists('.env.production') else '.env')
 
@@ -198,6 +205,13 @@ class User(UserMixin, db.Model):
     full_name = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_active = db.Column(db.Boolean, default=True)
+    
+    # Email notification preferences
+    email_notifications_enabled = db.Column(db.Boolean, default=True)
+    email_new_rsvp = db.Column(db.Boolean, default=True)
+    email_reminders = db.Column(db.Boolean, default=True)
+    email_weekly_summary = db.Column(db.Boolean, default=False)
+    email_milestones = db.Column(db.Boolean, default=True)
     
     # Relationships
     invitations = db.relationship('Invitation', backref='creator', lazy=True, cascade='all, delete-orphan')
@@ -528,6 +542,43 @@ def submit_rsvp(code):
         
         db.session.commit()
         
+        # Send email notifications (optional - works fine without email setup)
+        if email_service:
+            try:
+                # Send confirmation to guest if email provided
+                guest_email = request.form.get('guest_email', '')
+                if guest_email and existing_rsvp is None:  # Only for new RSVPs
+                    email_service.send_rsvp_confirmation(
+                        request.form['guest_name'],
+                        guest_email,
+                        invitation
+                    )
+                
+                # Notify host about new RSVP
+                host = invitation.creator
+                if host and hasattr(host, 'email_notifications_enabled') and host.email_notifications_enabled and hasattr(host, 'email_new_rsvp') and host.email_new_rsvp:
+                    rsvp_obj = existing_rsvp if existing_rsvp else rsvp
+                    email_service.send_new_rsvp_notification(
+                        host.email,
+                        host.full_name,
+                        invitation,
+                        rsvp_obj
+                    )
+                
+                # Check for milestones (10, 25, 50, 100 RSVPs)
+                if host and hasattr(host, 'email_milestones') and host.email_milestones:
+                    total_rsvps = invitation.total_rsvps
+                    milestones = [10, 25, 50, 100]
+                    if total_rsvps in milestones:
+                        email_service.send_milestone_notification(
+                            host.email,
+                            host.full_name,
+                            invitation,
+                            total_rsvps
+                        )
+            except Exception:
+                pass  # Silently fail - don't break RSVP if email fails
+        
         status_messages = {
             'attending': 'Great! We\'re excited to see you at the event!',
             'not_attending': 'Thanks for letting us know. You\'ll be missed!',
@@ -748,6 +799,96 @@ def sitemap():
 def robots():
     """Serve robots.txt for search engines"""
     return app.send_static_file('robots.txt')
+
+# Email Notification Settings
+@app.route('/settings/notifications')
+@login_required
+def notification_settings():
+    """User email notification preferences"""
+    return render_template('settings/notifications.html')
+
+@app.route('/settings/notifications', methods=['POST'])
+@login_required
+def update_notification_settings():
+    """Update email notification preferences"""
+    # Safely update preferences (works even if columns don't exist yet)
+    try:
+        if hasattr(current_user, 'email_notifications_enabled'):
+            current_user.email_notifications_enabled = request.form.get('email_notifications_enabled') == 'on'
+        if hasattr(current_user, 'email_new_rsvp'):
+            current_user.email_new_rsvp = request.form.get('email_new_rsvp') == 'on'
+        if hasattr(current_user, 'email_reminders'):
+            current_user.email_reminders = request.form.get('email_reminders') == 'on'
+        if hasattr(current_user, 'email_weekly_summary'):
+            current_user.email_weekly_summary = request.form.get('email_weekly_summary') == 'on'
+        if hasattr(current_user, 'email_milestones'):
+            current_user.email_milestones = request.form.get('email_milestones') == 'on'
+        
+        db.session.commit()
+        flash('Notification settings updated successfully!', 'success')
+    except Exception as e:
+        flash('Settings saved (email features require database migration)', 'info')
+    
+    return redirect(url_for('notification_settings'))
+
+# Background task for sending reminders (can be called via cron or scheduled task)
+@app.route('/tasks/send-reminders')
+def send_event_reminders():
+    """Send event reminders 1 day before (call this daily via cron)"""
+    if not email_service:
+        return jsonify({'status': 'skipped', 'message': 'Email service not configured'})
+    
+    tomorrow = datetime.utcnow() + timedelta(days=1)
+    tomorrow_start = tomorrow.replace(hour=0, minute=0, second=0)
+    tomorrow_end = tomorrow.replace(hour=23, minute=59, second=59)
+    
+    # Find events happening tomorrow
+    invitations = Invitation.query.filter(
+        Invitation.event_date >= tomorrow_start,
+        Invitation.event_date <= tomorrow_end
+    ).all()
+    
+    sent_count = 0
+    for invitation in invitations:
+        # Send reminders to all guests who RSVPed "attending"
+        for rsvp in invitation.rsvps:
+            if rsvp.status == 'attending' and rsvp.guest_email:
+                try:
+                    email_service.send_event_reminder(
+                        rsvp.guest_email,
+                        rsvp.guest_name,
+                        invitation
+                    )
+                    sent_count += 1
+                except Exception as e:
+                    print(f"Error sending reminder: {e}")
+    
+    return jsonify({'status': 'success', 'reminders_sent': sent_count})
+
+@app.route('/tasks/send-weekly-summaries')
+def send_weekly_summaries():
+    """Send weekly RSVP summaries (call this weekly via cron)"""
+    if not email_service:
+        return jsonify({'status': 'skipped', 'message': 'Email service not configured'})
+    
+    users = User.query.filter_by(email_weekly_summary=True).all()
+    
+    sent_count = 0
+    for user in users:
+        # Get user's active invitations
+        invitations = Invitation.query.filter_by(user_id=user.id).all()
+        if invitations:
+            try:
+                email_service.send_weekly_summary(
+                    user.email,
+                    user.full_name,
+                    invitations
+                )
+                sent_count += 1
+            except Exception as e:
+                print(f"Error sending weekly summary: {e}")
+    
+    return jsonify({'status': 'success', 'summaries_sent': sent_count})
 
 if __name__ == '__main__':
     with app.app_context():
