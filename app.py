@@ -301,8 +301,10 @@ class Invitation(db.Model):
     template_id = db.Column(db.String(50), default='classic')
     color_scheme = db.Column(db.String(20), default='blue')
     custom_message = db.Column(db.Text)
-    custom_image = db.Column(db.String(255))  # Path to uploaded custom image
-    design_data = db.Column(db.Text)  # JSON data for drag-and-drop editor
+    # Custom image and design data (optional - add columns via migration if needed)
+    # Uncomment after running: python add_custom_image_columns.py
+    # custom_image = db.Column(db.String(255))  # Path to uploaded custom image
+    # design_data = db.Column(db.Text)  # JSON data for drag-and-drop editor
     
     # Sharing & Privacy
     invitation_code = db.Column(db.String(20), unique=True, nullable=False)
@@ -325,19 +327,31 @@ class Invitation(db.Model):
     
     @property
     def total_rsvps(self):
-        return len(self.rsvps)
+        try:
+            return len(self.rsvps) if hasattr(self, 'rsvps') and self.rsvps else 0
+        except:
+            return 0
     
     @property
     def attending_count(self):
-        return len([rsvp for rsvp in self.rsvps if rsvp.status == 'attending'])
+        try:
+            return len([rsvp for rsvp in self.rsvps if hasattr(rsvp, 'status') and rsvp.status == 'attending'])
+        except:
+            return 0
     
     @property
     def not_attending_count(self):
-        return len([rsvp for rsvp in self.rsvps if rsvp.status == 'not_attending'])
+        try:
+            return len([rsvp for rsvp in self.rsvps if hasattr(rsvp, 'status') and rsvp.status == 'not_attending'])
+        except:
+            return 0
     
     @property
     def maybe_count(self):
-        return len([rsvp for rsvp in self.rsvps if rsvp.status == 'maybe'])
+        try:
+            return len([rsvp for rsvp in self.rsvps if hasattr(rsvp, 'status') and rsvp.status == 'maybe'])
+        except:
+            return 0
     
     @property
     def share_url(self):
@@ -556,7 +570,65 @@ def home():
 @login_required
 def dashboard():
     """User dashboard with their invitations"""
-    invitations = Invitation.query.filter_by(user_id=current_user.id).order_by(Invitation.created_at.desc()).all()
+    try:
+        invitations = Invitation.query.filter_by(user_id=current_user.id).order_by(Invitation.created_at.desc()).all()
+    except Exception:
+        # If custom columns don't exist, query without them using raw SQL
+        from sqlalchemy import text
+        results = db.session.execute(
+            text("""
+                SELECT id, title, description, event_type, event_date, event_time, 
+                       venue_name, venue_address, host_name, host_email, host_phone,
+                       template_id, color_scheme, custom_message, invitation_code,
+                       is_public, requires_approval, max_guests, user_id, created_at, updated_at
+                FROM invitation WHERE user_id = :user_id ORDER BY created_at DESC
+            """),
+            {'user_id': current_user.id}
+        ).fetchall()
+        
+        invitations = []
+        for result in results:
+            inv = Invitation()
+            inv.id = result[0]
+            inv.title = result[1]
+            inv.description = result[2]
+            inv.event_type = result[3]
+            inv.event_date = result[4]
+            inv.event_time = result[5]
+            inv.venue_name = result[6]
+            inv.venue_address = result[7]
+            inv.host_name = result[8]
+            inv.host_email = result[9]
+            inv.host_phone = result[10]
+            inv.template_id = result[11]
+            inv.color_scheme = result[12]
+            inv.custom_message = result[13]
+            inv.invitation_code = result[14]
+            inv.is_public = result[15]
+            inv.requires_approval = result[16]
+            inv.max_guests = result[17]
+            inv.user_id = result[18]
+            inv.created_at = result[19]
+            inv.updated_at = result[20]
+            inv.custom_image = None
+            inv.design_data = None
+            # Get RSVPs separately
+            try:
+                rsvp_results = db.session.execute(
+                    text("SELECT id, guest_name, status, guest_count, invitation_id FROM rsvp WHERE invitation_id = :inv_id"),
+                    {'inv_id': inv.id}
+                ).fetchall()
+                inv.rsvps = []
+                for rsvp_result in rsvp_results:
+                    rsvp = type('RSVP', (), {})()
+                    rsvp.id = rsvp_result[0]
+                    rsvp.guest_name = rsvp_result[1]
+                    rsvp.status = rsvp_result[2]
+                    rsvp.guest_count = rsvp_result[3]
+                    inv.rsvps.append(rsvp)
+            except:
+                inv.rsvps = []
+            invitations.append(inv)
     
     # Calculate statistics
     total_invitations = len(invitations)
@@ -671,6 +743,39 @@ def create_invitation_post():
         db.session.add(invitation)
         db.session.commit()
         
+        # Add optional custom image and design data if provided (using raw SQL if columns don't exist)
+        custom_image_path = None
+        if 'custom_image' in request.files:
+            file = request.files['custom_image']
+            if file and file.filename:
+                try:
+                    custom_image_path = save_uploaded_image(file, current_user.id)
+                except:
+                    pass
+        
+        design_data = request.form.get('design_data', '') or session.get('editor_design_data', '')
+        
+        if custom_image_path or design_data:
+            try:
+                from sqlalchemy import text
+                if custom_image_path:
+                    db.session.execute(
+                        text("UPDATE invitation SET custom_image = :img WHERE id = :id"),
+                        {'img': custom_image_path, 'id': invitation.id}
+                    )
+                if design_data:
+                    db.session.execute(
+                        text("UPDATE invitation SET design_data = :data WHERE id = :id"),
+                        {'data': design_data, 'id': invitation.id}
+                    )
+                db.session.commit()
+                if 'editor_design_data' in session:
+                    session.pop('editor_design_data')
+            except:
+                # Columns don't exist - that's okay
+                db.session.rollback()
+                pass
+        
         flash('Invitation created successfully!', 'success')
         return redirect(url_for('manage_invitation', code=invitation_code))
         
@@ -681,7 +786,52 @@ def create_invitation_post():
 @app.route('/invitation/<code>')
 def view_invitation(code):
     """View invitation page for guests"""
-    invitation = Invitation.query.filter_by(invitation_code=code).first_or_404()
+    try:
+        invitation = Invitation.query.filter_by(invitation_code=code).first_or_404()
+    except Exception:
+        # If custom columns don't exist, query without them
+        from sqlalchemy import text
+        result = db.session.execute(
+            text("""
+                SELECT id, title, description, event_type, event_date, event_time, 
+                       venue_name, venue_address, host_name, host_email, host_phone,
+                       template_id, color_scheme, custom_message, invitation_code,
+                       is_public, requires_approval, max_guests, user_id, created_at, updated_at
+                FROM invitation WHERE invitation_code = :code
+            """),
+            {'code': code}
+        ).fetchone()
+        if result:
+            # Create invitation object manually
+            invitation = Invitation()
+            invitation.id = result[0]
+            invitation.title = result[1]
+            invitation.description = result[2]
+            invitation.event_type = result[3]
+            invitation.event_date = result[4]
+            invitation.event_time = result[5]
+            invitation.venue_name = result[6]
+            invitation.venue_address = result[7]
+            invitation.host_name = result[8]
+            invitation.host_email = result[9]
+            invitation.host_phone = result[10]
+            invitation.template_id = result[11]
+            invitation.color_scheme = result[12]
+            invitation.custom_message = result[13]
+            invitation.invitation_code = result[14]
+            invitation.is_public = result[15]
+            invitation.requires_approval = result[16]
+            invitation.max_guests = result[17]
+            invitation.user_id = result[18]
+            invitation.created_at = result[19]
+            invitation.updated_at = result[20]
+            # Set defaults for optional fields
+            invitation.custom_image = None
+            invitation.design_data = None
+        else:
+            from flask import abort
+            abort(404)
+    
     return render_template('view_invitation.html', invitation=invitation)
 
 @app.route('/invitation/<code>/rsvp', methods=['POST'])
@@ -780,10 +930,65 @@ def submit_rsvp(code):
 @login_required
 def manage_invitation(code):
     """Manage invitation dashboard"""
-    invitation = Invitation.query.filter_by(
-        invitation_code=code, 
-        user_id=current_user.id  # Ensure user can only manage their own invitations
-    ).first_or_404()
+    try:
+        invitation = Invitation.query.filter_by(
+            invitation_code=code, 
+            user_id=current_user.id  # Ensure user can only manage their own invitations
+        ).first_or_404()
+    except Exception:
+        # If custom columns don't exist, query without them
+        from sqlalchemy import text
+        result = db.session.execute(
+            text("""
+                SELECT id, title, description, event_type, event_date, event_time, 
+                       venue_name, venue_address, host_name, host_email, host_phone,
+                       template_id, color_scheme, custom_message, invitation_code,
+                       is_public, requires_approval, max_guests, user_id, created_at, updated_at
+                FROM invitation WHERE invitation_code = :code AND user_id = :user_id
+            """),
+            {'code': code, 'user_id': current_user.id}
+        ).fetchone()
+        if result:
+            invitation = Invitation()
+            invitation.id = result[0]
+            invitation.title = result[1]
+            invitation.description = result[2]
+            invitation.event_type = result[3]
+            invitation.event_date = result[4]
+            invitation.event_time = result[5]
+            invitation.venue_name = result[6]
+            invitation.venue_address = result[7]
+            invitation.host_name = result[8]
+            invitation.host_email = result[9]
+            invitation.host_phone = result[10]
+            invitation.template_id = result[11]
+            invitation.color_scheme = result[12]
+            invitation.custom_message = result[13]
+            invitation.invitation_code = result[14]
+            invitation.is_public = result[15]
+            invitation.requires_approval = result[16]
+            invitation.max_guests = result[17]
+            invitation.user_id = result[18]
+            invitation.created_at = result[19]
+            invitation.updated_at = result[20]
+            invitation.custom_image = None
+            invitation.design_data = None
+            # Get RSVPs
+            rsvp_results = db.session.execute(
+                text("SELECT id, guest_name, status, guest_count, invitation_id FROM rsvp WHERE invitation_id = :inv_id"),
+                {'inv_id': invitation.id}
+            ).fetchall()
+            invitation.rsvps = []
+            for rsvp_result in rsvp_results:
+                rsvp = type('RSVP', (), {})()
+                rsvp.id = rsvp_result[0]
+                rsvp.guest_name = rsvp_result[1]
+                rsvp.status = rsvp_result[2]
+                rsvp.guest_count = rsvp_result[3]
+                invitation.rsvps.append(rsvp)
+        else:
+            from flask import abort
+            abort(404)
     
     # Generate QR code
     qr_code = generate_qr_code(invitation.share_url)
@@ -794,10 +999,44 @@ def manage_invitation(code):
 @login_required
 def invitation_stats(code):
     """API endpoint for invitation statistics"""
-    invitation = Invitation.query.filter_by(
-        invitation_code=code,
-        user_id=current_user.id  # Ensure user can only access their own stats
-    ).first_or_404()
+    try:
+        invitation = Invitation.query.filter_by(
+            invitation_code=code,
+            user_id=current_user.id  # Ensure user can only access their own stats
+        ).first_or_404()
+    except Exception:
+        # If custom columns don't exist, query without them
+        from sqlalchemy import text
+        result = db.session.execute(
+            text("SELECT id FROM invitation WHERE invitation_code = :code AND user_id = :user_id"),
+            {'code': code, 'user_id': current_user.id}
+        ).fetchone()
+        if not result:
+            from flask import abort
+            abort(404)
+        # Get RSVPs
+        rsvp_results = db.session.execute(
+            text("SELECT status, guest_count FROM rsvp WHERE invitation_id = :inv_id"),
+            {'inv_id': result[0]}
+        ).fetchall()
+        
+        attending = sum(1 for r in rsvp_results if r[0] == 'attending')
+        not_attending = sum(1 for r in rsvp_results if r[0] == 'not_attending')
+        maybe = sum(1 for r in rsvp_results if r[0] == 'maybe')
+        total = len(rsvp_results)
+        
+        return jsonify({
+            'total_rsvps': total,
+            'attending': attending,
+            'not_attending': not_attending,
+            'maybe': maybe,
+            'rsvps': [{
+                'guest_name': r[1] if len(r) > 1 else 'Guest',
+                'status': r[0],
+                'guest_count': r[2] if len(r) > 2 else 1,
+                'responded_at': ''
+            } for r in rsvp_results]
+        })
     
     return jsonify({
         'total_rsvps': invitation.total_rsvps,
